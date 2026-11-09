@@ -2,13 +2,5 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
-.env
-.env.*
-!.env.example
-*.pt
-*.onnx
-*.engine
 *.log
 .DS_Store
-wheeltec-camera.jpg
-wheeltec-camera.ppm
