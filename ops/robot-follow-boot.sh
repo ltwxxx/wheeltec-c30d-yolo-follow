@@ -27,7 +27,7 @@ while true; do
         fi
     fi
 
-    for script in follow_sensors.py follow_actuator.py follow_settings.py follow_settings.json battery_state.py lidar_geometry.py; do
+    for script in follow_sensors.py follow_actuator.py follow_settings.py follow_settings.json runtime_paths.py battery_state.py lidar_geometry.py; do
         if ! docker exec "$container" test -s "/tmp/$script"; then
             docker cp "$assets/$script" "$container:/tmp/$script"
         fi

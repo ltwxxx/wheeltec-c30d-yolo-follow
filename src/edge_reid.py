@@ -8,13 +8,14 @@ import time
 import numpy as np
 from PIL import Image
 from follow_settings import SETTINGS
+from runtime_paths import RESOURCE_ROOT
 
 
 class ReIdentifier:
     def __init__(self, model=None):
         path = Path(model or SETTINGS.reid_model)
         if not path.is_absolute():
-            path = Path(__file__).parent / path
+            path = RESOURCE_ROOT / path
         self.jobs = queue.Queue(maxsize=1)
         self.results = queue.Queue(maxsize=1)
         self.next_at = 0.

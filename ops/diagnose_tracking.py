@@ -1,16 +1,19 @@
 """Read-only perception diagnostic; no actuator, session or service mutations."""
 import json
+import os
 from pathlib import Path
 import sys
 import time
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(root / 'src' if (root / 'src').is_dir() else root))
 from edge_detector import Detector
 from edge_tracking import EdgeTracker
 from follow_control import fetch_frame, observe_person
 
 class Tap:
     def __init__(self):
-        self.detector = Detector(str(Path(__file__).resolve().parents[1] / 'follow-yolo11n.onnx'))
+        model = root / 'models' / 'follow-yolo11n.onnx' if (root / 'src').is_dir() else root / 'follow-yolo11n.onnx'
+        self.detector = Detector(os.environ.get('WHEELTEC_EDGE_MODEL', str(model)))
         self.rows = []
     def detect(self, image):
         self.rows = self.detector.detect(image)

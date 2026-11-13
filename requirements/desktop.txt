@@ -1,0 +1,5 @@
+# Optional legacy WSL inference backend. Default operation uses the robot backend.
+-r base.txt
+ultralytics>=8.3,<9
+torch>=2.2,<3
+opencv-python>=4.8,<5

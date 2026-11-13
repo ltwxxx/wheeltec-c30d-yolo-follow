@@ -10,4 +10,4 @@
 | `short-trial-2.telemetry.json` | 同一短测的逐样本状态、速度、里程计、电压及传感器年龄 | 从本地 JSONL 导出，删除会话标识，不含相机图像或人物外观特征 |
 | `deployment-audit.json` | 当时车端运行目录、服务和容器副本的 34 项部署复核 | 历史部署记录，不代表未来部署仍然一致 |
 
-完整过程、已知限制和待完成的实车项目见 [IMPLEMENTATION.md](../IMPLEMENTATION.md)。电量和电压均为采集时的读数，不表示当前电量；百分比是基于电压的估算。
+完整过程、已知限制和待完成的实车项目见 [IMPLEMENTATION.md](../docs/IMPLEMENTATION.md)。电量和电压均为采集时的读数，不表示当前电量；百分比是基于电压的估算。

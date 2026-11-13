@@ -7,3 +7,14 @@ venv/
 releases/
 models/*_source.pth
 validation/*.jsonl
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+test-results/
+.env
+.env.*
+!.env.example
+*.egg-info/
+build/
+dist/

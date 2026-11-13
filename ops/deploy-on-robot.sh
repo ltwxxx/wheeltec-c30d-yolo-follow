@@ -28,7 +28,7 @@ sudo tar -C /usr/local/share -cf "$backup/assets.tar" wheeltec-follow
 cp "$HOME/.config/systemd/user/wheeltec-follow-edge.service" "$backup/edge.service"
 sudo cp /usr/local/libexec/wheeltec-follow-boot "$backup/boot.sh"
 printf '%s\n' "$backup" > "$runtime/last-backup.txt"
-bridges=(follow_sensors.py follow_actuator.py follow_settings.py follow_settings.json battery_state.py lidar_geometry.py)
+bridges=(follow_sensors.py follow_actuator.py follow_settings.py follow_settings.json runtime_paths.py battery_state.py lidar_geometry.py)
 
 retire_bridges() {
     docker exec "$container" pkill -TERM -f '^python3 -u /tmp/follow_sensors.py$' || true

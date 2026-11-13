@@ -1,5 +1,7 @@
 # 车端跟随优化 2.0.0
 
+本文保留 2026-11-12 的实施和实车记录。2026-11-13 仓库已按工程目录整理：文中 Python 模块位于 `src/`，配置位于 `config/`，网页模板位于 `web/templates/`；发布后的车端路径保持兼容。当前操作入口见[部署文档](deployment.md)。
+
 控制入口：http://127.0.0.1:8769/ 。SSH：`ssh wheeltec@192.168.1.242`。
 主机为树莓派 5，ROS 在 `codex-camera-live` 容器内运行；Ubuntu-F 用于模型导出和网页隧道。
 
@@ -47,7 +49,7 @@
 ## 部署、配置与恢复
 
 1. `python -m pytest tests -q`
-2. 待机时修改 `follow_settings.json`，运行 `python ops/build_release.py`。生成包含 SHA-256 清单的 `releases/wheeltec-2.0.0.tar.gz`。
+2. 在仓库根目录修改 `config/follow_settings.json`，运行 `python ops/build_release.py`。生成包含 SHA-256 清单的 `releases/wheeltec-2.0.0.tar.gz`；部署到待机的小车后生效。
 3. 把归档上传车端，执行归档中的 `ops/deploy-on-robot.sh`，传入归档绝对路径。部署器拒绝正在跟随的会话；同步配置到传感器和执行器后重启，返回待机。
 4. 备份位于车端 `~/.local/share/wheeltec-follow-backups/<部署时间>/`，包含运行目录、传感器资产、用户服务和启动脚本。部署失败自动还原。
 

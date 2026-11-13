@@ -17,7 +17,7 @@ enable_detection=false
 control_failures=0
 sensor_failures=0
 
-[[ -r "$identity" && -x "$svc/venv/bin/python" && -r wheeltec-yolo11n.pt ]] || exit 1
+[[ -r "$identity" && -x "$svc/venv/bin/python" && -r models/wheeltec-yolo11n.pt ]] || exit 1
 exec 9>"$svc/watch.lock"
 flock -n 9 || exit 1
 
@@ -62,11 +62,11 @@ check_forward() {
 
 start_viewer() {
     systemd-run --user --unit="$unit" --collect --property=Type=exec --working-directory="$PWD" \
-        --setenv="WHEELTEC_YOLO_WEIGHTS=$PWD/wheeltec-yolo11n.pt" \
+        --setenv="WHEELTEC_YOLO_WEIGHTS=$PWD/models/wheeltec-yolo11n.pt" \
         --setenv="YOLO_CONFIG_DIR=$svc/ultralytics" --setenv="MPLCONFIGDIR=$svc/matplotlib" \
         --setenv=MPLBACKEND=Agg --setenv=YOLO_AUTOINSTALL=false --setenv=OMP_NUM_THREADS=2 \
         --setenv=OPENBLAS_NUM_THREADS=1 --setenv=MKL_NUM_THREADS=1 \
-        "$svc/venv/bin/python" -B -u "$PWD/camera_viewer.py" >&2
+        "$svc/venv/bin/python" -B -u "$PWD/src/camera_viewer.py" >&2
 }
 
 while true; do

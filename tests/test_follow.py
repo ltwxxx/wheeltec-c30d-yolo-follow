@@ -7,7 +7,6 @@ import numpy as np
 import pytest
 from PIL import Image
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from follow_control import Observation, Sensors, LidarFrame, observe_person
 from follow_settings import Settings, load_settings
 from follow_session import FollowSession

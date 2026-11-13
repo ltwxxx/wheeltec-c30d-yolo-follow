@@ -4,6 +4,7 @@ import json
 import math
 import os
 from pathlib import Path
+from runtime_paths import config_path
 
 VERSION = "2.0.0"
 
@@ -38,7 +39,7 @@ class Settings:
 
 
 def load_settings(path=None):
-    path = Path(path or os.environ.get("WHEELTEC_FOLLOW_CONFIG", Path(__file__).with_name("follow_settings.json")))
+    path = Path(path or os.environ.get("WHEELTEC_FOLLOW_CONFIG", config_path("follow_settings.json")))
     values = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     settings = Settings(**values)
     for key, value in asdict(settings).items():

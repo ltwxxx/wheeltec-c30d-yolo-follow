@@ -9,6 +9,7 @@ import subprocess
 from collections import deque
 from follow_session import FollowSession
 from follow_settings import SETTINGS, VERSION
+from runtime_paths import RESOURCE_ROOT, TEMPLATES_DIR, config_path
 import threading
 import time
 
@@ -17,7 +18,7 @@ from flask import Flask, Response, jsonify, render_template, request
 from follow_control import (ARRIVAL_DISTANCE_M, AUTO_MAX_FORWARD_MPS, FRAME_TIMEOUT, MAX_FORWARD_MPS,
                             fetch_frame, fresh_lidar, observe_person)
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=str(TEMPLATES_DIR))
 app.config["TRUSTED_HOSTS"] = ["127.0.0.1", "localhost"]
 app.config["MAX_CONTENT_LENGTH"] = 4096
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
@@ -38,7 +39,7 @@ else:
     cv2.setNumThreads(1)
 
 DISPLAY_RESULT_TIMEOUT = 1.25
-TRACKER_CONFIG = str(Path(__file__).with_name('botsort_reid.yaml'))
+TRACKER_CONFIG = str(config_path('botsort_reid.yaml'))
 lock = threading.Lock()
 observations_changed = threading.Condition(lock)
 motion_lock = threading.Lock()
@@ -53,7 +54,7 @@ shutting_down = False
 observations = {}
 observation_time = 0.0
 observation_sensors = None
-WEIGHTS = os.environ.get('WHEELTEC_YOLO_WEIGHTS', '/private/tmp/wheeltec-yolo11n.pt')
+WEIGHTS = os.environ.get('WHEELTEC_YOLO_WEIGHTS', str(RESOURCE_ROOT / 'models' / 'wheeltec-yolo11n.pt'))
 latest = threading.Condition()
 raw = None
 sequence = 0

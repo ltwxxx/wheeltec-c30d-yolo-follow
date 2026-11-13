@@ -1,0 +1,6 @@
+# This repository ships robot applications as a checksummed archive, not a pip library.
+[tool.pytest.ini_options]
+minversion = "7.4"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--strict-config --strict-markers"

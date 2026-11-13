@@ -1,0 +1,5 @@
+# Offline Re-ID export tools; not required by the live robot or core test suite.
+-r edge.txt
+torch>=2.2,<3
+onnx>=1.15,<2
+gdown>=5,<6
