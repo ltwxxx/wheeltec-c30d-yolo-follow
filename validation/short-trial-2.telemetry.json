@@ -1,0 +1,6218 @@
+{
+  "source": "short-trial-2.jsonl",
+  "recorded_date": "2026-11-12",
+  "scope": "second short physical trial; not full stop-distance acceptance",
+  "redacted_fields": [
+    "session_id"
+  ],
+  "samples": [
+    {
+      "elapsed_s": 0.012893619998067152,
+      "follow": {
+        "automatic": false,
+        "distance_m": null,
+        "forward_mps": 0.0,
+        "limit_mps": 0.0,
+        "limit_reason": "正在确认人物",
+        "local_trial_seconds": 10.0,
+        "offset": null,
+        "pause_reason": "正在确认人物",
+        "planned_forward_mps": 0.0,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.0,
+        "sensor_ages": {
+          "image_s": 0.16363770399766508,
+          "lidar_s": 0.19188338699677843
+        },
+        "sent_forward_mps": 0.0,
+        "sent_turn_rad_s": 0.0,
+        "source": "none",
+        "state": "confirming",
+        "status": "正在确认人物",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.06561327700183028,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19369.694996003,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.17597630999807734,
+        "lidar": true,
+        "lidar_age_s": 0.20422199299719068,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 0,
+        "interval_s": 0.5,
+        "ms": null,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.12129328000082751,
+      "follow": {
+        "automatic": false,
+        "distance_m": null,
+        "forward_mps": 0.0,
+        "limit_mps": 0.0,
+        "limit_reason": "正在确认人物 1",
+        "local_trial_seconds": 9.9,
+        "offset": null,
+        "pause_reason": "正在确认人物 1",
+        "planned_forward_mps": 0.0,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.0,
+        "sensor_ages": {
+          "image_s": 0.20777879799788934,
+          "lidar_s": 0.29054036399611505
+        },
+        "sent_forward_mps": 0.0,
+        "sent_turn_rad_s": 0.0,
+        "source": "none",
+        "state": "confirming",
+        "status": "正在确认人物 1",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.17295485300201108,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19369.694996003,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12358709500040277,
+        "lidar": true,
+        "lidar_age_s": 0.11419405800188542,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 0,
+        "interval_s": 0.5,
+        "ms": null,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.22803498999928706,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.54050507804579,
+        "forward_mps": 0.0302,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.8,
+        "offset": 0.03240623474121085,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1710851459974947,
+          "lidar_s": 0.1972942520005745
+        },
+        "sent_forward_mps": 0.0302,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.28141686400340404,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19369.694996003,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.19867535299999872,
+        "lidar": true,
+        "lidar_age_s": 0.22488445900307852,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 0,
+        "interval_s": 0.5,
+        "ms": 43.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.3349495689981268,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.536684784564404,
+        "forward_mps": 0.0603,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.7,
+        "offset": 0.03716144561767587,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15669192600034876,
+          "lidar_s": 0.1951888239964319
+        },
+        "sent_forward_mps": 0.0603,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3888260320018162,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19369.694996003,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12647486900095828,
+        "lidar": true,
+        "lidar_age_s": 0.13292344799629063,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 1,
+        "interval_s": 0.5,
+        "ms": 43.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.4404809740008204,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.54150409256984,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.6,
+        "offset": 0.04071941375732413,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1435555670032045,
+          "lidar_s": 0.20132529399779742
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4933181480009807,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19369.694996003,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18221183500281768,
+        "lidar": true,
+        "lidar_age_s": 0.2399815619974106,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 1,
+        "interval_s": 0.5,
+        "ms": 43.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.5464628189984069,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5422759852131875,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.5,
+        "offset": 0.02734375,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1343839350010967,
+          "lidar_s": 0.19522854700335301
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.10059894400183111,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.194198289,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1447568900002807,
+        "lidar": true,
+        "lidar_age_s": 0.1418276539989165,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 1,
+        "interval_s": 0.5,
+        "ms": 43.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.6530939189979108,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.540121370680974,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.4,
+        "offset": 0.037222766876220614,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16463530599867227,
+          "lidar_s": 0.1997042879993387
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.20564750100311358,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.194198289,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1398367630026769,
+        "lidar": true,
+        "lidar_age_s": 0.147653257001366,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 1,
+        "interval_s": 0.5,
+        "ms": 43.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.7562043430007179,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5402013299730113,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.2,
+        "offset": 0.023903369903564453,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.19733838100364665,
+          "lidar_s": 0.20515487500233576
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.31059687300148653,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.194198289,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1428466830002435,
+        "lidar": true,
+        "lidar_age_s": 0.150469290001638,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 1,
+        "interval_s": 0.5,
+        "ms": 39.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.860948086999997,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5417538280605423,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.1,
+        "offset": 0.031246185302734375,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1453500339994207,
+          "lidar_s": 0.21054111000194098
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4144579580024583,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.194198289,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12309798799833516,
+        "lidar": true,
+        "lidar_age_s": 0.15947662599864998,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 2,
+        "interval_s": 0.5,
+        "ms": 39.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 0.964553617999627,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.541336516198508,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 9.0,
+        "offset": 0.027442741394043013,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17564957099966705,
+          "lidar_s": 0.21202820899998187
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5183626160032873,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.194198289,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15557758200156968,
+        "lidar": true,
+        "lidar_age_s": 0.16196277199924225,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 2,
+        "interval_s": 0.5,
+        "ms": 39.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.069626378997782,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5379070629869123,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.9,
+        "offset": 0.024394416809081942,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1150780699972529,
+          "lidar_s": 0.15488721799920313
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.12464519799686968,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.744455615,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12150424099672819,
+        "lidar": true,
+        "lidar_age_s": 0.16131338899867842,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 2,
+        "interval_s": 0.5,
+        "ms": 39.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.1735416849987814,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.54225389474547,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.8,
+        "offset": 0.024843025207519576,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1456161419955606,
+          "lidar_s": 0.15733443899807753
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.22825187699709204,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.744455615,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15523636199577595,
+        "lidar": true,
+        "lidar_age_s": 0.16695465899829287,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 2,
+        "interval_s": 0.5,
+        "ms": 39.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.2780960050004069,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.542254013861969,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.7,
+        "offset": 0.023340606689453036,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1580321549990913,
+          "lidar_s": 0.1614695540010871
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.33314158400025917,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.744455615,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1706953329994576,
+        "lidar": true,
+        "lidar_age_s": 0.1741327320014534,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 2,
+        "interval_s": 0.5,
+        "ms": 43.8,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.3824290119991929,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.543503465724009,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.6,
+        "offset": 0.024209022521972656,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.150657066002168,
+          "lidar_s": 0.15677431400035857
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4369303539970133,
+          "forward_mps": 0.0,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19370.744455615,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.65
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16698312199878274,
+        "lidar": true,
+        "lidar_age_s": 0.1731003699969733,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 3,
+        "interval_s": 0.5,
+        "ms": 43.8,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.4871840159976273,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.541004652645445,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.5,
+        "offset": 0.02264328002929683,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14830662199892686,
+          "lidar_s": 0.1647962879978877
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.03696113200203399,
+          "forward_mps": 0.039000000804662704,
+          "turn_rad_s": -0.0020000000949949026
+        },
+        "sent": {
+          "at": 19371.244857559,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.166336311998748,
+        "lidar": true,
+        "lidar_age_s": 0.18282597799770883,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 3,
+        "interval_s": 0.5,
+        "ms": 43.8,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.5937408200006757,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5385060933586407,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.4,
+        "offset": 0.011732387542724654,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14109010500396835,
+          "lidar_s": 0.1566528510011267
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.14397328500126605,
+          "forward_mps": 0.039000000804662704,
+          "turn_rad_s": -0.0020000000949949026
+        },
+        "sent": {
+          "at": 19371.244857559,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.11366982200343045,
+        "lidar": true,
+        "lidar_age_s": 0.18722538699876168,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 3,
+        "interval_s": 0.5,
+        "ms": 43.8,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.6980329010002606,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5422464626347825,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.3,
+        "offset": 0.012464714050293146,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15281884599971818,
+          "lidar_s": 0.15714707100050873
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.24846686500313808,
+          "forward_mps": 0.039000000804662704,
+          "turn_rad_s": -0.0020000000949949026
+        },
+        "sent": {
+          "at": 19371.244857559,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18403274700176553,
+        "lidar": true,
+        "lidar_age_s": 0.18836097200255608,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 3,
+        "interval_s": 0.5,
+        "ms": 43.8,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.8038641179991828,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5324125847671435,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.2,
+        "offset": -0.0002883911132811612,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14868198900148855,
+          "lidar_s": 0.15941960800046218
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.35318231300334446,
+          "forward_mps": 0.039000000804662704,
+          "turn_rad_s": -0.0020000000949949026
+        },
+        "sent": {
+          "at": 19371.244857559,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14673148699876037,
+        "lidar": true,
+        "lidar_age_s": 0.19909240499691805,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 3,
+        "interval_s": 0.5,
+        "ms": 44.2,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 1.9067993959979503,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.530938041826472,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.1,
+        "offset": 0.01004104614257817,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14434513400192373,
+          "lidar_s": 0.16875499700108776
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.45845155300048646,
+          "forward_mps": 0.039000000804662704,
+          "turn_rad_s": -0.0020000000949949026
+        },
+        "sent": {
+          "at": 19371.244857559,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18114439800046966,
+        "lidar": true,
+        "lidar_age_s": 0.2055542609996337,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 4,
+        "interval_s": 0.5,
+        "ms": 44.2,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.0110787359990354,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.520842305734041,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 8.0,
+        "offset": 0.018203258514404297,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1570245340008114,
+          "lidar_s": 0.1621448820042133
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.06431389699719148,
+          "forward_mps": 0.08900000154972076,
+          "turn_rad_s": -0.008999999612569809
+        },
+        "sent": {
+          "at": 19371.744245011,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16104063199964003,
+        "lidar": true,
+        "lidar_age_s": 0.20488950700018904,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 4,
+        "interval_s": 0.5,
+        "ms": 44.2,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.1143068259989377,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.5118447986538,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.9,
+        "offset": 0.018978881835937544,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1503515129988955,
+          "lidar_s": 0.1637162039987743
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.16770768899732502,
+          "forward_mps": 0.08900000154972076,
+          "turn_rad_s": -0.008999999612569809
+        },
+        "sent": {
+          "at": 19371.744245011,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.19398129699766287,
+        "lidar": true,
+        "lidar_age_s": 0.20734598799754167,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 4,
+        "interval_s": 0.5,
+        "ms": 44.2,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.2212445909972303,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.505067143081132,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.8,
+        "offset": 0.020974445343017623,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14461826200204086,
+          "lidar_s": 0.16212708600141923
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.2708599099969433,
+          "forward_mps": 0.08900000154972076,
+          "turn_rad_s": -0.008999999612569809
+        },
+        "sent": {
+          "at": 19371.744245011,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15821619099733653,
+        "lidar": true,
+        "lidar_age_s": 0.21145156599959591,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 4,
+        "interval_s": 0.5,
+        "ms": 44.2,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.3292408089982928,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.4931067812221945,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.7,
+        "offset": 0.022086524963378817,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14550473599956604,
+          "lidar_s": 0.1690881980030099
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.37835515099868644,
+          "forward_mps": 0.08900000154972076,
+          "turn_rad_s": -0.008999999612569809
+        },
+        "sent": {
+          "at": 19371.744245011,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.10177086100156885,
+        "lidar": true,
+        "lidar_age_s": 0.11346087999845622,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 4,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.4346221779996995,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.4808548318545878,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.6,
+        "offset": 0.013369369506835982,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17195274900223012,
+          "lidar_s": 0.21837639999648673
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.48794850499689346,
+          "forward_mps": 0.08900000154972076,
+          "turn_rad_s": -0.008999999612569809
+        },
+        "sent": {
+          "at": 19371.744245011,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1777837770023325,
+        "lidar": true,
+        "lidar_age_s": 0.2242074279965891,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 5,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.54251586099781,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.468162136351138,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.5,
+        "offset": 0.01898345947265634,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.09719299000062165,
+          "lidar_s": 0.12007984500087332
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.0955382069987536,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.017999999225139618
+        },
+        "sent": {
+          "at": 19372.24471014,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.11017929399895365,
+        "lidar": true,
+        "lidar_age_s": 0.13306614899920532,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 5,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.6469482379980036,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.468162136351138,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.4,
+        "offset": 0.016548633575439453,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16147481399821118,
+          "lidar_s": 0.21934992999740643
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.19940647700059344,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.017999999225139618
+        },
+        "sent": {
+          "at": 19372.24471014,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.17817945899878396,
+        "lidar": true,
+        "lidar_age_s": 0.23605457499797922,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 5,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.751250633999007,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.447087912274052,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.3,
+        "offset": 0.015799903869628817,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.10250046600049245,
+          "lidar_s": 0.11815697099882527
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3044841080009064,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.017999999225139618
+        },
+        "sent": {
+          "at": 19372.24471014,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12413229500089074,
+        "lidar": true,
+        "lidar_age_s": 0.13978879999922356,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 5,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.855383030997473,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.447087912274052,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.2,
+        "offset": 0.011795234680175737,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17032887299865251,
+          "lidar_s": 0.22430437199727749
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4088979109983484,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.017999999225139618
+        },
+        "sent": {
+          "at": 19372.24471014,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.19271628799833707,
+        "lidar": true,
+        "lidar_age_s": 0.24669178699696204,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 5,
+        "interval_s": 0.5035550899992813,
+        "ms": 50.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 2.962305777000438,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.4392961198237346,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 7.0,
+        "offset": 0.017935752868652344,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.09425579099843162,
+          "lidar_s": 0.12196629299796768
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5156472689996008,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.017999999225139618
+        },
+        "sent": {
+          "at": 19372.24471014,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12325102399699972,
+        "lidar": true,
+        "lidar_age_s": 0.15096152599653578,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.0694038000001456,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.4392961198237346,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.9,
+        "offset": 0.02082195281982413,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16012786200008122,
+          "lidar_s": 0.2226859950023936
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.11746742199829896,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.0010000000474974513
+        },
+        "sent": {
+          "at": 19372.744741717,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1568652390014904,
+        "lidar": true,
+        "lidar_age_s": 0.16091678100201534,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.1740014530005283,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.4239691948414945,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.8,
+        "offset": 0.015225219726562544,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17244107900114614,
+          "lidar_s": 0.2381605029986531
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.22298603099625325,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.0010000000474974513
+        },
+        "sent": {
+          "at": 19372.744741717,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.21123221599918907,
+        "lidar": true,
+        "lidar_age_s": 0.27695163999669603,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.2769248969998443,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.415341976100196,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.7,
+        "offset": -0.004078483581543058,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16554298600385664,
+          "lidar_s": 0.21956679900176823
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.32755792499665404,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.0010000000474974513
+        },
+        "sent": {
+          "at": 19372.744741717,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1377995929979079,
+        "lidar": true,
+        "lidar_age_s": 0.16126205599721288,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.3796645649999846,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.409555241659711,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.6,
+        "offset": -0.020996475219726474,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16475043699756498,
+          "lidar_s": 0.22574393499598955
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4304146109971043,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.0010000000474974513
+        },
+        "sent": {
+          "at": 19372.744741717,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.2058033709981828,
+        "lidar": true,
+        "lidar_age_s": 0.2667968689966074,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.482724842000607,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.401970786851936,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.5,
+        "offset": -0.016836357116699174,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16035374800048885,
+          "lidar_s": 0.22604711700114422
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.533255296995776,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.0010000000474974513
+        },
+        "sent": {
+          "at": 19372.744741717,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16837492699414724,
+        "lidar": true,
+        "lidar_age_s": 0.16761007999957656,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 39.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.585896561999107,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.385971496666828,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.4,
+        "offset": -0.0250632286071778,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.09786770699793124,
+          "lidar_s": 0.126056465000147
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.13279804100238835,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": -0.050999999046325684
+        },
+        "sent": {
+          "at": 19373.244445168,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.11054425400288892,
+        "lidar": true,
+        "lidar_age_s": 0.17289137100306107,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 39.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.6910797659984382,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.385971496666828,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.3,
+        "offset": -0.022312736511230558,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16459795600167126,
+          "lidar_s": 0.2269450730018434
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.23750486000062665,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": -0.050999999046325684
+        },
+        "sent": {
+          "at": 19373.244445168,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.146931687999313,
+        "lidar": true,
+        "lidar_age_s": 0.17814005200125393,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 39.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.7974419239981216,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3789722814607765,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.2,
+        "offset": -0.020120620727539062,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.10586256900205626,
+          "lidar_s": 0.18334312200022396
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3438392780008144,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": -0.050999999046325684
+        },
+        "sent": {
+          "at": 19373.244445168,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.11083799300104147,
+        "lidar": true,
+        "lidar_age_s": 0.18831854599920916,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 39.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 3.9007462539993867,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3688057284668878,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.1,
+        "offset": -0.023626327514648438,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15568239799904404,
+          "lidar_s": 0.1770217470038915
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4474642530003621,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": -0.050999999046325684
+        },
+        "sent": {
+          "at": 19373.244445168,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16410762699888437,
+        "lidar": true,
+        "lidar_age_s": 0.18544697600373183,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 39.7,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.008453344998998,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.358390335386874,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 6.0,
+        "offset": -0.026556015014648438,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1510739340010332,
+          "lidar_s": 0.19688801600204897
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.05673227300212602,
+          "forward_mps": 0.06400000303983688,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19373.748481899,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15900866700030747,
+        "lidar": true,
+        "lidar_age_s": 0.20482274900132325,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 41.5,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.1136238090002735,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3502264922664584,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.9,
+        "offset": -0.026054668426513716,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1424969269974099,
+          "lidar_s": 0.1778678509981546
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.1632013190028374,
+          "forward_mps": 0.06400000303983688,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19373.748481899,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16090028100006748,
+        "lidar": true,
+        "lidar_age_s": 0.1962712050008122,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 41.5,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.221802692998608,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.348557115285184,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.8,
+        "offset": -0.031174182891845703,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.13778685400029644,
+          "lidar_s": 0.17499615200358676
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.2715422210021643,
+          "forward_mps": 0.06400000303983688,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19373.748481899,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16409364599894616,
+        "lidar": true,
+        "lidar_age_s": 0.20130294400223647,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 41.5,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.327638188999117,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3527270282456736,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.7,
+        "offset": -0.02646417617797847,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1479500140012533,
+          "lidar_s": 0.17033837400231278
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.37788371200076654,
+          "forward_mps": 0.06400000303983688,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19373.748481899,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14520273899688618,
+        "lidar": true,
+        "lidar_age_s": 0.20917480700154556,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 41.5,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.432461784999759,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3355669947830586,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.6,
+        "offset": -0.027898216247558616,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14579840099759167,
+          "lidar_s": 0.1812432689985144
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4829442510017543,
+          "forward_mps": 0.06400000303983688,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19373.748481899,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18150880399844027,
+        "lidar": true,
+        "lidar_age_s": 0.216953671999363,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 41.5,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.536378054999659,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.334348857673091,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.5,
+        "offset": -0.023887825012206987,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14237235400287318,
+          "lidar_s": 0.17741696600205614
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.03743916600069497,
+          "forward_mps": 0.07699999958276749,
+          "turn_rad_s": -0.04399999976158142
+        },
+        "sent": {
+          "at": 19374.244302251,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14221679999536718,
+        "lidar": true,
+        "lidar_age_s": 0.2263157629968191,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5085309700007201,
+        "ms": 50.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.639133796998067,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3230579699889535,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.4,
+        "offset": -0.008867835998535245,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1677987450020737,
+          "lidar_s": 0.18480185200314736
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.14076895900143427,
+          "forward_mps": 0.07699999958276749,
+          "turn_rad_s": -0.04399999976158142
+        },
+        "sent": {
+          "at": 19374.244302251,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.210456796001381,
+        "lidar": true,
+        "lidar_age_s": 0.22745990300245467,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5085309700007201,
+        "ms": 50.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.744330834000721,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.3158131718377266,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.3,
+        "offset": -0.0063634872436523215,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14388123200114933,
+          "lidar_s": 0.17969228099900647
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.24496850500145229,
+          "forward_mps": 0.07699999958276749,
+          "turn_rad_s": -0.04399999976158142
+        },
+        "sent": {
+          "at": 19374.244302251,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15492797699698713,
+        "lidar": true,
+        "lidar_age_s": 0.22745623599985265,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5085309700007201,
+        "ms": 50.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.849279539997951,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.312767841240148,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.2,
+        "offset": -0.021789741516113237,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.13949391300047864,
+          "lidar_s": 0.18569162199855782
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.34914010600186884,
+          "forward_mps": 0.07699999958276749,
+          "turn_rad_s": -0.04399999976158142
+        },
+        "sent": {
+          "at": 19374.244302251,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18990114400003222,
+        "lidar": true,
+        "lidar_age_s": 0.2360988529981114,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5085309700007201,
+        "ms": 50.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 4.9536041030005435,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.307558613580382,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 5.1,
+        "offset": -0.013630199432373091,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.21984479599632323,
+          "lidar_s": 0.23630018400217523
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4542923100016196,
+          "forward_mps": 0.07699999958276749,
+          "turn_rad_s": -0.04399999976158142
+        },
+        "sent": {
+          "at": 19374.244302251,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.22234381299494999,
+        "lidar": true,
+        "lidar_age_s": 0.23879920100080199,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5085309700007201,
+        "ms": 50.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.068119381998258,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2941541942460004,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.9,
+        "offset": -0.016428375244140536,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2164262680016691,
+          "lidar_s": 0.23006725200320943
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.10691683900222415,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": 0.007000000216066837
+        },
+        "sent": {
+          "at": 19374.744626012,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.22382235800250783,
+        "lidar": true,
+        "lidar_age_s": 0.23746334200404817,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 45.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.1740006180007185,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2864937856407366,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.8,
+        "offset": -0.017877960205078147,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.19770812100250623,
+          "lidar_s": 0.22970931199961342
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.22143722900000284,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": 0.007000000216066837
+        },
+        "sent": {
+          "at": 19374.744626012,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.21348507000220707,
+        "lidar": true,
+        "lidar_age_s": 0.24548626099931425,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 45.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.278037849999237,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.28684949457012,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.7,
+        "offset": -0.015865898132324197,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2268248529981065,
+          "lidar_s": 0.2381346520014631
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.32668783999906736,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": 0.007000000216066837
+        },
+        "sent": {
+          "at": 19374.744626012,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.24763937299576355,
+        "lidar": true,
+        "lidar_age_s": 0.25894917199912015,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 45.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.381890583998029,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2803497434423603,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.6,
+        "offset": -0.021925640106201127,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.18731433100037975,
+          "lidar_s": 0.23143185299704783
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.43078012700061663,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": 0.007000000216066837
+        },
+        "sent": {
+          "at": 19374.744626012,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.2107055529995705,
+        "lidar": true,
+        "lidar_age_s": 0.2548230749962386,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 45.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.491873102000682,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2803497434423603,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.5,
+        "offset": -0.02110347747802732,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2458277010009624,
+          "lidar_s": 0.3432838560001983
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5376017630005663,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": 0.007000000216066837
+        },
+        "sent": {
+          "at": 19374.744626012,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1950058260008518,
+        "lidar": true,
+        "lidar_age_s": 0.18218302000241238,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 45.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.597428859000502,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2638201819556736,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.4,
+        "offset": -0.01083030700683596,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2663485020020744,
+          "lidar_s": 0.25352569600363495
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.08895118399959756,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": -0.012000000104308128
+        },
+        "sent": {
+          "at": 19375.244413204,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16476465800224105,
+        "lidar": true,
+        "lidar_age_s": 0.19518475199947716,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5144131499764626,
+        "ms": 51.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.707061101998988,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.256730833260793,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.3,
+        "offset": -0.015727996826171875,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.22983895800280152,
+          "lidar_s": 0.2602590520000376
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.19477455000014743,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": -0.012000000104308128
+        },
+        "sent": {
+          "at": 19375.244413204,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1610920580023958,
+        "lidar": true,
+        "lidar_age_s": 0.1897031100015738,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5144131499764626,
+        "ms": 51.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.811055371999828,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.25077085994828,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.2,
+        "offset": -0.027041625976562456,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2217076340020867,
+          "lidar_s": 0.2503186860012647
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3034170979990449,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": -0.012000000104308128
+        },
+        "sent": {
+          "at": 19375.244413204,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16334405800080276,
+        "lidar": true,
+        "lidar_age_s": 0.20485239700064994,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5144131499764626,
+        "ms": 51.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 5.916600831998949,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.241021231012873,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.1,
+        "offset": -0.031966876983642534,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1762404199980665,
+          "lidar_s": 0.19506932700096513
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.40867550499751815,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": -0.012000000104308128
+        },
+        "sent": {
+          "at": 19375.244413204,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1790650819966686,
+        "lidar": true,
+        "lidar_age_s": 0.19789398899956723,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5144131499764626,
+        "ms": 51.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.02243130900024,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.241021231012873,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 4.0,
+        "offset": -0.031966876983642534,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.22631004199865856,
+          "lidar_s": 0.2451389490015572
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5130735120001191,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": -0.012000000104308128
+        },
+        "sent": {
+          "at": 19375.244413204,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.21409130500251194,
+        "lidar": true,
+        "lidar_age_s": 0.3015657240030123,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5144131499764626,
+        "ms": 51.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.127294219997566,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.2317716496624342,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.9,
+        "offset": -0.02971086502075193,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.23844589000145788,
+          "lidar_s": 0.29385661800188245
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.11303282699736883,
+          "forward_mps": 0.07199999690055847,
+          "turn_rad_s": 0.019999999552965164
+        },
+        "sent": {
+          "at": 19375.80060169,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.24966156099981163,
+        "lidar": true,
+        "lidar_age_s": 0.3050722890002362,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.238980761998391,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.22162917447874,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.8,
+        "offset": -0.03735332489013676,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1643171989962866,
+          "lidar_s": 0.1983256519997667
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.21957853899948532,
+          "forward_mps": 0.07199999690055847,
+          "turn_rad_s": 0.019999999552965164
+        },
+        "sent": {
+          "at": 19375.80060169,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18019099899902358,
+        "lidar": true,
+        "lidar_age_s": 0.21419945200250368,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.341725744998257,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.212561868004868,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.7,
+        "offset": -0.03746299743652348,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17597031100376626,
+          "lidar_s": 0.19858242799818981
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3285809729968605,
+          "forward_mps": 0.07199999690055847,
+          "turn_rad_s": 0.019999999552965164
+        },
+        "sent": {
+          "at": 19375.80060169,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1994573100018897,
+        "lidar": true,
+        "lidar_age_s": 0.22206942699631327,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.445477220997418,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.212561868004868,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.6,
+        "offset": -0.03215637207031252,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.24202788100228645,
+          "lidar_s": 0.30445947899715975
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4319136919984885,
+          "forward_mps": 0.07199999690055847,
+          "turn_rad_s": 0.019999999552965164
+        },
+        "sent": {
+          "at": 19375.80060169,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16157766499964055,
+        "lidar": true,
+        "lidar_age_s": 0.22375478400135762,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.551040884998656,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.195740903665358,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.5,
+        "offset": -0.037279796600341863,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16746871200302849,
+          "lidar_s": 0.20045637600196642
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.05537178500162554,
+          "forward_mps": 0.06499999761581421,
+          "turn_rad_s": -0.007000000216066837
+        },
+        "sent": {
+          "at": 19376.294459597,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1965976670035161,
+        "lidar": true,
+        "lidar_age_s": 0.22958533100245404,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.656643160000385,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.186119463875622,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.4,
+        "offset": -0.05590131282806399,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17923067399897263,
+          "lidar_s": 0.19361002300138352
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.16099346800183412,
+          "forward_mps": 0.06499999761581421,
+          "turn_rad_s": -0.007000000216066837
+        },
+        "sent": {
+          "at": 19376.294459597,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.10655330499866977,
+        "lidar": true,
+        "lidar_age_s": 0.12668242400104646,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 44.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.7630830769994645,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.1795627364667225,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.2,
+        "offset": -0.05566575527191164,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.13605760899736197,
+          "lidar_s": 0.19545597300020745
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.26801626900123665,
+          "forward_mps": 0.06499999761581421,
+          "turn_rad_s": -0.007000000216066837
+        },
+        "sent": {
+          "at": 19376.294459597,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.17858229099874734,
+        "lidar": true,
+        "lidar_age_s": 0.23798065500159282,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 44.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.8713699789987,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.171986516553215,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.1,
+        "offset": -0.05446815490722656,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.16892127399842138,
+          "lidar_s": 0.20066450500235078
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3714338579993637,
+          "forward_mps": 0.06499999761581421,
+          "turn_rad_s": -0.007000000216066837
+        },
+        "sent": {
+          "at": 19376.294459597,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.17706522899970878,
+        "lidar": true,
+        "lidar_age_s": 0.24815851799939992,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 44.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 6.974601218000316,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.170274912534037,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 3.0,
+        "offset": -0.0645049095153809,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1765125279998756,
+          "lidar_s": 0.2485874209960457
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.47982742599924677,
+          "forward_mps": 0.06499999761581421,
+          "turn_rad_s": -0.007000000216066837
+        },
+        "sent": {
+          "at": 19376.294459597,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1787329740000132,
+        "lidar": true,
+        "lidar_age_s": 0.2508078669961833,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 44.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.082171866997669,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.1619869646081966,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.9,
+        "offset": -0.05865907669067383,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1887854500018875,
+          "lidar_s": 0.2540044150009635
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.08217884900295758,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19376.794228345,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.19532645400249748,
+        "lidar": true,
+        "lidar_age_s": 0.26054541900157346,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 44.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.189321240999561,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.154275513620757,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.8,
+        "offset": -0.06183824539184579,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1849189810018288,
+          "lidar_s": 0.24766589200226008
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.18980620100046508,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19376.794228345,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.12310706299831509,
+        "lidar": true,
+        "lidar_age_s": 0.16215604999888455,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 30.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.29623748800077,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.145102132204113,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.7,
+        "offset": -0.06756391525268546,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1804224229999818,
+          "lidar_s": 0.26192348199765547
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.2962773030012613,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19376.794228345,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1989539429996512,
+        "lidar": true,
+        "lidar_age_s": 0.28045500199732487,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 30.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.400295830997493,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.1342766010285725,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.6,
+        "offset": -0.0548243522644043,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15613806100009242,
+          "lidar_s": 0.24685425099960412
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.4025126850028755,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19376.794228345,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14411108200147282,
+        "lidar": true,
+        "lidar_age_s": 0.1729013730000588,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 30.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.505939383998339,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.128564582788262,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.5,
+        "offset": -0.04833774566650384,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.18475950100037153,
+          "lidar_s": 0.25644467499660095
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5081009970017476,
+          "forward_mps": 0.07500000298023224,
+          "turn_rad_s": -0.004000000189989805
+        },
+        "sent": {
+          "at": 19376.794228345,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 7,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.21439065500089782,
+        "lidar": true,
+        "lidar_age_s": 0.28607582899712725,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 30.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.613537088000157,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.116102579098141,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.4,
+        "offset": -0.07040672302246098,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.11204709500088939,
+          "lidar_s": 0.15429242700338364
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.11645928200232447,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.039000000804662704
+        },
+        "sent": {
+          "at": 19377.294428627,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14607415900172782,
+        "lidar": true,
+        "lidar_age_s": 0.18831949100422207,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 30.9,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.716406717998325,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.1161025790981416,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.3,
+        "offset": -0.056265163421630904,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17736918900118326,
+          "lidar_s": 0.2544000430025335
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.22058188400114886,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.039000000804662704
+        },
+        "sent": {
+          "at": 19377.294428627,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18073660700247274,
+        "lidar": true,
+        "lidar_age_s": 0.2235924900014652,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.820385635997809,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.1158517453247434,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.2,
+        "offset": -0.06679327487945552,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.2430428550032957,
+          "lidar_s": 0.28589873800228816
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.3239488990002428,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.039000000804662704
+        },
+        "sent": {
+          "at": 19377.294428627,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15621024599749944,
+        "lidar": true,
+        "lidar_age_s": 0.20011743499708246,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 7.923179841000092,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.0949915862773305,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.1,
+        "offset": -0.06336441040039065,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14694667100411607,
+          "lidar_s": 0.15574839700275334
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.42743913600133965,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.039000000804662704
+        },
+        "sent": {
+          "at": 19377.294428627,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15704022100180737,
+        "lidar": true,
+        "lidar_age_s": 0.19603237399860518,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.027797495000414,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.0949915862773305,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 2.0,
+        "offset": -0.06999731063842773,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.21624471500035725,
+          "lidar_s": 0.25523686799715506
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5314460539993888,
+          "forward_mps": 0.0729999989271164,
+          "turn_rad_s": -0.039000000804662704
+        },
+        "sent": {
+          "at": 19377.294428627,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15528693799933535,
+        "lidar": true,
+        "lidar_age_s": 0.19778688000224065,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.130689366000297,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.082279252692927,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.9,
+        "offset": -0.048151397705078036,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.10441598800025531,
+          "lidar_s": 0.15969482899890863
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.13442232600209536,
+          "forward_mps": 0.07000000029802322,
+          "turn_rad_s": -0.003000000026077032
+        },
+        "sent": {
+          "at": 19377.794251524,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15087393600333598,
+        "lidar": true,
+        "lidar_age_s": 0.2061527770019893,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 47.4,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.237492520998785,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.075492831640629,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.8,
+        "offset": -0.07109565734863277,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15043921699907514,
+          "lidar_s": 0.15875087399763288
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.23728517800191185,
+          "forward_mps": 0.07000000029802322,
+          "turn_rad_s": -0.003000000026077032
+        },
+        "sent": {
+          "at": 19377.794251524,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.09112807500059716,
+        "lidar": true,
+        "lidar_age_s": 0.10340264400292654,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 43.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.340841258999717,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.065566751345216,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.7,
+        "offset": -0.07265300750732417,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1609780969993153,
+          "lidar_s": 0.20587955500377575
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.34414605500205653,
+          "forward_mps": 0.07000000029802322,
+          "turn_rad_s": -0.003000000026077032
+        },
+        "sent": {
+          "at": 19377.794251524,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16563098600090598,
+        "lidar": true,
+        "lidar_age_s": 0.21053244400536641,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 43.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.448241464997409,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.056780464911801,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.6,
+        "offset": -0.07100753784179692,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1566256500009331,
+          "lidar_s": 0.2119941380005912
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.44914718699874356,
+          "forward_mps": 0.07000000029802322,
+          "turn_rad_s": -0.003000000026077032
+        },
+        "sent": {
+          "at": 19377.794251524,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16614177799783647,
+        "lidar": true,
+        "lidar_age_s": 0.22151026599749457,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 43.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.558261797999876,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.0532442801162736,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.5,
+        "offset": -0.07018966674804683,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.22450024200225016,
+          "lidar_s": 0.21398078900165274
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.061756048002280295,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.009999999776482582
+        },
+        "sent": {
+          "at": 19378.294415845,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1163897270016605,
+        "lidar": true,
+        "lidar_age_s": 0.12631822299954365,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 43.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.663362262999726,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.046494810433833,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.3,
+        "offset": -0.0561324119567872,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.1610979840006621,
+          "lidar_s": 0.21672221200060449
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.16831752000143752,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.009999999776482582
+        },
+        "sent": {
+          "at": 19378.294415845,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18651537600089796,
+        "lidar": true,
+        "lidar_age_s": 0.24213960400084034,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 43.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.76780104700083,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.037067720477337,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.2,
+        "offset": -0.0573905944824219,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.19082239800263778,
+          "lidar_s": 0.20402068299881648
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.2730052650003927,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.009999999776482582
+        },
+        "sent": {
+          "at": 19378.294415845,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.11504242299633916,
+        "lidar": true,
+        "lidar_age_s": 0.12868905600043945,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5630594299873337,
+        "ms": 56.3,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.871440282997355,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.0325678243896466,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.1,
+        "offset": -0.05219621658325202,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.12250506899727043,
+          "lidar_s": 0.20490897199852043
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.37738927300233627,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.009999999776482582
+        },
+        "sent": {
+          "at": 19378.294415845,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1513251369979116,
+        "lidar": true,
+        "lidar_age_s": 0.23372903999916161,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5630594299873337,
+        "ms": 56.3,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 8.974867501998233,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.024568198153597,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 1.0,
+        "offset": -0.04924662113189693,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.18752945999949588,
+          "lidar_s": 0.21564201599903754
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.48081182500027353,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.009999999776482582
+        },
+        "sent": {
+          "at": 19378.294415845,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1299264899971604,
+        "lidar": true,
+        "lidar_age_s": 0.14071710899588652,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5630594299873337,
+        "ms": 56.3,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.078484755998943,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.01899675571278,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.9,
+        "offset": -0.07181491851806643,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.12962266000249656,
+          "lidar_s": 0.21133010600169655
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.08233005199872423,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19378.794257501,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16306663599971216,
+        "lidar": true,
+        "lidar_age_s": 0.24477408199891215,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5630594299873337,
+        "ms": 56.3,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.187075600999378,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.0079620138523975,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.8,
+        "offset": -0.06529142856597903,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.19337373000234948,
+          "lidar_s": 0.21135421700091683
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.1884341580007458,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19378.794257501,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16183492300115176,
+        "lidar": true,
+        "lidar_age_s": 0.25747479700294207,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5630594299873337,
+        "ms": 56.3,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.290216285000497,
+      "follow": {
+        "automatic": false,
+        "distance_m": 2.003997668941416,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.7,
+        "offset": -0.07291336059570308,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.15417461399920285,
+          "lidar_s": 0.2168406739983766
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.2945858179991774,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19378.794257501,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14957064999907743,
+        "lidar": true,
+        "lidar_age_s": 0.16716495599757764,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.39706356899842,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.997069044780254,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.6,
+        "offset": -0.05666959285736084,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.20534143099939683,
+          "lidar_s": 0.22293573699789704
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.40021944500040263,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19378.794257501,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14497766800195677,
+        "lidar": true,
+        "lidar_age_s": 0.161671165998996,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.503989019998698,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.985498949437729,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.5,
+        "offset": -0.07041838169097903,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.141826063998451,
+          "lidar_s": 0.1619722380019084
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.5055368339999404,
+          "forward_mps": 0.07100000232458115,
+          "turn_rad_s": 0.0
+        },
+        "sent": {
+          "at": 19378.794257501,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.14513498199812602,
+        "lidar": true,
+        "lidar_age_s": 0.16528115600158344,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.60837665699728,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.9854989494377278,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.4,
+        "offset": -0.07250757217407233,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.17316679699797533,
+          "lidar_s": 0.267173071999423
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.060753408000891795,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.003000000026077032
+        },
+        "sent": {
+          "at": 19379.294247712,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.18334064199734712,
+        "lidar": true,
+        "lidar_age_s": 0.27734691699879477,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.712355501000275,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.9655002024764754,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.3,
+        "offset": -0.0768145561218262,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.14593191999665578,
+          "lidar_s": 0.16302739499951713
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.1648300110027776,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.003000000026077032
+        },
+        "sent": {
+          "at": 19379.294247712,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1597283109986165,
+        "lidar": true,
+        "lidar_age_s": 0.17682378600147786,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.815559313999984,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.965500202476474,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.2,
+        "offset": -0.07032511234283456,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.18000909499824047,
+          "lidar_s": 0.2695956820025458
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.26776340100332163,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.003000000026077032
+        },
+        "sent": {
+          "at": 19379.294247712,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1952136049985711,
+        "lidar": true,
+        "lidar_age_s": 0.28480019200287643,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 40.0,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 9.91870166499939,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.9520011404501623,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0.1,
+        "offset": -0.07781515121459959,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.13382497799830162,
+          "lidar_s": 0.16857964799783076
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.37081075200330815,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.003000000026077032
+        },
+        "sent": {
+          "at": 19379.294247712,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.15168594799979473,
+        "lidar": true,
+        "lidar_age_s": 0.18644061799932388,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 33.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 10.021759145998658,
+      "follow": {
+        "automatic": false,
+        "distance_m": 1.9365023018148024,
+        "forward_mps": 0.07,
+        "limit_mps": 0.1,
+        "limit_reason": "电量限速",
+        "local_trial_seconds": 0,
+        "offset": -0.08006811141967773,
+        "pause_reason": null,
+        "planned_forward_mps": 0.1,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.8,
+        "sensor_ages": {
+          "image_s": 0.12976330799938296,
+          "lidar_s": 0.16347811499872478
+        },
+        "sent_forward_mps": 0.07,
+        "sent_turn_rad_s": 0.0,
+        "source": "lidar",
+        "state": "following",
+        "status": "雷达优先跟随",
+        "target": 1,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.47442613600287586,
+          "forward_mps": 0.0689999982714653,
+          "turn_rad_s": 0.003000000026077032
+        },
+        "sent": {
+          "at": 19379.294247712,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.64
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.1510823429998709,
+        "lidar": true,
+        "lidar_age_s": 0.1847971499992127,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 33.1,
+        "ready": true
+      }
+    },
+    {
+      "elapsed_s": 10.125731619998987,
+      "follow": {
+        "automatic": false,
+        "distance_m": null,
+        "forward_mps": 0.0,
+        "limit_mps": 0.0,
+        "limit_reason": "试跑时间已到",
+        "local_trial_seconds": null,
+        "offset": null,
+        "pause_reason": null,
+        "planned_forward_mps": 0.0,
+        "planned_turn_rad_s": 0.0,
+        "quality": 0.0,
+        "sensor_ages": {
+          "image_s": 0.14248029900045367,
+          "lidar_s": 0.1649676580018422
+        },
+        "sent_forward_mps": 0.0,
+        "sent_turn_rad_s": 0.0,
+        "source": "none",
+        "state": "manual_stop",
+        "status": "试跑时间已到",
+        "target": null,
+        "turn_rad_s": 0.0,
+        "unlocked": false,
+        "version": "2.0.0"
+      },
+      "actuator": {
+        "odometry": {
+          "age_s": 0.077850366000348,
+          "forward_mps": 0.07599999755620956,
+          "turn_rad_s": 0.004999999888241291
+        },
+        "sent": {
+          "at": 19379.794275923,
+          "forward_mps": 0.07,
+          "turn_rad_s": 0.0
+        }
+      },
+      "battery": {
+        "estimated": true,
+        "latched": false,
+        "limit_mps": 0.1,
+        "percent": 6,
+        "reason": "电池电压偏低",
+        "recoverable": false,
+        "voltage": 10.63
+      },
+      "sensors": {
+        "aligned": true,
+        "image_age_s": 0.16639040599693544,
+        "lidar": true,
+        "lidar_age_s": 0.18887776499832398,
+        "trial_block_reason": null
+      },
+      "reid": {
+        "error": null,
+        "gallery_size": 6,
+        "interval_s": 0.5,
+        "ms": 33.1,
+        "ready": true
+      }
+    }
+  ]
+}

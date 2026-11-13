@@ -1,0 +1,176 @@
+{
+  "checks": [
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/camera_viewer.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_control.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_actuator.py",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/follow_actuator.py",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/follow_actuator.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_sensors.py",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/follow_sensors.py",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/follow_sensors.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_settings.py",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/follow_settings.py",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/follow_settings.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_settings.json",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/follow_settings.json",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/follow_settings.json",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_session.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/follow_motion.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/battery_state.py",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/battery_state.py",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/battery_state.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/lidar_geometry.py",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/lidar_geometry.py",
+      "ok": true
+    },
+    {
+      "file": "container:/tmp/lidar_geometry.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/edge_detector.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/edge_tracking.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/edge_reid.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/calibration.json",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/templates/follow.html",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/models/osnet_x0_25.onnx",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/models/osnet_x0_25.json",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/models/OSNET-LICENSE",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/libexec/wheeltec-follow-boot",
+      "ok": true
+    },
+    {
+      "file": "/usr/local/share/wheeltec-follow/boot_health.py",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.config/systemd/user/wheeltec-follow-edge.service",
+      "ok": true
+    },
+    {
+      "file": "/home/wheeltec/.local/share/wheeltec-follow-edge/ops/record_validation.py",
+      "ok": true
+    }
+  ],
+  "passed": 34,
+  "failed": 0,
+  "excluded": [
+    "archive-only installer: ops/deploy-on-robot.sh"
+  ],
+  "actuator": {
+    "ok": true,
+    "subscribers": 1,
+    "active": false,
+    "command_age_s": null,
+    "battery_voltage": 10.56,
+    "max_forward_mps": 0.25,
+    "available_forward_mps": 0.1,
+    "max_turn_rad_s": 0.25,
+    "battery": {
+      "voltage": 10.56,
+      "percent": 3,
+      "estimated": true,
+      "latched": false,
+      "recoverable": false,
+      "limit_mps": 0.1,
+      "reason": "电池电压偏低"
+    },
+    "version": "2.0.0",
+    "sent": {
+      "forward_mps": 0.0,
+      "turn_rad_s": 0.0,
+      "at": 20088.563138417
+    },
+    "stop_reason": "人工停止或控制器暂停",
+    "odometry": {
+      "age_s": 0.010561940001935,
+      "forward_mps": 0.0,
+      "turn_rad_s": 0.0
+    }
+  }
+}

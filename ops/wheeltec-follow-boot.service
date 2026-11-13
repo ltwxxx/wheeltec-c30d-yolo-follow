@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the Wheeltec camera and follow bridges
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=wheeltec
+ExecStart=/usr/local/libexec/wheeltec-follow-boot
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,22 @@
+{
+  "samples": 97,
+  "max_sent_mps": 0.07,
+  "max_odometry_mps": 0.08900000154972076,
+  "states": [
+    "confirming",
+    "following",
+    "manual_stop"
+  ],
+  "lidar_associated_samples": 94,
+  "final_state": "manual_stop",
+  "final_sent": {
+    "at": 19380.297266464,
+    "forward_mps": 0.0,
+    "turn_rad_s": 0.0
+  },
+  "final_odometry": {
+    "age_s": 0.0410140460007824,
+    "forward_mps": 0.0,
+    "turn_rad_s": 0.0
+  }
+}

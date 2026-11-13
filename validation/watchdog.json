@@ -1,0 +1,20 @@
+{
+  "scope": "ROS loop timing on isolated /codex_validation/cmd_vel; no chassis motion",
+  "watchdog_s": 0.28,
+  "trials": 10,
+  "zero_observed_ms": [
+    307.49599199998556,
+    333.3772579999277,
+    292.7281940001194,
+    328.0773199999203,
+    305.0591979999808,
+    314.714019999883,
+    310.08441499989203,
+    288.18571800002246,
+    302.1552390000579,
+    294.2844150002202
+  ],
+  "actuator_sha256": "8f45d5cc1660e7e6c1374754919814e24f1d5009ad4eb6b2904ebfbd832f7f06",
+  "max_zero_observed_ms": 333.3772579999277,
+  "passed_350ms": true
+}

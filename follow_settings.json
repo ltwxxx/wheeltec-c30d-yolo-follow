@@ -1,0 +1,6 @@
+{
+  "camera_to_front_m": 0.0244,
+  "geometry_verified": true,
+  "braking_verified": false,
+  "brake_deceleration_mps2": 0.30
+}

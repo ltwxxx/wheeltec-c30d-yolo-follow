@@ -1,0 +1,13 @@
+{
+  "robot_model": "mini_mec",
+  "source": "Factory robot_model.yaml and mini_mec_robot.urdf collision mesh; owner confirmed unmodified installation on 2026-11-12",
+  "base_front_x_m": 0.13149,
+  "laser_x_m": 0.03163,
+  "camera_link_x_m": 0.10709,
+  "laser_to_front_m": 0.09986,
+  "camera_to_front_m": 0.02440,
+  "geometry_basis": "factory model, not a physical tape measurement",
+  "stop_tests_completed": 0,
+  "brake_tests_completed": 0,
+  "battery_basis": "Existing 3S voltage estimate 10.5-12.6 V; cell specification and voltage meter comparison pending"
+}

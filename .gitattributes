@@ -1,0 +1,4 @@
+*.sh text eol=lf
+*.service text eol=lf
+# Preserve the upstream OSNet source bytes for its recorded SHA-256.
+models/osnet_export_source.py -text

@@ -1,0 +1,19 @@
+[Unit]
+Description=Wheeltec on-robot visual following console
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/wheeltec-follow-edge
+Environment=PYTHONPATH=%h/.local/share/wheeltec-yolo-local:%h/.local/share/wheeltec-yolo-local/vendor
+Environment=WHEELTEC_EDGE_MODEL=%h/.local/share/wheeltec-follow-edge/follow-yolo11n.onnx
+Environment=WHEELTEC_VIEWER_PORT=18769
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=OMP_NUM_THREADS=2
+ExecStart=/usr/bin/python3 -B -u %h/.local/share/wheeltec-follow-edge/camera_viewer.py
+Restart=on-failure
+RestartSec=3
+Nice=5
+
+[Install]
+WantedBy=default.target

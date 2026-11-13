@@ -1,0 +1,18 @@
+{
+  "architecture": "osnet_x0_25",
+  "training": "Market1501",
+  "input": [
+    1,
+    3,
+    256,
+    128
+  ],
+  "source": "https://raw.githubusercontent.com/KaiyangZhou/deep-person-reid/master/torchreid/models/osnet.py",
+  "weights": "https://drive.google.com/file/d/1z1UghYvOTtjx7kEoRfmqSMu-z62J6MAj/view",
+  "source_sha256": "c7c1c29187d6330f859c91da229271531920464c7011aec13842a086b2263cae",
+  "weights_sha256": "c0ff09177a21417a19bc73bbf5af4eb5d2b097c2074ed35e67819ee6cd93612c",
+  "onnx_sha256": "83b514ea95f73901427209ccdc4a04693865d108f30d575be4a6bdc91e33dda4",
+  "export_max_absolute_error": 3.4570693969726562e-06,
+  "torch": "2.15.0+cpu",
+  "onnxruntime": "1.31.1"
+}

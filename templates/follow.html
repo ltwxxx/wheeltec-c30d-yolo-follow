@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b111b">
+  <title>视觉跟随 · WHEELTEC 小车</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b111b;
+      --panel: #121d2b;
+      --line: #29394b;
+      --text: #edf4fb;
+      --muted: #a5b5c8;
+      --accent: #65e7c4;
+      --warn: #ffd08a;
+      --danger: #ff9c9c;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 90% 0%, #152e37 0%, transparent 40rem), var(--bg);
+      color: var(--text);
+      font: 15px/1.55 system-ui, "Microsoft YaHei", sans-serif;
+    }
+    button, select { font: inherit; }
+    button, select, .badge { border-radius: 10px; }
+    button, select { min-height: 46px; }
+    button { cursor: pointer; transition: background-color .15s, border-color .15s; }
+    button:disabled, select:disabled { cursor: default; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .shell { width: min(1440px, calc(100% - 64px)); margin: 0 auto; }
+    .topbar { border-bottom: 1px solid var(--line); background: #0b111bd9; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: .04em; }
+    .brand-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #0b261f; }
+    .brand-icon svg { width: 22px; height: 22px; }
+    main { padding-block: 28px 32px; }
+    .intro { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 22px; }
+    .eyebrow { margin: 0 0 4px; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .18em; }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.12; letter-spacing: -.03em; }
+    h2 { font-size: 16px; font-weight: 720; }
+    .signals { display: flex; flex-wrap: wrap; gap: 6px; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: #141f2c; padding: 4px 9px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .badge[data-tone="good"] { color: var(--accent); border-color: #306457; background: #122b29; }
+    .badge[data-tone="warn"] { color: var(--warn); border-color: #614d34; background: #2b241d; }
+    .badge[data-tone="bad"] { color: var(--danger); border-color: #683d4a; background: #321e29; }
+    .battery-badge::before { display: none; }
+    .battery-icon {
+      position: relative;
+      display: inline-flex;
+      width: 19px;
+      height: 10px;
+      border: 1px solid currentColor;
+      border-radius: 3px;
+      padding: 1px;
+      margin-right: 2px;
+    }
+    .battery-icon::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2px;
+      height: 4px;
+      border-radius: 1px;
+      background: currentColor;
+    }
+    .battery-fill { width: 0; border-radius: 1px; background: currentColor; }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 360px); gap: 16px; align-items: start; }
+    .panel { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 28px #02060c40; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 54px; padding: 10px 16px; }
+    .camera { overflow: hidden; }
+    .viewport {
+      position: relative;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 3;
+      max-height: 58vh;
+      background: #080e16;
+      border-block: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .viewport img { position: absolute; width: 100%; height: 100%; object-fit: contain; color: transparent; }
+    .video-placeholder {
+      z-index: 1;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0b1521e8;
+      color: var(--muted);
+      text-align: center;
+    }
+    .camera-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 16px; padding: 12px 16px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .controls { padding: 16px; }
+    .controls h2 { margin-bottom: 12px; }
+    .section-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 13px; }
+    select { width: 100%; padding: 8px 12px; border: 1px solid #41546a; background: #0c1521; color: var(--text); }
+    select:disabled { color: var(--muted); }
+    .status-line { min-height: 48px; padding-top: 9px; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+    .status-line[data-tone="good"] { color: var(--accent); }
+    .status-line[data-tone="warn"] { color: var(--warn); }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .actions button { padding: 9px 6px; font-weight: 760; border: 1px solid transparent; }
+    #start { background: var(--accent); color: #0c2b22; }
+    #start:hover:not(:disabled) { background: #9af5dd; }
+    #start:disabled { background: #263545; color: #a5b5c8; border-color: #394b60; }
+    #stop { background: #351f2b; color: #ffd1d1; border-color: #754657; }
+    #stop:hover { background: #53303e; border-color: #b16f7c; }
+    #start-unlocked { width: 100%; margin-top: 8px; color: #a7f3dd; background: #183b37; border: 1px solid #43736b; }
+    #start-unlocked:hover:not(:disabled) { background: #215049; }
+    #start-unlocked:disabled { color: var(--muted); }
+    #detection-toggle { width: 100%; margin-top: 8px; color: var(--text); background: #1b2a3b; border: 1px solid var(--line); padding-inline: 8px; }
+    #detection-toggle:hover:not(:disabled) { background: #25394e; }
+    #detection-toggle:disabled { color: var(--muted); }
+    #shutdown-host { width: 100%; margin-top: 8px; color: #b5c3d2; background: transparent; border: 1px solid var(--line); font-size: 13px; }
+    #shutdown-host:hover { color: #ffd1d1; border-color: #754657; }
+    .panel, .controls { min-width: 0; }
+    .telemetry { margin-top: 16px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: #0e1824; }
+    .telemetry dt { margin-top: 8px; }
+    .telemetry dt:first-child { margin-top: 0; }
+    .telemetry dd { font-size: 13px; font-weight: 500; line-height: 1.6; white-space: normal; overflow-wrap: anywhere; color: var(--text); }
+    #action-error { margin-top: 10px; color: var(--danger); font-size: 13px; overflow-wrap: anywhere; }
+    .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 16px 0 0; }
+    .metrics div { border: 1px solid var(--line); border-radius: 10px; background: #0e1824; padding: 8px; }
+    dt { color: var(--muted); font-size: 12px; }
+    dd { margin: 3px 0 0; font-size: clamp(17px, 2vw, 22px); font-weight: 740; font-variant-numeric: tabular-nums; white-space: nowrap; line-height: 1.2; }
+    dd small { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); font-weight: 500; }
+    .operation-note { margin-top: 14px; padding-top: 11px; border-top: 1px solid var(--line); }
+    .operation-note strong { color: var(--text); font-variant-numeric: tabular-nums; }
+    .operation-note p + p { margin-top: 5px; }
+    .trial-mode { display: block; margin: 0 0 10px; font-size: 14px; }
+    .trial-mode input { margin: 0 6px 0 0; }
+    .trial-hint { margin: 0 0 10px; color: var(--warn); font-size: 13px; }
+    @media (max-width: 900px) {
+      .shell { width: calc(100% - 32px); }
+      main { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+      .workspace { grid-template-columns: 1fr; }
+      .viewport { max-height: 43vh; }
+      .actions {
+        position: fixed;
+        z-index: 2;
+        inset: auto 0 0;
+        padding: 9px 16px calc(9px + env(safe-area-inset-bottom));
+        background: #0e1824;
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -6px 24px #02060c55;
+      }
+    }
+    @media (max-width: 420px) {
+      .shell { width: calc(100% - 20px); }
+      main { padding-top: 20px; }
+      .controls { padding: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="11" rx="3"/><path d="M12 3v3M7 17v3m10-3v3M8 11h.01m8 0h.01M10 14h4"/></svg>
+        </span>
+        WHEELTEC 小车
+      </div>
+      <span class="badge" id="connection">正在连接</span>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="intro">
+      <div>
+        <p class="eyebrow">ROBOT CONTROL</p>
+        <h1>视觉跟随</h1>
+      </div>
+      <div class="signals" aria-label="设备状态">
+        <span class="badge" id="video-state">画面等待中</span>
+        <span class="badge" id="depth-state">雷达等待中</span>
+        <span class="badge" id="control-state">底盘等待中</span>
+        <span class="badge battery-badge" id="battery-state">
+          <span class="battery-icon" aria-hidden="true"><span class="battery-fill" id="battery-fill"></span></span>
+          <span id="battery-label">电池 —%</span>
+        </span>
+      </div>
+    </div>
+    <div class="workspace">
+      <section class="panel camera" aria-labelledby="camera-title">
+        <header class="panel-head">
+          <h2 id="camera-title">实时画面</h2>
+          <span class="badge" id="track-count">0 个跟踪目标</span>
+        </header>
+        <div class="viewport">
+          <img id="video" {% if edge %}data-snapshots="1"{% else %}src="/video"{% endif %} alt="小车前方实时画面">
+          <p id="video-placeholder" class="video-placeholder">正在连接小车相机…</p>
+        </div>
+        <footer class="camera-footer">
+          <span id="status" class="muted">正在获取识别状态…</span>
+          <span class="muted">{{ '车端 YOLO11n · 人物跟踪' if edge else 'YOLO · BoT-SORT Re-ID' }}</span>
+        </footer>
+      </section>
+      <section class="panel controls" aria-labelledby="controls-title">
+        <h2 id="controls-title">跟随控制</h2>
+        <label class="section-label" for="target">跟随目标</label>
+        <select id="target" disabled><option value="">自动选择人物</option></select>
+        <p class="trial-hint" id="target-hint" hidden></p>
+        <p class="status-line" id="follow-status" role="status">等待连接</p>
+        {% if edge %}
+        <label class="trial-mode"><input type="checkbox" id="local-trial">车端试跑（最多 {{ trial_seconds }} 秒）</label>
+        <p class="trial-hint" id="trial-hint" hidden></p>
+        {% endif %}
+        <div class="actions">
+          <button type="button" id="start" disabled>启动普通跟随</button>
+          <button type="button" id="stop">停止跟随</button>
+        </div>
+        {% if edge %}
+        <button type="button" id="start-unlocked" disabled>启动不认主跟随</button>
+        {% endif %}
+        <button type="button" id="detection-toggle" disabled>开启人物识别</button>
+        {% if edge %}<button type="button" id="shutdown-host">关闭车载主机</button>{% endif %}
+        <p id="action-error" role="alert" hidden></p>
+        <dl class="metrics">
+          <div><dt id="distance-label">目标距离</dt><dd><span id="distance">—</span><small>m</small></dd></div>
+          <div><dt>计划前进</dt><dd><span id="forward">—</span><small>m/s</small></dd></div>
+          <div><dt>计划转向</dt><dd><span id="turn">—</span><small>rad/s</small></dd></div>
+        </dl>
+        <dl class="telemetry" style="font-size:13px;line-height:1.8;color:var(--muted)">
+          <dt>模式 / 运行状态</dt><dd id="mode-state">—</dd>
+          <dt>测距与限速</dt><dd id="range-state">—</dd>
+          <dt>下发 / 底盘反馈</dt><dd id="speed-state">—</dd>
+          <dt>数据与识别性能</dt><dd id="health-detail">—</dd>
+        </dl>
+        <div class="operation-note muted">
+          <p>最高 <strong>{{ "%.2f"|format(max_speed) }} m/s</strong> · 车头停车净距 <strong>{{ "%.2f"|format(follow_distance) }} m</strong></p>
+          <p>车端自主运行：启动后关闭网页仍会继续跟随。重新打开页面可查看或停止当前会话。</p>
+          {% if edge %}
+          <p>雷达优先测距。无可信人物回波时仅允许远距离低速辅助；接近人物或雷达过期时停车等待。</p>
+          <p>短暂丢人或遇障会停车并保留会话，条件恢复后继续。电量和制动标定会影响当前限速。</p>
+          <p>试跑限速 {{ "%.2f"|format(trial_speed) }} m/s。网页断开时车端仍会执行，最晚到时停车。试跑时请在车旁看护。</p>
+          {% endif %}
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const get = id => document.getElementById(id);
+    const target = get('target');
+    const start = get('start');
+    const startUnlocked = get('start-unlocked');
+    const stop = get('stop');
+    const detection = get('detection-toggle');
+    const trial = get('local-trial');
+    const errorBox = get('action-error');
+    const video = get('video');
+    const snapshots = video.dataset.snapshots === '1';
+    const useAutoTarget = () => snapshots && !target.value;
+    const pageId = sessionStorage.getItem('wheeltec.followPage') || crypto.randomUUID();
+    sessionStorage.setItem('wheeltec.followPage', pageId);
+    let pageState;
+    let refreshing = false;
+    let pendingActions = 0;
+    let heartbeatPending = false;
+    let backendSession;
+    let previewRequest;
+    let previewUrl;
+    let followSequence = 0;
+    const nextFollowSequence = () => (followSequence = Math.max(Date.now(), followSequence + 1));
+
+    function signal(id, text, tone) {
+      const badge = get(id);
+      badge.textContent = text;
+      badge.dataset.tone = tone;
+    }
+
+    function showBattery(battery) {
+      const badge = get('battery-state');
+      const voltage = battery?.voltage;
+      const available = Number.isFinite(voltage) && voltage > 0;
+      const percent = available && Number.isFinite(battery?.percent) ? battery.percent : null;
+      get('battery-label').textContent = percent === null ? '电池 —%' : '估算 ' + percent + '% · ' + voltage.toFixed(2) + ' V';
+      get('battery-fill').style.width = (percent ?? 0) + '%';
+      badge.dataset.tone = percent === null ? '' : percent <= 5 ? 'bad' : percent <= 20 ? 'warn' : 'good';
+      badge.title = available
+        ? '按电压估算，非精确剩余容量。' + (battery?.reason || '')
+        : '暂无电池电压数据';
+    }
+
+    async function post(path, data) {
+      const response = await fetch(path, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-Follow-Page': pageId},
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(3200),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error || '指令未被确认，请重试。');
+      }
+    }
+
+    async function send(path, data) {
+      errorBox.hidden = true;
+      pendingActions++;
+      previewRequest?.abort();
+      updateButtons();
+      try {
+        await post(path, data);
+      } catch (error) {
+        errorBox.textContent = error.name === 'TimeoutError' || error.name === 'TypeError' ?
+          '没收到车端确认，请查看跟随状态后再操作。' : error.message;
+        errorBox.hidden = false;
+      } finally {
+        pendingActions--;
+        await refresh();
+        updateButtons();
+      }
+    }
+
+    async function heartbeat() {
+      if (document.visibilityState !== 'visible' || heartbeatPending) return;
+      heartbeatPending = true;
+      try {
+        await fetch('/heartbeat', {
+          method: 'POST', headers: {'X-Follow-Page': pageId},
+          cache: 'no-store', signal: AbortSignal.timeout(900)
+        });
+      } catch {} finally {
+        heartbeatPending = false;
+      }
+    }
+
+    async function refreshPreview() {
+      if (document.visibilityState !== 'visible' || pendingActions || previewRequest) return;
+      const controller = new AbortController();
+      previewRequest = controller;
+      const deadline = setTimeout(() => controller.abort(), 850);
+      try {
+        const response = await fetch('/preview.jpg', {cache: 'no-store', signal: controller.signal});
+        if (!response.ok) return;
+        const blob = await response.blob();
+        if (controller.signal.aborted || pendingActions) return;
+        const oldUrl = previewUrl;
+        previewUrl = URL.createObjectURL(blob);
+        video.src = previewUrl;
+        if (oldUrl) URL.revokeObjectURL(oldUrl);
+      } catch {} finally {
+        clearTimeout(deadline);
+        previewRequest = undefined;
+      }
+    }
+
+    function updateTargets(s) {
+      const selected = target.value;
+      const active = s.follow.target;
+      const automatic = useAutoTarget() || s.follow.automatic;
+      const waitingId = active ?? (!automatic && snapshots && selected ? Number(selected) : null);
+      const waiting = waitingId !== null && !s.ids.includes(waitingId);
+      const signature = s.ids.map(id => id + ':' + (s.distances_m[id] != null)).join(',') +
+        (waiting ? '|waiting:' + waitingId : '') + '|enabled:' + s.enabled + '|automatic:' + automatic +
+        '|unlocked:' + s.follow.unlocked;
+      if (signature !== target.dataset.signature) {
+        let prompt = s.ids.length ? '请选择人物编号' : s.enabled ? '等待人物出现' : '请先开启人物识别';
+        if (snapshots && s.enabled) prompt = '自动选择人物（普通跟随保持身份）';
+        const options = [new Option(prompt, ''), ...s.ids.map(id => new Option(
+          '人物 ' + id + (s.distances_m[id] == null ? ' · 测距待确认' : ' · 雷达可用'), String(id)))];
+        if (waiting) options.push(new Option('人物 ' + waitingId + ' · 等待重识别', String(waitingId)));
+        target.replaceChildren(...options);
+        target.dataset.signature = signature;
+      }
+      if (active !== null) {
+        target.value = String(active);
+      } else if (selected && (waiting || s.ids.includes(Number(selected)))) {
+        target.value = selected;
+      } else {
+        target.value = '';
+      }
+    }
+
+    function showPlan() {
+      const follow = pageState?.follow;
+      const meters = follow?.target === null && !follow?.unlocked ?
+        pageState.distances_m[target.value] : follow?.distance_m;
+      get('distance-label').textContent = '车头净距';
+      get('distance').textContent = meters == null ? '—' : meters.toFixed(2);
+      get('forward').textContent = follow ? follow.forward_mps.toFixed(3) : '—';
+      get('turn').textContent = follow ? follow.turn_rad_s.toFixed(3) : '—';
+      const labels = {idle:'待机', confirming:'确认目标', following:'跟随中', arrived:'到达距离',
+        waiting_person:'等待人物', waiting_corridor:'等待通道', fault_paused:'故障暂停', manual_stop:'人工停止'};
+      get('mode-state').textContent = follow ? (follow.unlocked ? '不认主跟随' : '普通跟随') + ' · ' + (labels[follow.state] || follow.state) : '—';
+      get('range-state').textContent = follow ? ({lidar:'雷达', visual:'画面辅助', none:'等待测距'}[follow.source] || '等待测距') +
+        ' · ' + (follow.limit_mps ?? 0).toFixed(2) + ' m/s · ' + follow.limit_reason : '—';
+      const sent = pageState?.actuator?.sent, odom = pageState?.actuator?.odometry;
+      get('speed-state').textContent = (sent?.forward_mps ?? 0).toFixed(3) + ' / ' +
+        (odom && odom.age_s < 1 ? odom.forward_mps.toFixed(3) : '—') + ' m/s';
+      const p = pageState?.performance;
+      get('health-detail').textContent = p ? p.fps + ' FPS · 延迟 P95 ' + (p.latency_p95_ms ?? '—') + ' ms · v' + pageState.version +
+        (pageState.calibration?.braking ? '' : ' · 制动实测待完成') : '—';
+    }
+
+    function updateButtons() {
+      const s = pageState;
+      const trialSelected = trial?.checked === true;
+      const trialBlocked = s?.sensors.trial_block_reason;
+      const automatic = useAutoTarget();
+      const running = s?.follow.automatic || s?.follow.target != null;
+      const selectedMissing = Boolean(s && !automatic && target.value && !s.ids.includes(Number(target.value)));
+      const targetHint = get('target-hint');
+      targetHint.hidden = !selectedMissing || running;
+      targetHint.textContent = selectedMissing ? '所选编号暂不可用。请等待重新识别，或选择列表中的当前人物。' : '';
+      target.disabled = !s || pendingActions > 0 || running ||
+        (!s.ids.length && !target.value);
+      start.disabled = pendingActions > 0 || !s?.enabled || s.view_only || running ||
+        !s.control_ready || (!automatic && (!target.value || selectedMissing)) ||
+        (!snapshots && (!s.sensors.aligned || s.distances_m[target.value] == null)) ||
+        (trialSelected && s.sensors.aligned && Boolean(trialBlocked));
+      if (trial) {
+        trial.disabled = pendingActions > 0 || running;
+        start.textContent = pendingActions ? '正在等待车端确认' :
+          trialSelected ? '启动车端试跑' : '启动普通跟随';
+        const hint = get('trial-hint');
+        hint.hidden = !trialSelected || !trialBlocked;
+        hint.textContent = trialBlocked || '';
+      }
+      if (startUnlocked) {
+        startUnlocked.disabled = pendingActions > 0 || !s?.enabled || s.view_only || running ||
+          !s.control_ready || trialSelected;
+      }
+      stop.textContent = s?.follow.unlocked ? '停止不认主跟随' : '停止跟随';
+      detection.disabled = pendingActions > 0 || !s || s.follow.unlocked;
+      detection.textContent = s?.enabled ? '关闭人物识别' : '开启人物识别';
+    }
+
+    async function refresh() {
+      if (refreshing) return;
+      refreshing = true;
+      try {
+        const response = await fetch('/status', {cache: 'no-store', signal: AbortSignal.timeout(1800)});
+        if (!response.ok) throw new Error('状态读取失败');
+        const s = await response.json();
+        const session = s.start_status?.[0];
+        if (backendSession && session && session !== backendSession) target.value = '';
+        backendSession = session;
+        pageState = s;
+        signal('connection', '控制台在线', 'good');
+        signal('video-state', s.video ? '画面在线' : '画面等待中', s.video ? 'good' : 'warn');
+        signal('depth-state', s.sensors.lidar ? '雷达可用' : '雷达待确认', s.sensors.lidar ? 'good' : 'warn');
+        signal('control-state', s.control_ready ? '底盘已连接' : '底盘未就绪', s.control_ready ? 'good' : 'warn');
+        showBattery(s.battery);
+        get('control-state').title = s.control_error || '';
+        get('video-placeholder').hidden = s.video;
+        get('video-placeholder').textContent = '等待小车画面…';
+        get('status').textContent = s.status;
+        get('track-count').textContent = s.ids.length + ' 个跟踪目标';
+        const followStatus = get('follow-status');
+        const remaining = s.follow.local_trial_seconds;
+        const followMessage = remaining == null ? s.follow.status :
+          s.follow.status + ' · 剩余 ' + Math.ceil(remaining) + ' 秒';
+        if (followStatus.textContent !== followMessage) followStatus.textContent = followMessage;
+        followStatus.dataset.tone = s.follow.status.startsWith('已暂停') ? 'warn' : s.follow.target !== null ? 'good' : '';
+        updateTargets(s);
+      } catch {
+        pageState = undefined;
+        signal('connection', '连接中断', 'bad');
+        signal('video-state', '画面未知', '');
+        signal('depth-state', '雷达未知', '');
+        signal('control-state', '底盘未知', '');
+        showBattery(null);
+        get('video-placeholder').hidden = false;
+        get('video-placeholder').textContent = '网页服务连接中断';
+        get('status').textContent = '正在重新连接…';
+        get('track-count').textContent = '跟踪状态未知';
+        get('follow-status').textContent = '跟随状态未知';
+        get('follow-status').dataset.tone = 'warn';
+        target.disabled = true;
+      } finally {
+        showPlan();
+        updateButtons();
+        refreshing = false;
+      }
+    }
+
+    target.addEventListener('change', () => { showPlan(); updateButtons(); });
+    trial?.addEventListener('change', () => {
+      if (pageState) updateTargets(pageState);
+      showPlan();
+      updateButtons();
+    });
+    detection.addEventListener('click', () => send('/detection', {enabled: !pageState.enabled}));
+    start.addEventListener('click', () => send('/follow', {
+      target: useAutoTarget() ? 'auto' : Number(target.value), seq: nextFollowSequence(), local_trial: trial?.checked === true,
+      start_status: pageState?.start_status
+    }));
+    startUnlocked?.addEventListener('click', () => send('/follow', {
+      target: 'unlocked', seq: nextFollowSequence(), start_status: pageState?.start_status
+    }));
+    stop.addEventListener('click', () => send('/follow', {target: null, seq: nextFollowSequence()}));
+    get('shutdown-host')?.addEventListener('click', () => {
+      if (pageState && confirm('关闭车载 Linux 主机？会先停止跟随并确认底盘静止。电池总开关仍需手动关闭。')) {
+        send('/shutdown', {confirm:'shutdown-host', boot_id:pageState.start_status[0]});
+      }
+    });
+    if (snapshots) {
+      setInterval(refreshPreview, 260);
+      refreshPreview();
+    } else {
+      video.addEventListener('error', () => {
+        setTimeout(() => { video.src = '/video?reconnect=' + Date.now(); }, 1000);
+      });
+    }
+    document.addEventListener('visibilitychange', heartbeat);
+    setInterval(heartbeat, 400);
+    setInterval(refresh, 500);
+    heartbeat();
+    refresh();
+  </script>
+</body>
+</html>

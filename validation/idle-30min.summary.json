@@ -1,0 +1,17 @@
+{
+  "seconds": 1800.4203121860005,
+  "samples": 3598,
+  "http_errors": 0,
+  "median_reported_fps": 13.67,
+  "max_reported_latency_p95_ms": 230.6,
+  "motion_states": [
+    "idle"
+  ],
+  "scope": "read-only service telemetry, not a physical following/stop-distance test",
+  "rss_first_kib": 138656,
+  "rss_last_kib": 139680,
+  "rss_peak_kib": 140192,
+  "pids": [
+    74929
+  ]
+}
