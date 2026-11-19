@@ -2,10 +2,12 @@
 import numpy as np
 from PIL import Image
 import onnxruntime as ort
+from follow_settings import SETTINGS
 
 
 class Detector:
-    def __init__(self, model):
+    def __init__(self, model, settings=SETTINGS):
+        self.cfg = settings
         options = ort.SessionOptions()
         options.intra_op_num_threads = 2
         options.inter_op_num_threads = 1
@@ -26,7 +28,7 @@ class Detector:
         if output.ndim != 2 or output.shape[1] != 84:
             raise ValueError(f'Expected YOLO11 COCO output, got {output.shape}')
         scores = output[:, 4]
-        keep = (scores >= .10) & (output[:, 4:].argmax(axis=1) == 0)
+        keep = (scores >= self.cfg.detection_min_confidence) & (output[:, 4:].argmax(axis=1) == 0)
         scores = scores[keep]
         centers, radii = output[keep, :2], output[keep, 2:4] / 2
         boxes = np.concatenate((centers - radii, centers + radii), axis=1)
@@ -41,5 +43,5 @@ class Detector:
             overlap = np.maximum(0, np.minimum(boxes[best, 2:], boxes[rest, 2:]) -
                                  np.maximum(boxes[best, :2], boxes[rest, :2])).prod(axis=1)
             iou = overlap / np.maximum(areas[best] + areas[rest] - overlap, 1e-6)
-            order = rest[iou <= .7]
+            order = rest[iou <= self.cfg.detection_nms_iou]
         return people

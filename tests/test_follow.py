@@ -139,6 +139,38 @@ def test_visual_fallback_never_fast_or_close():
     assert planner.plan(person, sensors, 1., 1., 0., .25).forward_mps == 0
 
 
+def test_unlocked_cruise_reaches_requested_speed_only_in_unlocked_session():
+    settings = replace(CFG, braking_verified=False, unlocked_cruise_mps=.25)
+    for mode, expected in (("unlocked", .25), ("auto", .10), (1, .10)):
+        session = FollowSession(settings)
+        session.start(mode, 1.)
+        for now in np.arange(1., 2.5, .1):
+            tick(session, float(now), distance=1.8)
+        assert session.data["forward_mps"] == expected
+
+
+def test_unlocked_cruise_slows_for_clearance_turns_and_uncertain_range():
+    planner = FollowMotion(replace(CFG, braking_verified=False, unlocked_cruise_mps=.25))
+    obs, sensors = scene(1., distance=1.8, front=1.8)
+    target = obs[1]
+    planner.plan(target, sensors, 1., 1., 0., .25, unlocked=True)
+    _, sensors = scene(1.1, distance=1.8, front=1.8)
+    assert planner.plan(target, sensors, 1.1, 1.1, 0., .25, unlocked=True).forward_mps == .25
+    assert planner.plan(target, sensors, 1.1, 1.1, 0., .1, unlocked=True).forward_mps == .1
+    assert planner.plan(replace(target, angle_rad=.14), sensors, 1.1, 1.1, 0., .25,
+                        unlocked=True).forward_mps <= .1
+    sensors = replace(sensors, lidar=replace(sensors.lidar, nearest_m=1.125))
+    assert planner.plan(target, sensors, 1.1, 1.1, 0., .25, unlocked=True).forward_mps == pytest.approx(.175)
+    sensors = replace(sensors, lidar=replace(sensors.lidar, nearest_m=None))
+    assert planner.plan(target, sensors, 1.1, 1.1, 0., .25, unlocked=True).forward_mps <= .1
+    _, sensors = scene(1.2, distance=1.8, front=1.8)
+    ambiguous = replace(target, lidar_distance_m=None, lidar_candidates_m=(target.lidar_distance_m,))
+    assert planner.plan(ambiguous, sensors, 1.2, 1.2, 0., .25, unlocked=True).forward_mps <= .1
+    _, sensors = scene(1.3, distance=1.8, front=.25)
+    stopped = planner.plan(target, sensors, 1.3, 1.3, .25, .25, unlocked=True)
+    assert stopped.state == "waiting_corridor" and stopped.forward_mps == 0
+
+
 def test_persistent_single_beam_obstacle_is_confirmed():
     planner = FollowMotion(CFG)
     obs, sensors = scene(1.)

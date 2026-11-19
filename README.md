@@ -2,7 +2,9 @@
 
 基于树莓派 5、YOLO11n、二维激光雷达和 OSNet Re-ID 的室内人物跟随系统，提供指定人物跟随和不认主跟随两种模式。
 
-**当前状态：2.0.0，实车验收进行中。** 目标车头净距 30 cm，制动实测未完成，实际配置最高暂限 0.10 m/s。详细限制见[实施记录](docs/IMPLEMENTATION.md)。
+**当前版本：2.0.1，实车验收进行中。** 不认主直线巡航在条件满足时可下发最高 0.25 m/s，普通跟随仍使用制动待测的低速档。运动、识别参数和速度条件见[调参方案](docs/tuning-guide.md)，历史实车数据见[实施记录](docs/IMPLEMENTATION.md)。
+
+[小车说明书](docs/小车说明书.md) · [下载说明书与项目工作汇报（PDF，12 页）](output/pdf/Wheeltec-C30D-小车说明书与项目工作汇报.pdf)
 
 [控制页入口（待配置）](docs/control-page.md) · [架构说明](docs/architecture.md) · [开发指南](docs/development.md) · [部署与排障](docs/deployment.md) · [验证数据](validation/README.md) · [变更记录](CHANGELOG.md)
 

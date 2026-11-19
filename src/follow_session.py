@@ -123,7 +123,8 @@ class FollowSession:
         odom = health.get("odometry") or {}
         measured_speed = abs(odom.get("forward_mps", 0.)) if odom.get("age_s", 99) < .5 else 0.
         current_speed = max(self.data["sent_forward_mps"], measured_speed)
-        plan = self.motion.plan(obs, sensors, frame_at, now, current_speed, battery_limit)
+        plan = self.motion.plan(obs, sensors, frame_at, now, current_speed, battery_limit,
+                                unlocked=self.data["unlocked"])
         previous_forward, previous_turn = self.data["sent_forward_mps"], self.data["sent_turn_rad_s"]
         self._state(plan.state, plan.reason, now)
         self.data.update(distance_m=plan.distance_m, source=plan.source, offset=obs.offset,

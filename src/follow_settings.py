@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from runtime_paths import config_path
 
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 
 
 @dataclass(frozen=True)
@@ -22,6 +22,14 @@ class Settings:
     max_speed_mps: float = 0.25
     fallback_speed_mps: float = 0.10
     approach_speed_mps: float = 0.05
+    unlocked_cruise_mps: float = 0.0
+    unlocked_clearance_m: float = 1.0
+    forward_gain_per_s: float = 0.65
+    turn_gain_per_s: float = 0.90
+    turn_deadband_deg: float = 5.0
+    full_forward_angle_deg: float = 9.0
+    turn_only_angle_deg: float = 12.0
+    near_slowdown_m: float = 0.60
     acceleration_mps2: float = 0.30
     angular_acceleration_rad_s2: float = 0.60
     max_turn_rad_s: float = 0.25
@@ -31,6 +39,11 @@ class Settings:
     battery_stop_v: float = 10.5
     battery_stop_s: float = 3.0
     battery_recover_s: float = 5.0
+    detection_min_confidence: float = 0.10
+    tracking_new_confidence: float = 0.35
+    detection_nms_iou: float = 0.70
+    reid_min_similarity: float = 0.82
+    reid_min_margin: float = 0.08
     reid_model: str = "models/osnet_x0_25.onnx"
 
     @property
@@ -60,6 +73,19 @@ def load_settings(path=None):
         raise ValueError("Invalid stop/resume distances")
     if not 0 < settings.approach_speed_mps <= settings.fallback_speed_mps <= settings.max_speed_mps <= .25:
         raise ValueError("Invalid speed limits")
+    if settings.unlocked_cruise_mps and not settings.fallback_speed_mps <= settings.unlocked_cruise_mps <= .25:
+        raise ValueError("Invalid unlocked cruise speed")
+    if not 1.0 <= settings.unlocked_clearance_m <= 5.0:
+        raise ValueError("Unlocked cruise requires at least 1 m of measured clearance")
+    if not (0 < settings.forward_gain_per_s <= 2 and 0 < settings.turn_gain_per_s <= 2
+            and 0 <= settings.turn_deadband_deg < settings.full_forward_angle_deg < settings.turn_only_angle_deg <= 25
+            and .30 <= settings.near_slowdown_m <= 2):
+        raise ValueError("Invalid steering or approach settings")
+    if not (.05 <= settings.detection_min_confidence < settings.tracking_new_confidence <= .95
+            and .30 <= settings.detection_nms_iou <= .90
+            and .70 <= settings.reid_min_similarity <= .98
+            and .02 <= settings.reid_min_margin <= .30):
+        raise ValueError("Invalid detection or identity thresholds")
     if not 0 < settings.brake_deceleration_mps2 <= 2 or not 0 < settings.acceleration_mps2 <= 1:
         raise ValueError("Invalid acceleration")
     if not 0 < settings.battery_stop_v < settings.battery_slow_v < 12.6:

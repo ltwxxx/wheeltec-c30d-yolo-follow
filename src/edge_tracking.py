@@ -8,6 +8,7 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 from PIL import ImageDraw
 from edge_reid import ReIdentifier
+from follow_settings import SETTINGS
 
 
 def iou(a, b):
@@ -67,8 +68,9 @@ class Track:
 
 
 class EdgeTracker:
-    def __init__(self, detector, reid=None):
+    def __init__(self, detector, reid=None, settings=SETTINGS):
         self.detector = detector
+        self.cfg = settings
         self.reid = reid if reid is not None else ReIdentifier()
         self.tracks = {}
         self.next_id = 1
@@ -121,16 +123,15 @@ class EdgeTracker:
         self.tracks = {key: track for key, track in self.tracks.items()
                        if captured_at - track.last_seen < 1.5 or key == self.selected_id}
         predictions = {key: track.predict(dt) for key, track in self.tracks.items()}
-        detections = [p for p in self.detector.detect(image) if p['confidence'] >= .1
+        detections = [p for p in self.detector.detect(image) if p['confidence'] >= self.cfg.detection_min_confidence
                       and p['xyxy'][2] - p['xyxy'][0] >= 8 and p['xyxy'][3] - p['xyxy'][1] >= 12]
         boxes = [tuple(p['xyxy']) for p in detections]
         # Low-score torso duplicates maintain a track; they are not new identities.
-        high_indices = {i for i, person in enumerate(detections) if person['confidence'] >= .35}
-        ambiguous_boxes = {i for i in high_indices
-                           if any(i != j and iou(boxes[i], boxes[j]) > .25 for j in high_indices)}
+        high = [i for i, p in enumerate(detections) if p['confidence'] >= self.cfg.tracking_new_confidence]
+        low = [i for i, p in enumerate(detections) if p['confidence'] < self.cfg.tracking_new_confidence]
+        ambiguous_boxes = {i for i in high
+                           if any(i != j and iou(boxes[i], boxes[j]) > .25 for j in high)}
         colors = [torso_colors(image, b) for b in boxes]
-        high = [i for i, p in enumerate(detections) if p['confidence'] >= .35]
-        low = [i for i, p in enumerate(detections) if .1 <= p['confidence'] < .35]
         remaining = set(self.tracks)
         matched_detections = set()
         for indices, low_stage in ((high, False), (low, True)):
@@ -174,7 +175,7 @@ class EdgeTracker:
                 self.gallery_at = selected.feature_at
         if selected and selected.needs_reid_at is not None:
             if (selected.feature is not None and selected.feature_at >= selected.needs_reid_at
-                    and self.similarity(selected.feature) >= .82
+                    and self.similarity(selected.feature) >= self.cfg.reid_min_similarity
                     and not any(iou(selected.box, boxes[i]) > .25 for i in ambiguous_boxes)):
                 selected.needs_reid_at = None
         if selected and self.gallery and (selected.last_seen != captured_at or selected.needs_reid_at is not None):
@@ -183,7 +184,8 @@ class EdgeTracker:
                                  and captured_at - t.feature_at < .65 and t.hits >= 2
                                  and t.feature_at >= (selected.needs_reid_at if selected.needs_reid_at is not None else selected.last_seen)
                                  and not any(iou(t.box, boxes[i]) > .25 for i in ambiguous_boxes)], reverse=True)
-            if candidates and candidates[0][0] >= .82 and (len(candidates) == 1 or candidates[0][0]-candidates[1][0] >= .08):
+            if (candidates and candidates[0][0] >= self.cfg.reid_min_similarity
+                    and (len(candidates) == 1 or candidates[0][0]-candidates[1][0] >= self.cfg.reid_min_margin)):
                 recovered_id = candidates[0][1]
                 if recovered_id != self.selected_id:
                     recovered = self.tracks.pop(recovered_id)

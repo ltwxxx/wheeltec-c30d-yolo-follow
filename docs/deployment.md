@@ -8,6 +8,10 @@
 
 当前脚本使用 `Ubuntu-F`、已校验的主机记录和受限转发密钥。车端页面模式需要 WSL 中的 `~/.local/share/wheeltec-follow/use-robot-ui` 标记。`ops/watch-follow.sh` 没有该标记时走兼容的本地推理路径；源码入口已调整为 `src/camera_viewer.py`，权重位于 `models/`。
 
+车端页面模式会尝试上次连接成功的地址以及 Windows 解析到的 `wheeltec.local` 地址，最后尝试原有的固定地址。每次连接都核对原有 SSH 主机密钥。
+
+小车开机会自行启动相机、雷达、底盘桥和推理服务，跟随处于待机。控制电脑登录 Windows 后，计划任务 `Wheeltec Follow Console` 持续等待小车上线。相机、对齐深度、雷达和底盘就绪后，任务打开本机控制页。小车重启或连接中断后会自动重连。计划任务每五分钟补一次启动，已经运行时忽略重复触发。
+
 连接脚本保留现有安装的主机、用户和路径设置，移到其他电脑前需要相应调整。密码和私钥不入库。
 
 ## 页面打不开
@@ -35,7 +39,7 @@ curl --noproxy '*' http://127.0.0.1:18769/healthz
 
 1. 从仓库根目录运行 `python -B -m pytest -q`。
 2. 核对 `config/follow_settings.json`、`config/calibration.json`，运行 `python ops/build_release.py`。
-3. 发布包输出到 `releases/wheeltec-2.0.0.tar.gz`；也可通过 `--output-dir` 指定其他输出目录。相同输入产生相同归档，内部 `SHA256SUMS` 覆盖发布文件。
+3. 发布包输出到 `releases/wheeltec-<版本>.tar.gz`；也可通过 `--output-dir` 指定其他输出目录。相同输入产生相同归档，内部 `SHA256SUMS` 覆盖发布文件。运动和识别参数见[调参方案](tuning-guide.md)。
 4. 上传归档到车端，解包后运行其中的 `ops/deploy-on-robot.sh`，参数为归档绝对路径。该脚本要求已有运行目录、Docker 容器、ROS 环境和服务，不是首次安装器。
 5. 部署器检查当前会话已停止，备份运行目录和服务，更新后回到待机；失败时尝试恢复备份。备份位置和历史版本见[实施记录](IMPLEMENTATION.md)。
 

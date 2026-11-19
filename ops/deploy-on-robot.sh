@@ -15,6 +15,7 @@ cd "$stage"
 sha256sum -c SHA256SUMS
 python3 -m compileall -q .
 python3 -c 'from follow_settings import SETTINGS; print(SETTINGS)'
+expected_version=$(python3 -c 'from follow_settings import VERSION; print(VERSION)')
 bash -n ops/robot-follow-boot.sh
 curl -fsS http://127.0.0.1:18769/status | python3 -c '
 import json,sys
@@ -30,16 +31,12 @@ sudo cp /usr/local/libexec/wheeltec-follow-boot "$backup/boot.sh"
 printf '%s\n' "$backup" > "$runtime/last-backup.txt"
 bridges=(follow_sensors.py follow_actuator.py follow_settings.py follow_settings.json runtime_paths.py battery_state.py lidar_geometry.py)
 
-retire_bridges() {
-    docker exec "$container" pkill -TERM -f '^python3 -u /tmp/follow_sensors.py$' || true
-    docker exec "$container" pkill -TERM -f '^python3 -u /tmp/follow_actuator.py$' || true
-    sleep 2
-}
-
-retire_camera() {
-    docker exec "$container" pkill -INT -f '^(.*python3 )?.*/ros2 launch astra_camera astra.launch.xml ' || true
-    docker exec "$container" pkill -TERM -f '^/home/wheeltec/wheeltec_ros2/install/astra_camera/lib/astra_camera/astra_camera_node ' || true
-    sleep 2
+stop_ros_container() {
+    # Restart producers and consumers together so ROS can discover them afresh.
+    # The boot service starts the same container after files have been copied.
+    if [[ $(docker inspect -f '{{.State.Running}}' "$container") == true ]]; then
+        docker stop --time 8 "$container" >/dev/null
+    fi
 }
 
 rollback() {
@@ -47,12 +44,11 @@ rollback() {
     echo "Deployment failed; restoring $backup" >&2
     systemctl --user stop wheeltec-follow-edge.service || true
     sudo systemctl stop wheeltec-follow-boot.service || true
+    stop_ros_container
     tar -xf "$backup/runtime.tar" -C "$(dirname "$runtime")"
     sudo tar -xf "$backup/assets.tar" -C /usr/local/share
     cp "$backup/edge.service" "$HOME/.config/systemd/user/wheeltec-follow-edge.service"
     sudo install -m 0755 "$backup/boot.sh" /usr/local/libexec/wheeltec-follow-boot
-    retire_bridges
-    retire_camera
     for file in "${bridges[@]}"; do
         if [[ -f "$assets/$file" ]]; then docker cp "$assets/$file" "$container:/tmp/$file"; fi
     done
@@ -64,8 +60,7 @@ rollback() {
 trap rollback ERR
 systemctl --user stop wheeltec-follow-edge.service
 sudo systemctl stop wheeltec-follow-boot.service
-retire_bridges
-retire_camera
+stop_ros_container
 for file in "${bridges[@]}"; do
     sudo install -m 0644 "$file" "$assets/$file"
     docker cp "$file" "$container:/tmp/$file"
@@ -82,7 +77,7 @@ cp ops/wheeltec-follow-edge.service "$HOME/.config/systemd/user/wheeltec-follow-
 systemctl --user daemon-reload
 sudo systemctl start wheeltec-follow-boot.service
 ready=false
-for attempt in {1..15}; do
+for attempt in {1..45}; do
     if curl -fsS --max-time 1 http://127.0.0.1:18768/health >/dev/null; then ready=true; break; fi
     sleep 1
 done
@@ -93,8 +88,9 @@ for attempt in {1..30}; do
     if curl -fsS --max-time 1 http://127.0.0.1:18769/status | python3 -c '
 import json,sys
 d=json.load(sys.stdin)
-assert d.get("version")=="2.0.0" and d["follow"]["state"]=="idle" and d["control_ready"] and d["video"]
-' 2>/dev/null; then ready=true; break; fi
+assert d.get("version")==sys.argv[1] and d["follow"]["state"]=="idle"
+assert d["control_ready"] and d["video"] and d["sensors"]["lidar"]
+' "$expected_version" 2>/dev/null; then ready=true; break; fi
     sleep 1
 done
 $ready

@@ -1,8 +1,7 @@
 """Stateful lidar-priority distance control, independent of HTTP and ROS."""
 from dataclasses import dataclass
 import math
-from follow_control import (fresh_lidar, front_corridor, front_obstacle, VISUAL_CLOSE_HEIGHT,
-                            VISUAL_CLOSE_WIDTH, TURN_DEADBAND_RAD, TURN_ONLY_ANGLE_RAD)
+from follow_control import fresh_lidar, front_corridor, front_obstacle, VISUAL_CLOSE_HEIGHT, VISUAL_CLOSE_WIDTH
 from follow_settings import SETTINGS
 
 
@@ -22,6 +21,9 @@ class Motion:
 class FollowMotion:
     def __init__(self, settings=SETTINGS):
         self.cfg = settings
+        self.turn_deadband = math.radians(settings.turn_deadband_deg)
+        self.full_forward_angle = math.radians(settings.full_forward_angle_deg)
+        self.turn_only_angle = math.radians(settings.turn_only_angle_deg)
         self.arrived = False
         self.obstructed = False
         self.clear_since = None
@@ -30,7 +32,7 @@ class FollowMotion:
         self.isolated_since = None
         self.isolated_sample_at = None
 
-    def plan(self, obs, sensors, frame_at, now, speed, battery_limit):
+    def plan(self, obs, sensors, frame_at, now, speed, battery_limit, *, unlocked=False):
         cfg = self.cfg
         if not cfg.geometry_verified or cfg.camera_to_front_m is None:
             return Motion("fault_paused", "等待安装位置标定")
@@ -102,13 +104,30 @@ class FollowMotion:
             if now - self.clear_since >= cfg.obstacle_clear_s:
                 self.obstructed = False
         if self.obstructed:
-            return Motion("waiting_corridor", "等待前方通道连续清空 0.5 秒", distance_m=distance, source=source)
+            return Motion("waiting_corridor", f"等待前方通道连续清空 {cfg.obstacle_clear_s:g} 秒",
+                          distance_m=distance, source=source)
         proximity = max(obs.width_ratio / VISUAL_CLOSE_WIDTH, obs.height_ratio / VISUAL_CLOSE_HEIGHT)
         if distance is None and (proximity >= .85 or self.arrived):
             return Motion("waiting_person", "人物靠近，等待可信雷达测距", source="visual")
         cap = min(cfg.max_speed_mps, battery_limit)
         reason = "电量限速" if battery_limit < cfg.max_speed_mps else "车端速度上限"
-        if not cfg.braking_verified and cap > cfg.fallback_speed_mps:
+        bearing = abs(obs.angle_rad)
+        if unlocked and cfg.unlocked_cruise_mps:
+            cruise_cap = cfg.fallback_speed_mps
+            cruise_reason = "等待直线巡航条件"
+            # Require direct target association and a measured return in the
+            # front corridor. Ambiguous or missing returns cannot enable cruise.
+            if (distance is not None and obs.lidar_distance_m is not None and quality >= .8
+                    and lidar.nearest_m is not None and now - frame_at <= .30
+                    and bearing <= min(self.turn_deadband, math.radians(5))):
+                clearance = min(distance, lidar.nearest_m)
+                fraction = max(0., min(1., (clearance - cfg.unlocked_clearance_m) / .25))
+                cruise_cap += fraction * (cfg.unlocked_cruise_mps - cfg.fallback_speed_mps)
+                if fraction:
+                    cruise_reason = "不认主直线巡航" if fraction == 1. else "前方空间有限，巡航减速"
+            if cruise_cap < cap or (cruise_cap == cap and battery_limit >= cfg.max_speed_mps):
+                cap, reason = cruise_cap, cruise_reason
+        elif not cfg.braking_verified and cap > cfg.fallback_speed_mps:
             cap, reason = cfg.fallback_speed_mps, "制动实测待完成"
         if distance is None:
             cap, reason = min(cap, cfg.fallback_speed_mps), "雷达关联待确认，画面辅助"
@@ -118,16 +137,17 @@ class FollowMotion:
                 math.sqrt(latency**2 + 2 * available / cfg.brake_deceleration_mps2) - latency)
             if brake_cap < cap:
                 cap, reason = brake_cap, "感知延迟及制动距离"
-            if distance < .60 and cap > cfg.approach_speed_mps:
+            if distance < cfg.near_slowdown_m and cap > cfg.approach_speed_mps:
                 cap, reason = cfg.approach_speed_mps, "近距离缓慢靠近"
-        bearing = abs(obs.angle_rad)
-        turn = 0. if bearing <= TURN_DEADBAND_RAD else max(-cfg.max_turn_rad_s, min(cfg.max_turn_rad_s, -.9 * obs.angle_rad))
-        steering = max(0., min(1., (TURN_ONLY_ANGLE_RAD - bearing) / math.radians(3)))
+        turn = 0. if bearing <= self.turn_deadband else max(
+            -cfg.max_turn_rad_s, min(cfg.max_turn_rad_s, -cfg.turn_gain_per_s * obs.angle_rad))
+        steering = max(0., min(1., (self.turn_only_angle - bearing) /
+                               (self.turn_only_angle - self.full_forward_angle)))
         if abs(obs.offset) + obs.width_ratio >= .98:
             steering = 0.
         forward = cap * steering
         if distance is not None:
-            forward = min(forward, .65 * max(0., distance - cfg.stop_m))
+            forward = min(forward, cfg.forward_gain_per_s * max(0., distance - cfg.stop_m))
         else:
             forward *= min(1., max(0., (.85 - proximity) / .35))
         return Motion("following", "雷达优先跟随" if distance is not None else "远距离画面辅助跟随",

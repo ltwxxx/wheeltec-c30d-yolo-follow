@@ -4,7 +4,7 @@ set -u
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." || exit 1
 svc="$HOME/.local/share/wheeltec-follow"
 if [[ -e "$svc/use-robot-ui" ]]; then
-    exec bash ./ops/watch-robot-ui.sh
+    exec bash ./ops/watch-robot-ui.sh "$@"
 fi
 socket="$svc/ssh-control"
 sensor_socket="$svc/ssh-sensor"
@@ -41,7 +41,7 @@ ensure_tunnel() {
     if connect "$robot_ip" "$path" "$port"; then return 0; fi
     # Windows can resolve the robot's mDNS name even in WSL NAT mode.
     resolved=$(timeout 5 /mnt/c/Windows/System32/PING.EXE -4 -n 1 -w 400 wheeltec.local 2>/dev/null |
-        sed -nE 's/.*\[([0-9]+(\.[0-9]+){3})\].*/\1/p' | head -1)
+        LC_ALL=C sed -nE 's/.*\[([0-9]+(\.[0-9]+){3})\].*/\1/p' | head -1)
     [[ -n "$resolved" && "$resolved" != "$robot_ip" ]] && connect "$resolved" "$path" "$port"
 }
 

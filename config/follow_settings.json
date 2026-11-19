@@ -2,5 +2,18 @@
   "camera_to_front_m": 0.0244,
   "geometry_verified": true,
   "braking_verified": false,
-  "brake_deceleration_mps2": 0.30
+  "brake_deceleration_mps2": 0.30,
+  "unlocked_cruise_mps": 0.25,
+  "unlocked_clearance_m": 1.0,
+  "forward_gain_per_s": 0.65,
+  "turn_gain_per_s": 0.90,
+  "turn_deadband_deg": 5.0,
+  "full_forward_angle_deg": 9.0,
+  "turn_only_angle_deg": 12.0,
+  "near_slowdown_m": 0.60,
+  "detection_min_confidence": 0.10,
+  "tracking_new_confidence": 0.35,
+  "detection_nms_iou": 0.70,
+  "reid_min_similarity": 0.82,
+  "reid_min_margin": 0.08
 }
