@@ -113,6 +113,7 @@ def main() -> None:
 
     with mujoco.viewer.launch_passive(model, data) as viewer:
         print("拖动“人”或“车”：左键双击选中，再按住 Ctrl + 右键拖动", flush=True)
+        print("看车头画面：按 ] 切到车载摄像头视角，Esc 回到自由视角", flush=True)
         last_report = 0.0
         next_tick = time.monotonic()
         while viewer.is_running():
