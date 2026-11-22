@@ -26,8 +26,11 @@
     <geom name="floor" type="plane" size="6 6 0.1" material="grid"/>
 
     <!-- 跟随目标：站在车前方 2 米的“人”
-         z = 0.61 让胶囊下端（-0.45 - 半径 0.16）刚好落在地面上 -->
-    <body name="person" pos="2.0 0 0.61">
+         z = 0.61 让胶囊下端（-0.45 - 半径 0.16）刚好落在地面上。
+         自由关节 + gravcomp 关掉重力：这样才能在窗口里用鼠标拖它，
+         松手后它就停在那儿，不会倒也不会掉。 -->
+    <body name="person" pos="2.0 0 0.61" gravcomp="1">
+      <freejoint name="person_root"/>
       <geom type="capsule" fromto="0 0 -0.45 0 0 0.45" size="0.16" material="human"/>
       <geom type="sphere" pos="0 0 0.66" size="0.12" material="human"/>
     </body>
