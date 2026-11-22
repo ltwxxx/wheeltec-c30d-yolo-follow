@@ -25,8 +25,9 @@
     <light pos="0 0 3" dir="0 0 -1" directional="true"/>
     <geom name="floor" type="plane" size="6 6 0.1" material="grid"/>
 
-    <!-- 跟随目标：站在车前方 2 米的“人” -->
-    <body name="person" pos="2.0 0 0.9">
+    <!-- 跟随目标：站在车前方 2 米的“人”
+         z = 0.61 让胶囊下端（-0.45 - 半径 0.16）刚好落在地面上 -->
+    <body name="person" pos="2.0 0 0.61">
       <geom type="capsule" fromto="0 0 -0.45 0 0 0.45" size="0.16" material="human"/>
       <geom type="sphere" pos="0 0 0.66" size="0.12" material="human"/>
     </body>
@@ -37,6 +38,8 @@
       <geom name="shell" type="box" size="0.15 0.125 0.04" material="shell"/>
       <!-- 车头参考点（真实车头在 0.13149 m） -->
       <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
+      <!-- 测距传感器：rangefinder 沿 site 的 z 轴发射，所以绕 y 转 90° 让它朝正前方 -->
+      <site name="range_front" pos="0.16 0 0" euler="0 90 0" size="0.008" rgba="1 1 0 1"/>
 
       <!-- 四个轮子：绕 y 轴（左右轴）旋转 -->
       <body name="wheel_fl" pos="0.10  0.150 -0.04">
@@ -65,6 +68,11 @@
     <exclude body1="chassis" body2="wheel_rl"/>
     <exclude body1="chassis" body2="wheel_rr"/>
   </contact>
+
+  <!-- 前方测距：一束激光沿车头方向打出去，量到最近障碍物的距离（米） -->
+  <sensor>
+    <rangefinder name="front_range" site="range_front" cutoff="6"/>
+  </sensor>
 
   <!-- 四个“马达”：ctrl 是目标轮速（rad/s），kv 是跟随强度，forcerange 是力矩上限 -->
   <actuator>
