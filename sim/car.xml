@@ -26,9 +26,9 @@
              rgb1="0.38 0.60 0.88" rgb2="0.90 0.94 0.99"/>
     <!-- 草坪：两种很接近的绿色交替，远看是草，近看有细微纹理 -->
     <texture name="grass" type="2d" builtin="checker" width="512" height="512"
-             rgb1="0.37 0.51 0.29" rgb2="0.33 0.47 0.26"/>
+             rgb1="0.362 0.502 0.292" rgb2="0.352 0.492 0.284"/>
 
-    <material name="grass" texture="grass" texrepeat="30 30" specular="0.02"/>
+    <material name="grass" texture="grass" texrepeat="140 140" specular="0.02"/>
     <material name="path"   rgba="0.64 0.62 0.58 1" specular="0.12" shininess="0.2"/>
     <material name="shell"  rgba="0.09 0.34 0.32 1" specular="0.40" shininess="0.6"/>
     <material name="deck"   rgba="0.16 0.45 0.41 1" specular="0.40" shininess="0.6"/>
@@ -124,9 +124,6 @@
       <geom type="sphere" pos="0 0 0.12" size="0.16" material="rock" contype="0" conaffinity="0"/>
     </body>
 
-    <!-- 第三人称俯瞰镜头：按 ] 依次切换 车头视角 → 俯瞰视角，Esc 回自由视角 -->
-    <camera name="overview" mode="targetbody" target="chassis" pos="3.2 -3.2 2.4"/>
-
     <!-- 跟随目标：站在车前方 2 米的“人”
          z = 0.61 让胶囊下端（-0.45 - 半径 0.16）刚好落在地面上。
          自由关节 + gravcomp 关掉重力：这样才能在窗口里用鼠标拖它，
@@ -135,8 +132,16 @@
       <freejoint name="person_root"/>
       <geom type="capsule" fromto="0 0 -0.45 0 0 0.45" size="0.16" material="person"/>
       <geom type="sphere" pos="0 0 0.66" size="0.12" material="skin"/>
-      <!-- 头发：视觉件，只盖住头顶，不影响碰撞和测距 -->
+      <!-- 头发、胳膊、手：视觉件，只负责像个人，不影响碰撞和测距 -->
       <geom type="sphere" pos="0 0.02 0.73" size="0.115" material="hair"
+            density="0" contype="0" conaffinity="0"/>
+      <geom type="capsule" fromto="0 0.205 0.30 0 0.240 -0.04" size="0.050"
+            material="person" density="0" contype="0" conaffinity="0"/>
+      <geom type="capsule" fromto="0 -0.205 0.30 0 -0.240 -0.04" size="0.050"
+            material="person" density="0" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 0.243 -0.08" size="0.054" material="skin"
+            density="0" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 -0.243 -0.08" size="0.054" material="skin"
             density="0" contype="0" conaffinity="0"/>
     </body>
 
@@ -163,7 +168,7 @@
       <geom name="tail_r" type="sphere" pos="-0.149 -0.090 0.015" size="0.008"
             material="tail" density="0" contype="0" conaffinity="0"/>
       <!-- 车头指示条：让“车头朝哪”一眼可见；不参与碰撞，也不挡测距 -->
-      <geom name="nose" type="capsule" fromto="0.14 0 0 0.30 0 0" size="0.010"
+      <geom name="nose" type="capsule" fromto="0.14 0 0 0.24 0 0" size="0.010"
             rgba="1 0.35 0.10 1" density="0" contype="0" conaffinity="0"/>
       <!-- 车头参考点（真实车头在 0.13149 m） -->
       <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
@@ -198,6 +203,10 @@
               density="0" contype="0" conaffinity="0"/>
       </body>
     </body>
+
+    <!-- 第三人称俯瞰镜头：按两次 ] 切到它，Esc 回自由视角 -->
+    <body name="shot_target" pos="1.0 0 0.5"/>
+    <camera name="overview" mode="targetbody" target="shot_target" pos="3.6 -4.4 3.0"/>
   </worldbody>
 
   <!-- 车身与轮子不要互相碰撞（否则会数值爆炸） -->

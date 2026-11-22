@@ -107,13 +107,16 @@ def main() -> None:
     per_v = model.jnt_dofadr[per_joint]
 
     renderer = mujoco.Renderer(model, H, W)
+    # 激光束是窗口里的辅助线，真摄像头拍不到：渲染相机画面时关掉
+    cam_opt = mujoco.MjvOption()
+    cam_opt.flags[int(mujoco.mjtVisFlag.mjVIS_RANGEFINDER)] = 0
     substeps = max(1, round(CONTROL_DT / model.opt.timestep))
 
     mujoco.mj_forward(model, data)
 
     with mujoco.viewer.launch_passive(model, data) as viewer:
         print("拖动“人”或“车”：左键双击选中，再按住 Ctrl + 右键拖动", flush=True)
-        print("看车头画面：按 ] 切到车载摄像头视角，Esc 回到自由视角", flush=True)
+        print("看画面：按 ] 先俯瞰全景、再按一次切到车头视角，Esc 回到自由视角", flush=True)
         last_report = 0.0
         next_tick = time.monotonic()
         while viewer.is_running():
@@ -121,7 +124,7 @@ def main() -> None:
             clamp_car(data, car_q, car_v)
 
             distance = float(data.sensordata[range_adr])
-            renderer.update_scene(data, camera="eye")
+            renderer.update_scene(data, camera="eye", scene_option=cam_opt)
             bearing, pixels = find_person(renderer.render())
             state, speed, turn = control(bearing, distance, cutoff)
 
