@@ -39,6 +39,9 @@
     <body name="chassis" pos="0 0 0.09">
       <freejoint name="root"/>
       <geom name="shell" type="box" size="0.15 0.125 0.04" material="shell"/>
+      <!-- 车头指示条：让“车头朝哪”一眼可见；不参与碰撞，也不挡测距 -->
+      <geom name="nose" type="capsule" fromto="0.14 0 0 0.30 0 0" size="0.010"
+            rgba="1 0.35 0.10 1" contype="0" conaffinity="0"/>
       <!-- 车头参考点（真实车头在 0.13149 m） -->
       <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
       <!-- 测距传感器：rangefinder 沿 site 的 z 轴发射，所以绕 y 转 90° 让它朝正前方 -->
