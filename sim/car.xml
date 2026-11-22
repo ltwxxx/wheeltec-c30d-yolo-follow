@@ -46,6 +46,8 @@
       <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
       <!-- 测距传感器：rangefinder 沿 site 的 z 轴发射，所以绕 y 转 90° 让它朝正前方 -->
       <site name="range_front" pos="0.16 0 0" euler="0 90 0" size="0.008" rgba="1 1 0 1"/>
+      <!-- 车载摄像头：装在车头，镜头朝正前方。控制程序从这里“看”人 -->
+      <camera name="eye" pos="0.175 0 0.12" xyaxes="0 -1 0 0 0 1" fovy="65"/>
 
       <!-- 四个轮子：绕 y 轴（左右轴）旋转 -->
       <body name="wheel_fl" pos="0.10  0.150 -0.04">
