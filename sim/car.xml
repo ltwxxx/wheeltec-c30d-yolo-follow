@@ -1,0 +1,76 @@
+<mujoco model="mini_mec">
+  <!--
+    第一版“车”：先把几何立起来，不讲物理细节。
+    尺寸按真实车近似：车体 300 x 250 x 80 mm，轮子半径 50 mm。
+    前方 2 米站一个“人”，就是你的跟随目标。
+  -->
+  <compiler angle="degree" autolimits="true"/>
+  <option timestep="0.002"/>
+
+  <visual>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.55 0.55 0.55"/>
+    <map znear="0.01" zfar="50"/>
+  </visual>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.86 0.86 0.86" rgb2="0.78 0.78 0.78"/>
+    <material name="grid"  texture="grid" texrepeat="10 10" reflectance="0.04"/>
+    <material name="shell" rgba="0.10 0.36 0.30 1"/>
+    <material name="tyre"  rgba="0.14 0.15 0.17 1"/>
+    <material name="human" rgba="0.82 0.44 0.32 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1" directional="true"/>
+    <geom name="floor" type="plane" size="6 6 0.1" material="grid"/>
+
+    <!-- 跟随目标：站在车前方 2 米的“人” -->
+    <body name="person" pos="2.0 0 0.9">
+      <geom type="capsule" fromto="0 0 -0.45 0 0 0.45" size="0.16" material="human"/>
+      <geom type="sphere" pos="0 0 0.66" size="0.12" material="human"/>
+    </body>
+
+    <!-- 车体：可以整体移动，所以挂一个自由关节 -->
+    <body name="chassis" pos="0 0 0.09">
+      <freejoint name="root"/>
+      <geom name="shell" type="box" size="0.15 0.125 0.04" material="shell"/>
+      <!-- 车头参考点（真实车头在 0.13149 m） -->
+      <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
+
+      <!-- 四个轮子：绕 y 轴（左右轴）旋转 -->
+      <body name="wheel_fl" pos="0.10  0.150 -0.04">
+        <joint name="j_fl" type="hinge" axis="0 1 0" armature="0.01"/>
+        <geom type="cylinder" size="0.05 0.018" euler="90 0 0" material="tyre"/>
+      </body>
+      <body name="wheel_fr" pos="0.10 -0.150 -0.04">
+        <joint name="j_fr" type="hinge" axis="0 1 0" armature="0.01"/>
+        <geom type="cylinder" size="0.05 0.018" euler="90 0 0" material="tyre"/>
+      </body>
+      <body name="wheel_rl" pos="-0.10  0.150 -0.04">
+        <joint name="j_rl" type="hinge" axis="0 1 0" armature="0.01"/>
+        <geom type="cylinder" size="0.05 0.018" euler="90 0 0" material="tyre"/>
+      </body>
+      <body name="wheel_rr" pos="-0.10 -0.150 -0.04">
+        <joint name="j_rr" type="hinge" axis="0 1 0" armature="0.01"/>
+        <geom type="cylinder" size="0.05 0.018" euler="90 0 0" material="tyre"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- 车身与轮子不要互相碰撞（否则会数值爆炸） -->
+  <contact>
+    <exclude body1="chassis" body2="wheel_fl"/>
+    <exclude body1="chassis" body2="wheel_fr"/>
+    <exclude body1="chassis" body2="wheel_rl"/>
+    <exclude body1="chassis" body2="wheel_rr"/>
+  </contact>
+
+  <!-- 四个“马达”：ctrl 是目标轮速（rad/s），kv 是跟随强度，forcerange 是力矩上限 -->
+  <actuator>
+    <velocity name="motor_fl" joint="j_fl" kv="5" forcerange="-3 3" ctrlrange="-10 10"/>
+    <velocity name="motor_fr" joint="j_fr" kv="5" forcerange="-3 3" ctrlrange="-10 10"/>
+    <velocity name="motor_rl" joint="j_rl" kv="5" forcerange="-3 3" ctrlrange="-10 10"/>
+    <velocity name="motor_rr" joint="j_rr" kv="5" forcerange="-3 3" ctrlrange="-10 10"/>
+  </actuator>
+</mujoco>

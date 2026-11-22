@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wheeltec C30D 人形跟随小车 · 硬件解剖台</title>
+<style>
+  :root{
+    --paper:#f6f5f1;
+    --card:#ffffff;
+    --ink:#16181b;
+    --ink-2:#4a4f57;
+    --muted:#82888f;
+    --line:#e2ded5;
+    --line-strong:#cfc9bd;
+    --accent:#0b6b5a;
+    --accent-soft:#e3f1ed;
+    --amber:#a9641a;
+    --amber-soft:#fbf0e0;
+    --red:#a4262c;
+    --red-soft:#fbeaea;
+    --blue:#255c8a;
+    --blue-soft:#e8f0f7;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+    --shadow:0 1px 2px rgba(22,24,27,.05),0 8px 24px -12px rgba(22,24,27,.18);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-size:15px;line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent)}
+  ::selection{background:var(--accent-soft)}
+
+  /* ---------- header ---------- */
+  header.top{
+    padding:44px 32px 26px;max-width:1280px;margin:0 auto;
+  }
+  .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  h1{font-size:34px;line-height:1.2;margin:10px 0 8px;letter-spacing:-.02em;font-weight:700}
+  h1 .thin{color:var(--muted);font-weight:400}
+  .sub{color:var(--ink-2);max-width:78ch;font-size:15px;margin:0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{
+    font-size:12px;padding:5px 11px;border-radius:999px;background:var(--card);
+    border:1px solid var(--line);color:var(--ink-2);white-space:nowrap;
+  }
+  .chip b{color:var(--ink);font-weight:600}
+  .chip.warn{background:var(--amber-soft);border-color:#eeddc4;color:var(--amber)}
+  .chip.bad{background:var(--red-soft);border-color:#f0cfcf;color:var(--red)}
+
+  /* ---------- nav ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:40;background:rgba(246,245,241,.92);
+    backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);
+  }
+  .tabs-inner{
+    max-width:1280px;margin:0 auto;padding:0 32px;display:flex;gap:4px;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .tabs-inner::-webkit-scrollbar{display:none}
+  nav.tabs button{
+    appearance:none;background:none;border:0;cursor:pointer;font-family:inherit;
+    font-size:13.5px;color:var(--muted);padding:14px 13px 12px;white-space:nowrap;
+    border-bottom:2px solid transparent;font-weight:500;transition:.15s;
+  }
+  nav.tabs button:hover{color:var(--ink)}
+  nav.tabs button.on{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+  nav.tabs button .n{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:6px}
+
+  /* ---------- layout ---------- */
+  main{max-width:1280px;margin:0 auto;padding:0 32px 100px}
+  section.page{display:none;animation:fade .28s ease}
+  section.page.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .lead{color:var(--ink-2);max-width:84ch;margin:26px 0 8px}
+  h2{font-size:23px;margin:36px 0 6px;letter-spacing:-.015em;font-weight:700}
+  h2 .idx{font-family:var(--mono);font-size:12px;color:var(--accent);margin-right:10px;font-weight:600;vertical-align:2px}
+  h3{font-size:16px;margin:26px 0 8px;font-weight:650}
+  .note{font-size:13px;color:var(--muted)}
+  hr.sep{border:0;border-top:1px solid var(--line);margin:40px 0}
+
+  /* ---------- card ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+  .pad{padding:22px 24px}
+
+  /* ---------- explorer ---------- */
+  .explorer{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:22px;align-items:start;margin-top:22px}
+  @media(max-width:980px){.explorer{grid-template-columns:1fr}}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px;position:relative}
+  .stage svg{width:100%;height:auto;display:block;border-radius:10px;background:
+      radial-gradient(circle at 50% 38%,#fdfcfa 0%,#f1efe9 100%)}
+  .hot{cursor:pointer}
+  .hot .ring{fill:#fff;stroke:var(--line-strong);stroke-width:1.4;transition:.16s}
+  .hot .num{font-family:var(--mono);font-size:13px;font-weight:700;fill:var(--ink-2);transition:.16s}
+  .hot:hover .ring,.hot.sel .ring{fill:var(--accent);stroke:var(--accent)}
+  .hot:hover .num,.hot.sel .num{fill:#fff}
+  .hot.sel .pulse{opacity:.5}
+  .pulse{fill:none;stroke:var(--accent);stroke-width:2;opacity:0;transition:.2s}
+  .lbl{font-family:var(--sans);font-size:10.5px;fill:var(--ink-2);pointer-events:none}
+  .dim{font-family:var(--mono);font-size:9px;fill:var(--muted);pointer-events:none}
+  .ruler{stroke:var(--accent);stroke-width:1;stroke-dasharray:3 3;opacity:.55}
+
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:12px;color:var(--muted)}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+
+  /* ---------- detail panel ---------- */
+  .detail{position:sticky;top:64px}
+  @media(max-width:980px){.detail{position:static}}
+  .detail .card{padding:0;overflow:hidden}
+  .d-head{padding:20px 22px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff, #fcfbf8)}
+  .d-tag{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .d-tag .badge{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff;background:var(--accent);border-radius:6px;padding:2px 7px}
+  .d-tag .role{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .d-title{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:0}
+  .d-sub{font-size:13px;color:var(--ink-2);margin:5px 0 0}
+  .d-body{padding:6px 22px 20px;max-height:min(60vh,620px);overflow:auto}
+  .row{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .row:last-child{border-bottom:0}
+  .row .k{color:var(--muted);font-size:12.5px}
+  .row .v{color:var(--ink)}
+  .row .v code{font-family:var(--mono);font-size:12px;background:#f2f0ea;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .d-sec{margin-top:16px}
+  .d-sec h4{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:700}
+  .d-sec ul{margin:0;padding-left:1.15em}
+  .d-sec li{font-size:13.3px;margin:5px 0;color:var(--ink-2)}
+  .d-sec li b{color:var(--ink);font-weight:600}
+  .price{display:inline-flex;align-items:baseline;gap:7px;background:var(--accent-soft);color:var(--accent);
+    border-radius:8px;padding:6px 11px;font-weight:600;font-size:14px}
+  .price small{font-weight:500;font-size:11.5px;opacity:.85}
+  .price.unk{background:#f2f0ea;color:var(--muted)}
+  .coderef{font-family:var(--mono);font-size:12px;color:var(--blue);background:var(--blue-soft);border-radius:5px;padding:1px 6px;white-space:nowrap}
+
+  /* ---------- tables ---------- */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-top:14px}
+  table{border-collapse:collapse;width:100%;font-size:13.4px;min-width:560px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:650;background:#fbfaf7}
+  tr:last-child td{border-bottom:0}
+  td code{font-family:var(--mono);font-size:12.2px;background:#f2f0ea;border:1px solid var(--line);border-radius:4px;padding:.5px 5px}
+  .num-r{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ---------- pipeline ---------- */
+  .pipe{display:grid;gap:12px;margin-top:18px}
+  .pipe-row{display:grid;grid-template-columns:132px repeat(6,1fr);gap:10px;align-items:stretch}
+  @media(max-width:1080px){.pipe-row{grid-template-columns:1fr;gap:8px}}
+  .pipe-label{display:flex;flex-direction:column;justify-content:center;font-size:12px;font-weight:650;color:var(--muted);
+    letter-spacing:.06em;text-transform:uppercase;padding-right:6px}
+  .pipe-label small{font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:11px 12px;font-size:12.6px;position:relative;box-shadow:var(--shadow)}
+  .node b{display:block;font-size:13.2px;margin-bottom:2px}
+  .node small{color:var(--muted);font-size:11.4px;line-height:1.5;display:block}
+  .node::after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--line-strong);font-size:15px}
+  .pipe-row .node:last-child::after{display:none}
+  @media(max-width:1080px){.node::after{content:"↓";right:12px;top:auto;bottom:-14px}}
+  @media(max-width:1080px){.pipe-row .node:last-child::after{display:none}}
+  .node.k{background:var(--accent-soft);border-color:#cfe4de}
+  .node.w{background:var(--amber-soft);border-color:#eeddc4}
+  .node.d{background:var(--red-soft);border-color:#f0d3d3}
+
+  /* ---------- sev chips ---------- */
+  .sev{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:999px;text-transform:uppercase}
+  .sev.p0{background:var(--red);color:#fff}
+  .sev.p1{background:var(--amber);color:#fff}
+  .sev.p2{background:#5c6570;color:#fff}
+
+  .defect{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:12px;box-shadow:var(--shadow)}
+  .defect .dtop{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+  .defect h4{margin:0;font-size:15.5px;font-weight:650}
+  .defect .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .defect p{margin:8px 0 0;font-size:13.6px;color:var(--ink-2)}
+  .defect p b{color:var(--ink)}
+  .kv{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:13.3px;margin-top:10px}
+  .kv div:nth-child(odd){color:var(--muted);font-size:12.5px;padding-top:1px}
+  .ev{font-family:var(--mono);font-size:12px;background:#f4f2ec;border-left:3px solid var(--line-strong);
+      padding:8px 11px;border-radius:0 6px 6px 0;margin-top:8px;color:var(--ink-2);overflow-x:auto;white-space:pre}
+
+  /* ---------- roadmap ---------- */
+  .phase{display:grid;grid-template-columns:160px 1fr;gap:22px;padding:22px 0;border-top:1px solid var(--line)}
+  @media(max-width:760px){.phase{grid-template-columns:1fr;gap:10px}}
+  .phase .ptag{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700}
+  .phase .ptag b{display:block;font-family:var(--sans);font-size:15.5px;color:var(--ink);margin-top:3px;letter-spacing:-.01em}
+  .phase .ptag small{display:block;color:var(--muted);font-size:11.5px;margin-top:5px;font-weight:400}
+  .phase ul{margin:0;padding-left:1.1em}
+  .phase li{margin:6px 0;font-size:13.6px;color:var(--ink-2)}
+  .phase li b{color:var(--ink)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .mini h4{margin:0 0 8px;font-size:14px}
+  .mini p{margin:0;font-size:13.2px;color:var(--ink-2)}
+  .mini ul{margin:6px 0 0;padding-left:1.1em;font-size:13.2px;color:var(--ink-2)}
+  .mini li{margin:4px 0}
+
+  footer{border-top:1px solid var(--line);padding:26px 32px 60px;max-width:1280px;margin:0 auto;color:var(--muted);font-size:12.5px}
+  footer code{font-family:var(--mono);font-size:11.5px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="kicker">硬件解剖台 · Wheeltec C30D / mini_mec</div>
+  <h1>一台人形跟随小车，<span class="thin">从上到下拆开看</span></h1>
+  <p class="sub">基于车端 2.0.1 实测快照（2026-11-16 核对，2026-11-19 整理）。下面每一块硬件都可以点击展开：型号、接口、串口怎么走、价格、在系统里干什么活、对应哪段源码。</p>
+  <div class="chips">
+    <span class="chip"><b>Wheeltec R550</b> 原厂模型 mini_mec</span>
+    <span class="chip"><b>Pi 5</b> Model B Rev1.1 · 4 GB</span>
+    <span class="chip"><b>ROS2 Humble</b> Docker · Ubuntu 22.04.4</span>
+    <span class="chip"><b>YOLO11n</b> ONNX CPU 320×320</span>
+    <span class="chip warn">Astra S 已停产</span>
+    <span class="chip bad">制动值未标定</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabs">
+    <button data-p="hw" class="on"><span class="n">01</span>整车与外设</button>
+    <button data-p="wiring"><span class="n">02</span>串口与接线</button>
+    <button data-p="dataflow"><span class="n">03</span>协同数据流</button>
+    <button data-p="specs"><span class="n">04</span>参数速查</button>
+    <button data-p="stack"><span class="n">05</span>技术栈</button>
+    <button data-p="bom"><span class="n">06</span>BOM 与价格</button>
+    <button data-p="code"><span class="n">07</span>代码诊断</button>
+    <button data-p="roadmap"><span class="n">08</span>玩具→工业</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================ 01 HW -->
+<section class="page on" id="page-hw">
+  <p class="lead">俯视图按厂家 URDF 的真实坐标绘制：车头在最上方，单位毫米。点击图中编号或下方图例，右侧面板会展开对应部件。所有尺寸取自 <code>config/calibration.json</code>，不是卷尺量出来的。</p>
+
+  <div class="explorer">
+    <div>
+      <div class="stage">
+        <svg viewBox="-205 -215 410 440" role="img" aria-label="小车俯视结构图">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0H0V20" fill="none" stroke="#e9e5dc" stroke-width=".7"/>
+            </pattern>
+          </defs>
+          <rect x="-205" y="-215" width="410" height="440" fill="url(#grid)" opacity=".55"/>
+
+          <!-- front reference line -->
+          <line x1="-150" y1="-131.49" x2="150" y2="-131.49" class="ruler"/>
+          <text x="150" y="-137" text-anchor="end" class="dim">车头 x=131.5</text>
+          <text x="-205" y="-142" class="dim" opacity=".9">前</text>
+
+          <!-- body -->
+          <rect x="-116" y="-131.49" width="232" height="290" rx="20" fill="#ffffff" stroke="#cfc9bd" stroke-width="1.6"/>
+          <rect x="-116" y="-131.49" width="232" height="290" rx="20" fill="none" stroke="#e6e1d6" stroke-width="6" opacity=".5"/>
+          <text x="0" y="150" text-anchor="middle" class="dim" opacity=".8">车身半宽 ±116 · 长向示意</text>
+
+          <!-- mecanum wheels -->
+          <g fill="#2a2f36">
+            <rect x="-152" y="-118" width="34" height="96" rx="9"/>
+            <rect x="118" y="-118" width="34" height="96" rx="9"/>
+            <rect x="-152" y="70" width="34" height="96" rx="9"/>
+            <rect x="118" y="70" width="34" height="96" rx="9"/>
+          </g>
+          <g stroke="#6b727a" stroke-width="1" opacity=".7">
+            <line x1="-150" y1="-100" x2="-120" y2="-100"/><line x1="-150" y1="-80" x2="-120" y2="-80"/>
+            <line x1="-150" y1="-60" x2="-120" y2="-60"/><line x1="-150" y1="-40" x2="-120" y2="-40"/>
+            <line x1="120" y1="-100" x2="150" y2="-100"/><line x1="120" y1="-80" x2="150" y2="-80"/>
+            <line x1="120" y1="-60" x2="150" y2="-60"/><line x1="120" y1="-40" x2="150" y2="-40"/>
+            <line x1="-150" y1="90" x2="-120" y2="90"/><line x1="-150" y1="110" x2="-120" y2="110"/>
+            <line x1="-150" y1="130" x2="-120" y2="130"/><line x1="-150" y1="150" x2="-120" y2="150"/>
+            <line x1="120" y1="90" x2="150" y2="90"/><line x1="120" y1="110" x2="150" y2="110"/>
+            <line x1="120" y1="130" x2="150" y2="130"/><line x1="120" y1="150" x2="150" y2="150"/>
+          </g>
+
+          <!-- lidar -->
+          <circle cx="0" cy="-31.63" r="34" fill="none" stroke="#0b6b5a" stroke-width="1" opacity=".22"/>
+          <circle cx="0" cy="-31.63" r="58" fill="none" stroke="#0b6b5a" stroke-width="1" opacity=".14"/>
+          <circle cx="0" cy="-31.63" r="82" fill="none" stroke="#0b6b5a" stroke-width="1" opacity=".09"/>
+          <circle cx="0" cy="-31.63" r="18" fill="#123f36" stroke="#0b6b5a" stroke-width="1.4"/>
+          <circle cx="0" cy="-31.63" r="5" fill="#0b6b5a"/>
+
+          <!-- camera -->
+          <rect x="-19" y="-120" width="38" height="26" rx="6" fill="#1e2530" stroke="#3a424e" stroke-width="1.2"/>
+          <circle cx="-6" cy="-107" r="4.4" fill="#7ad0c0"/>
+          <circle cx="8" cy="-107" r="3" fill="#1b1e23" stroke="#4a525d" stroke-width="1"/>
+
+          <!-- Pi5 -->
+          <rect x="-74" y="46" width="98" height="62" rx="7" fill="#0f5132" stroke="#0a3a24" stroke-width="1.2"/>
+          <rect x="-66" y="54" width="30" height="20" rx="3" fill="#1c6b45"/>
+          <rect x="-30" y="54" width="22" height="20" rx="3" fill="#1c6b45"/>
+          <text x="-25" y="94" text-anchor="middle" fill="#cde9dd" font-size="10.5" font-family="ui-monospace,monospace">PI 5</text>
+
+          <!-- C30D -->
+          <rect x="30" y="48" width="86" height="60" rx="7" fill="#3b3325" stroke="#2a2419" stroke-width="1.2"/>
+          <rect x="38" y="56" width="70" height="12" rx="3" fill="#5a4c35"/>
+          <text x="73" y="94" text-anchor="middle" fill="#e8d9bd" font-size="10" font-family="ui-monospace,monospace">C30D</text>
+
+          <!-- battery -->
+          <rect x="-96" y="118" width="76" height="46" rx="6" fill="#8a3b1c" stroke="#6d2e15" stroke-width="1.2"/>
+          <text x="-58" y="146" text-anchor="middle" fill="#ffdcc8" font-size="10" font-family="ui-monospace,monospace">3S</text>
+
+          <!-- bridge -->
+          <rect x="120" y="14" width="26" height="46" rx="4" fill="#243447" stroke="#1a2735" stroke-width="1.1"/>
+          <text x="133" y="76" text-anchor="middle" class="dim">UART</text>
+
+          <!-- hotspots -->
+          <g class="hot" data-part="chassis" tabindex="0" role="button" aria-label="底盘总成">
+            <circle class="pulse" cx="-92" cy="-160" r="17"/><circle class="ring" cx="-92" cy="-160" r="13"/><text class="num" x="-92" y="-155.5" text-anchor="middle">1</text>
+          </g>
+          <g class="hot" data-part="wheel" tabindex="0" role="button" aria-label="麦克纳姆轮">
+            <circle class="pulse" cx="-135" cy="122" r="17"/><circle class="ring" cx="-135" cy="122" r="13"/><text class="num" x="-135" y="126.5" text-anchor="middle">2</text>
+          </g>
+          <g class="hot" data-part="c30d" tabindex="0" role="button" aria-label="WheelBoard C30D 主控板">
+            <circle class="pulse" cx="73" cy="48" r="17"/><circle class="ring" cx="73" cy="48" r="13"/><text class="num" x="73" y="52.5" text-anchor="middle">3</text>
+          </g>
+          <g class="hot" data-part="pi5" tabindex="0" role="button" aria-label="树莓派 5">
+            <circle class="pulse" cx="-25" cy="46" r="17"/><circle class="ring" cx="-25" cy="46" r="13"/><text class="num" x="-25" y="50.5" text-anchor="middle">4</text>
+          </g>
+          <g class="hot" data-part="camera" tabindex="0" role="button" aria-label="Astra S 深度相机">
+            <circle class="pulse" cx="0" cy="-134" r="17"/><circle class="ring" cx="0" cy="-134" r="13"/><text class="num" x="0" y="-129.5" text-anchor="middle">5</text>
+          </g>
+          <g class="hot" data-part="lidar" tabindex="0" role="button" aria-label="镭神 N10Plus 雷达">
+            <circle class="pulse" cx="0" cy="-31.63" r="17"/><circle class="ring" cx="0" cy="-31.63" r="13"/><text class="num" x="0" y="-27" text-anchor="middle">6</text>
+          </g>
+          <g class="hot" data-part="bridge" tabindex="0" role="button" aria-label="USB 转串口桥">
+            <circle class="pulse" cx="133" cy="14" r="15"/><circle class="ring" cx="133" cy="14" r="12"/><text class="num" x="133" y="18.3" text-anchor="middle">7</text>
+          </g>
+          <g class="hot" data-part="battery" tabindex="0" role="button" aria-label="3S 电池与电源">
+            <circle class="pulse" cx="-58" cy="118" r="16"/><circle class="ring" cx="-58" cy="118" r="12.5"/><text class="num" x="-58" y="122.3" text-anchor="middle">8</text>
+          </g>
+          <g class="hot" data-part="docker" tabindex="0" role="button" aria-label="ROS2 容器与软件栈">
+            <circle class="pulse" cx="160" cy="110" r="16"/><circle class="ring" cx="160" cy="110" r="12.5"/><text class="num" x="160" y="114.3" text-anchor="middle">9</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#0b6b5a"></i>感知</span>
+        <span><i style="background:#243447"></i>通信</span>
+        <span><i style="background:#3b3325"></i>驱动控制</span>
+        <span><i style="background:#8a3b1c"></i>供电</span>
+        <span class="note">提示：键盘 ← → 切换部件，Esc 收起。</span>
+      </div>
+    </div>
+
+    <aside class="detail">
+      <div class="card" id="detailCard">
+        <div class="d-head">
+          <div class="d-tag"><span class="badge" id="dBadge">—</span><span class="role" id="dRole">硬件部件</span></div>
+          <h3 class="d-title" id="dTitle">选一个部件</h3>
+          <p class="d-sub" id="dSub">点击左侧图中编号查看型号、接口、价格与源码位置。</p>
+        </div>
+        <div class="d-body" id="dBody"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============================================================ 02 WIRING -->
+<section class="page" id="page-wiring">
+  <p class="lead">三路外设全部走 USB 接进树莓派，没有一根业务线走 GPIO。所以「串口怎么连」的答案其实分两层：物理上是 USB，逻辑上是 udev 生成的稳定符号链接，最后再以 <code>--device</code> 灌进 Docker 容器。</p>
+
+  <h2><span class="idx">2.1</span>物理拓扑</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>链路</th><th>USB 转换芯片</th><th>识别键</th><th>车端设备节点</th><th>对端</th><th>串口参数</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>底盘</b></td>
+          <td>CP2102 / CH343 / CH9102</td>
+          <td><code>10c4:ea60</code> serial=<b>0002</b><br><code>1a86:55d4</code> serial=<b>0002</b></td>
+          <td><code>/dev/wheeltec_controller</code></td>
+          <td>STM32F407（C30D）</td>
+          <td class="num-r">115200 8N1</td>
+        </tr>
+        <tr>
+          <td><b>激光雷达</b></td>
+          <td>CP2102</td>
+          <td><code>10c4:ea60</code> serial=<b>0001</b></td>
+          <td>官方 <code>/dev/wheeltec_laser</code><br>本项目记录 <code>/dev/wheeltec_lidar</code></td>
+          <td>镭神 N10Plus</td>
+          <td class="num-r">由 lslidar_driver 决定</td>
+        </tr>
+        <tr>
+          <td><b>深度相机</b></td>
+          <td>—（原生 USB 设备）</td>
+          <td><code>2bc5:0402</code></td>
+          <td><code>/dev/bus/usb/…</code></td>
+          <td>Orbbec Astra S</td>
+          <td class="num-r">USB 2.0 UVC</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:10px">注意：官方 <code>wheeltec_udev.sh</code> 生成的是 <code>wheeltec_laser</code>，而本项目车端记录写的是 <code>wheeltec_lidar</code>。两套名字同时在用，换卡或重装系统后极易断链——这是第 07 节里的一条「高」级缺陷。</p>
+
+  <h2><span class="idx">2.2</span>udev 规则原文</h2>
+  <p class="note">两个 CP2102 芯片型号完全相同，只能靠出厂序列号区分，这就是为什么规则必须写 <code>ATTRS{serial}</code> 而不能只写 vendor/product。</p>
+  <div class="tbl-wrap"><table><tbody>
+    <tr><td style="width:100%"><pre class="ev" style="margin:0;border:0;background:transparent;padding:0">KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0002", SYMLINK+="wheeltec_controller"
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", SYMLINK+="wheeltec_laser"
+KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0003", SYMLINK+="wheeltec_laser"   <span style="color:#82888f"># LD14 型号兼容</span>
+KERNEL=="ttyCH343USB*", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", ATTRS{serial}=="0002", SYMLINK+="wheeltec_controller"</pre></td></tr>
+  </tbody></table></div>
+
+  <h2><span class="idx">2.3</span>容器边界</h2>
+  <div class="grid2">
+    <div class="mini">
+      <h4>宿主机（Debian 12 / aarch64）</h4>
+      <ul>
+        <li>udev 生成 <code>/dev/wheeltec_*</code></li>
+        <li>Docker 引擎管理容器 <code>codex-camera-live</code></li>
+        <li>systemd user unit 拉起网页控制台</li>
+      </ul>
+    </div>
+    <div class="mini">
+      <h4>容器内（Ubuntu 22.04.4 + Humble）</h4>
+      <ul>
+        <li>只有通过 <code>--device=/dev/wheeltec_controller --device=/dev/wheeltec_laser</code> 挂进来的节点才可见</li>
+        <li>ROS2 话题、<code>lslidar_driver</code>、<code>turn_on_wheeltec_robot</code> 都跑在这里</li>
+        <li>发布 <code>/scan</code> <code>/odom</code> <code>/PowerVoltage</code>，订阅 <code>/cmd_vel</code></li>
+      </ul>
+    </div>
+  </div>
+  <p class="note" style="margin-top:12px">这也是「ROS2 只在容器里」的由来：宿主机上没有 ROS 环境，任何 <code>ros2 topic list</code> 都得先 <code>docker exec</code> 进去再 source——这是第 07 节里「启动脚本不检查失败」那条缺陷的直接温床。</p>
+</section>
+
+<!-- ============================================================ 03 DATAFLOW -->
+<section class="page" id="page-dataflow">
+  <p class="lead">车上的逻辑是「感知 → 识别 → 会话状态机 → 规划 → 执行 → 反馈」六段式。下面数字全部来自 2026-11-16 的在线快照，不是设计目标。</p>
+
+  <h2><span class="idx">3.1</span>主链路</h2>
+  <div class="pipe">
+    <div class="pipe-row">
+      <div class="pipe-label">感知<small>Sensor</small></div>
+      <div class="node k"><b>Astra S</b><small>彩色/深度 320×240 @30 Hz<br>RGB-D 双流</small></div>
+      <div class="node k"><b>N10Plus</b><small>/scan ≈9.9 Hz · 540 束<br>步长 0.667° · 0.15–50 m</small></div>
+      <div class="node"><b>传感器桥</b><small>:18767 转 JSON<br>最新帧缓存</small></div>
+      <div class="node k"><b>YOLO11n</b><small>ONNX CPU 320×320<br>COCO person</small></div>
+      <div class="node k"><b>跟踪 + Re-ID</b><small>两阶段关联<br>OSNet 512 维</small></div>
+      <div class="node"><b>会话状态机</b><small>认主 / 丢失 / 巡航<br>0.50 s 重认窗口</small></div>
+    </div>
+    <div class="pipe-row">
+      <div class="pipe-label">决策<small>Plan</small></div>
+      <div class="node"><b>几何解算</b><small>车头净距 = 雷达 − 99.86 mm<br>通道 ±116 + 40 mm 余量</small></div>
+      <div class="node"><b>速度规划</b><small>P 增益 0.65 / 0.90<br>净距分级限速</small></div>
+      <div class="node"><b>安全包络</b><small>到达 0.30 m<br>回退 0.40 m 才再靠近</small></div>
+      <div class="node"><b>加速度斜坡</b><small>Δv/Δω 限幅<br>50 ms 一拍</small></div>
+      <div class="node"><b>执行器桥</b><small>:18768 → /cmd_vel<br>280 ms 看门狗</small></div>
+      <div class="node"><b>C30D</b><small>115200 串口<br>PWM + 闭环</small></div>
+    </div>
+    <div class="pipe-row">
+      <div class="pipe-label">反馈<small>Feedback</small></div>
+      <div class="node d"><b>/PowerVoltage</b><small>Float32 · 1 s 中值滤波<br>&lt;10.8 限速 · &lt;10.5 锁停</small></div>
+      <div class="node"><b>/odom</b><small>Odometry · 里程计<br>帧 odom_combined</small></div>
+      <div class="node"><b>控制观测</b><small>P95 201–231 ms<br>13.3–13.7 FPS</small></div>
+      <div class="node"><b>看门狗</b><small>10 次实测最慢 333 ms<br>预算 280 ms</small></div>
+      <div class="node"><b>网页 HMI</b><small>:18769 → SSH 隧道 :8769<br>GET/POST 状态与控制</small></div>
+      <div class="node"><b>日志</b><small>容器 /tmp/*.log<br>重启即失</small></div>
+    </div>
+  </div>
+
+  <h2><span class="idx">3.2</span>保护阶梯</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>触发条件</th><th>系统动作</th><th>恢复条件</th></tr></thead>
+      <tbody>
+        <tr><td>净距 1.00 – 1.25 m</td><td>逐级抬高上限，巡航最高 0.25 m/s</td><td>退出巡航回落 0.10 m/s</td></tr>
+        <tr><td>净距 &lt; 0.60 m</td><td>最高下发 0.05 m/s</td><td>净距回升</td></tr>
+        <tr><td>到达 0.30 m</td><td>停；不允许继续靠近</td><td>拉到 0.40 m 才解除</td></tr>
+        <tr><td>通道被占</td><td>按速度与制动余量停车</td><td>连续清空 0.50 s</td></tr>
+        <tr><td>电压 &lt; 10.8 V</td><td>限速 0.10 m/s</td><td>电压回升</td></tr>
+        <tr><td>电压 &lt; 10.5 V 持续 3 s</td><td><b>锁定停车</b></td><td>回到 10.8 V 保持 5 s，<b>且需人工重启</b></td></tr>
+        <tr><td>指令中断 &gt; 280 ms</td><td>执行器看门狗归零</td><td>新指令到达</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:10px">制动减速度用的是 <code>0.30 m/s²</code>——但 <code>braking_verified=false</code>，也就是说这个数是假设值，没做过实测标定。所有「按制动余量停车」的判断都建立在这个假设上。</p>
+</section>
+
+<!-- ============================================================ 04 SPECS -->
+<section class="page" id="page-specs">
+  <p class="lead">一张表看完全部会动的数字。来源标注在最后一列：<b>实测</b>是车端快照，<b>配置</b>是仓库 JSON，<b>手册</b>是原厂 PDF。</p>
+
+  <h2><span class="idx">4.1</span>运动与安全</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>参数</th><th>值</th><th>含义</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr><td>普通跟随上限</td><td class="num-r">0.10 m/s</td><td>未进入巡航时的前进上限</td><td>手册</td></tr>
+      <tr><td>巡航上限</td><td class="num-r">0.25 m/s</td><td>认主且净距 1.00–1.25 m 时</td><td>配置</td></tr>
+      <tr><td>巡航进入净距</td><td class="num-r">1.0 m</td><td><code>unlocked_clearance_m</code></td><td>配置</td></tr>
+      <tr><td>到达净距 / 回退</td><td class="num-r">0.30 / 0.40 m</td><td>滞回，防抖</td><td>手册</td></tr>
+      <tr><td>近距减速阈值</td><td class="num-r">0.60 m</td><td><code>near_slowdown_m</code></td><td>配置</td></tr>
+      <tr><td>制动减速度</td><td class="num-r">0.30 m/s²</td><td><b>未标定</b> <code>braking_verified=false</code></td><td>配置</td></tr>
+      <tr><td>前向 / 转向增益</td><td class="num-r">0.65 / 0.90 s⁻¹</td><td>P 控制</td><td>配置</td></tr>
+      <tr><td>转向死区 / 满前向 / 只转</td><td class="num-r">5° / 9° / 12°</td><td>角度分段</td><td>配置</td></tr>
+      <tr><td>指令看门狗</td><td class="num-r">280 ms</td><td>超时归零</td><td>手册</td></tr>
+      <tr><td>输出周期</td><td class="num-r">50 ms</td><td>ROS 定时器</td><td>配置</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span class="idx">4.2</span>几何</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>量</th><th>值</th><th>用途</th><th>来源</th></tr></thead>
+    <tbody>
+      <tr><td>车头前端 x</td><td class="num-r">0.13149 m</td><td>基准原点向前</td><td>配置</td></tr>
+      <tr><td>雷达参考 x</td><td class="num-r">0.03163 m</td><td>—</td><td>配置</td></tr>
+      <tr><td>相机参考 x</td><td class="num-r">0.10709 m</td><td>—</td><td>配置</td></tr>
+      <tr><td><b>雷达 → 车头</b></td><td class="num-r">0.09986 m</td><td><b>净距 = 回波 − 99.86 mm</b></td><td>配置</td></tr>
+      <tr><td>相机 → 车头</td><td class="num-r">0.02440 m</td><td><code>camera_to_front_m</code></td><td>配置</td></tr>
+      <tr><td>车身半宽</td><td class="num-r">0.116 m</td><td>通道判定</td><td>配置</td></tr>
+      <tr><td>通道单侧余量</td><td class="num-r">0.04 m</td><td>剩余可通过宽度</td><td>配置</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note" style="margin-top:10px">几何基准是<b>厂家 URDF</b>，不是卷尺实测（<code>geometry_basis: "factory model, not a physical tape measurement"</code>）。所以 99.86 mm 这个数只对「出厂未改装」成立。</p>
+
+  <h2><span class="idx">4.3</span>感知与链路</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>指标</th><th>实测值</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td>检测帧率</td><td class="num-r">13.31 / 13.67 FPS</td><td>待机快照 / 静止 30 min 中位数</td></tr>
+      <tr><td>控制确认延迟 P95</td><td class="num-r">201.4 ms</td><td>控制确认窗口</td></tr>
+      <tr><td>控制延迟 P95（峰值）</td><td class="num-r">230.6 ms</td><td>静止 30 min 最差窗口</td></tr>
+      <tr><td>看门狗最慢</td><td class="num-r">333.38 ms</td><td>独立话题 10 次</td></tr>
+      <tr><td>雷达频率 / 每帧束数</td><td class="num-r">≈9.9 Hz / 540</td><td>2026-11-16 采样</td></tr>
+      <tr><td>雷达角度步长</td><td class="num-r">0.667°</td><td>540 束全周</td></tr>
+      <tr><td>点云帧</td><td class="num-r">525 × 1</td><td>同次采样最后一帧</td></tr>
+      <tr><td>HTTP 错误</td><td class="num-r">0 / 3598</td><td>静止 30 min</td></tr>
+      <tr><td>实车低速短测</td><td class="num-r">97 采样 / 94 次用雷达</td><td>10 s，净距 2.54 → 1.94 m，最高 0.07 m/s</td></tr>
+      <tr><td>自动化测试</td><td class="num-r">28 项通过</td><td>2.0.1 离线套件</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span class="idx">4.4</span>模型与参数</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>项</th><th>值</th></tr></thead>
+    <tbody>
+      <tr><td>检测模型</td><td><code>follow-yolo11n.onnx</code>，YOLO11n，320×320，COCO person</td></tr>
+      <tr><td>检测阈值</td><td>min_conf 0.10 · new_track 0.35 · NMS IoU 0.70</td></tr>
+      <tr><td>跟踪</td><td>ByteTrack 式高低分两阶段；track_high 0.25 / low 0.10 / buffer 30 / match 0.8</td></tr>
+      <tr><td>Re-ID</td><td>OSNet-x0.25，Market1501，256×128 → 512 维；相似度 ≥0.82，间隔 ≥0.08</td></tr>
+      <tr><td>Re-ID 吞吐</td><td>有界队列，每秒 ≤2 批，每批 ≤2 人</td></tr>
+      <tr><td>丢主重认</td><td>0.50 s 后重新关联</td></tr>
+      <tr><td>运行时依赖</td><td>Python 3.12 · Flask 2.2.2 · ONNX Runtime 1.23.2 · NumPy 1.24.2 · SciPy 1.10.1 · Pillow 9.4.0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ 05 STACK -->
+<section class="page" id="page-stack">
+  <p class="lead">六层栈，从下往上。越往下越「稳」，越往上越「脆」——这也是后面代码诊断里的主要攻击面。</p>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>层</th><th>选型</th><th>作用</th><th>成熟度判断</th></tr></thead>
+    <tbody>
+      <tr><td>机械</td><td>R550 铝车架 + 4× 麦轮 + 减速电机 + 增量编码器</td><td>全向底盘</td><td>成熟（教学级）</td></tr>
+      <tr><td>驱动控制</td><td>WheelBoard C30D（STM32F407VET6）</td><td>PWM 驱动、编码器闭环、电压采集、串口协议</td><td>成熟（闭源固件）</td></tr>
+      <tr><td>计算</td><td>Raspberry Pi 5 4 GB / Debian 12 aarch64</td><td>全部高层计算</td><td>够用，CPU 推理是瓶颈</td></tr>
+      <tr><td>传感器</td><td>Orbbec Astra S（结构光 320×240@30）+ 镭神 N10Plus（单线 TOF 9.9 Hz）</td><td>视觉 + 防撞</td><td><b>相机已停产</b>；雷达勤快但只有一圈</td></tr>
+      <tr><td>中间件</td><td>ROS2 Humble in Docker（<code>ros2:wheeltec_V1.1</code> / Ubuntu 22.04.4）</td><td>话题、TF、驱动</td><td>标准，但被 HTTP 桥「架空」</td></tr>
+      <tr><td>应用</td><td>Python 3.12 + Flask 2.2.2 + ONNX Runtime 1.23.2</td><td>检测、跟踪、Re-ID、规划、HMI</td><td>自研单体，耦合重</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2><span class="idx">5.1</span>用到的技术清单</h2>
+  <div class="grid2">
+    <div class="mini"><h4>计算机视觉</h4><ul>
+      <li>YOLO11n 单阶段目标检测（ONNX，CPU 执行）</li>
+      <li>ByteTrack 式两阶段关联（高分先匹配、低分补匹配）</li>
+      <li>OSNet 行人重识别（512 维嵌入 + 余弦相似度 + margin 判据）</li>
+      <li>RGB-D 深度反投影，把像素框换算成米</li>
+    </ul></div>
+    <div class="mini"><h4>机器人</h4><ul>
+      <li>ROS2 Humble：话题 / TF / 串口驱动</li>
+      <li><code>lslidar_driver</code>、<code>turn_on_wheeltec_robot</code>、<code>astra_camera</code></li>
+      <li>单线激光的扇形通道占用判定</li>
+      <li>P 控制 + 加速度斜坡 + 滞回状态机</li>
+    </ul></div>
+    <div class="mini"><h4>系统与运维</h4><ul>
+      <li>Docker 容器化 ROS 环境</li>
+      <li>udev 按序列号生成稳定设备名</li>
+      <li>systemd user unit 开机自启</li>
+      <li>SSH 隧道 + Windows 计划任务远程运维</li>
+    </ul></div>
+    <div class="mini"><h4>Web 与发布</h4><ul>
+      <li>Flask 同步 HTTP，三端口分工（18767/18768/18769）</li>
+      <li>MJPEG 视频流 + JSON 状态轮询</li>
+      <li>tar.gz 发布包 + SHA-256 归档校验</li>
+      <li>GitHub Actions 双系统 × 双 Python 矩阵测试</li>
+    </ul></div>
+  </div>
+
+  <h2><span class="idx">5.2</span>哪里还能更省</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>可优化点</th><th>现状</th><th>可能收益</th></tr></thead>
+    <tbody>
+      <tr><td>推理后端</td><td>ONNX Runtime CPU</td><td>Pi 5 无 NPU；换 INT8 量化 + XNNPACK，或在 Pi 5 上加 Hailo-8L AI Kit 可提数倍</td></tr>
+      <tr><td>相机</td><td>320×240 结构光</td><td>换 RGB 全局快门 + 更大分辨率，提升远距离人物像素数</td></tr>
+      <tr><td>雷达</td><td>单线单高度</td><td>矮障碍漏检；补一个下视 TOF 或超声</td></tr>
+      <tr><td>传输</td><td>Flask HTTP 轮询</td><td>改原生 ROS2 节点，去掉一次序列化与一次网络往返</td></tr>
+      <tr><td>计算放置</td><td>Pi 5 单板全包</td><td>感知下放 / 规划上移的分层，或双板冗余</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ 06 BOM -->
+<section class="page" id="page-bom">
+  <p class="lead">价格分三档置信度：<b>官方价</b>（厂商页面）、<b>渠道价</b>（电商在售价，会波动）、<b>未标价</b>（需询价）。没有把握的一律标「未公开」，不编数字。</p>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>部件</th><th>型号</th><th>价格</th><th>置信度</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>整车</td><td>Wheeltec R550（mini_mec）</td>
+        <td class="num-r">约 ¥1,149</td><td>渠道价</td>
+        <td>京东在售整机套餐，含计算板；配置差异大</td>
+      </tr>
+      <tr>
+        <td>主控板</td><td>WheelBoard C30D（STM32F407VET6）</td>
+        <td class="num-r">约 ¥340</td><td>渠道价</td>
+        <td>单板零售；整车已含</td>
+      </tr>
+      <tr>
+        <td>麦轮</td><td>抱紧式联轴器麦轮</td>
+        <td class="num-r">约 ¥207 / 套（4 只）</td><td>渠道价</td>
+        <td>淘宝在售</td>
+      </tr>
+      <tr>
+        <td>计算板</td><td>Raspberry Pi 5 Model B 4 GB</td>
+        <td class="num-r">$70</td><td><b>官方价</b></td>
+        <td>2025-12-01 起由 $60 上调（LPDDR4 涨价）；国内裸板另计</td>
+      </tr>
+      <tr>
+        <td>激光雷达</td><td>镭神 N10 / N10Plus</td>
+        <td class="num-r">约 ¥479</td><td>渠道价</td>
+        <td>N10 在售；N10P 需定制询价</td>
+      </tr>
+      <tr>
+        <td>深度相机</td><td>Orbbec Astra S</td>
+        <td class="num-r">—</td><td><b>未公开（已停产）</b></td>
+        <td>奥比中光资料页标注停产；替代：Astra 2 / Gemini 2 L</td>
+      </tr>
+      <tr>
+        <td>USB-UART 桥</td><td>CP2102 / CH343</td>
+        <td class="num-r">¥10 – 30</td><td>渠道价</td>
+        <td>通常已集成在底盘/雷达线缆内</td>
+      </tr>
+      <tr>
+        <td>电池</td><td>3S 锂电（10.5–12.6 V）</td>
+        <td class="num-r">约 ¥100 – 250</td><td>渠道价</td>
+        <td>容量决定价格；手册未给型号</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h2><span class="idx">6.1</span>BOM 估算</h2>
+  <div class="grid2">
+    <div class="mini"><h4>套件口径</h4><p>整车 ¥1,149 是<b>整机套餐</b>价，已经把底盘、主控、麦轮、计算板、电池、线束打包。单独按散件复算会明显更贵——因为散件要另买线缆、支架、电源。</p></div>
+    <div class="mini"><h4>若按散件重造（人民币，粗估）</h4><ul>
+      <li>底盘 + 麦轮 + 电机：¥600 – 800</li>
+      <li>C30D 主控板：¥340</li>
+      <li>Pi 5 4 GB：¥600 – 750</li>
+      <li>N10 雷达：¥479</li>
+      <li>深度相机：¥400 – 900（二手/库存）</li>
+      <li>电池 + 线束 + 结构件：¥300 – 500</li>
+      <li><b>合计约 ¥2,700 – 3,800</b></li>
+    </ul></div>
+  </div>
+  <p class="note" style="margin-top:12px">结论：<b>买套件比散件便宜约四成</b>，主要省在结构件、线束和整机调试成本上。这也是教学机型能压到千元级的原因。</p>
+
+  <h2><span class="idx">6.2</span>停产带来的风险</h2>
+  <p class="lead" style="margin-top:6px">Astra S 已停产意味着：一旦这台坏掉，<b>无法买到同型号原厂新件</b>。换 Astra 2 / Gemini 2 后，驱动、分辨率、内参、帧率都会变，<code>calibration.json</code> 里的 <code>camera_to_front_m</code> 和相机内参都要重标——这不是换一个零件，是换一条感知链路。</p>
+</section>
+
+<!-- ============================================================ 07 CODE -->
+<section class="page" id="page-code">
+  <p class="lead">每条都带 <code>文件:行号</code>，可以直接在仓库里跳过去核对。按「会不会伤人 / 会不会静默失效 / 只是不优雅」分三级。</p>
+
+  <h2><span class="idx">7.1</span>安全级（P0）</h2>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p0">P0</span><h4>关机令牌在 /status 里明文广播</h4><span class="meta">src/camera_viewer.py</span></div>
+    <p>启动时生成的会话令牌，被当作 <code>start_status</code> 的一部分随 <code>GET /status</code> 一起返回。而同一个令牌正是 <code>POST /shutdown</code> 的校验凭据——<b>谁能读状态，谁就能关机</b>，凭据与公告合一。</p>
+    <div class="ev">:69   START_SESSION = secrets.token_hex(8)
+:546  events=list(session.events)[-10:], start_status=[START_SESSION, now, start_generation])
+:448  ... data.get('boot_id') != START_SESSION:
+:476  subprocess.run(['sudo', '-n', 'systemctl', 'poweroff'], check=True, timeout=3)</div>
+    <div class="kv"><div>工业做法</div><div>密钥/令牌永不出现在任何可读端点；关机是带外操作或双人确认，且需审计留痕。</div>
+    <div>迁移动作</div><div>把令牌从 <code>/status</code> 移除；<code>/shutdown</code> 改为独立鉴权 + 二次确认 + 审计日志。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p0">P0</span><h4>没有硬件急停，只有软件看门狗</h4><span class="meta">follow_actuator · STOP_BURST_S</span></div>
+    <p>全部「停」的能力都依赖软件：<code>/cmd_vel</code> 归零、280 ms 看门狗、<code>STOP_BURST_S=1.5</code> 的零速突发。一旦进程死锁、Docker 卡住或 USB 掉线，没有任何独立通路能切断电机动力。</p>
+    <div class="ev">src/follow_actuator.py:25  STOP_BURST_S = 1.5
+src/follow_actuator.py:38  self.create_timer(0.05, self.tick)</div>
+    <div class="kv"><div>工业做法</div><div>独立双通道 E-stop，直接断动力或短接刹车；符合 ISO 13849 PL c / Cat 2，安全功能与控制软件物理隔离。</div>
+    <div>迁移动作</div><div>加一个物理急停按钮接底盘使能；安全回路不经过 Pi 与容器。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p0">P0</span><h4>制动减速度是假设值，却用于安全距离计算</h4><span class="meta">config/follow_settings.json</span></div>
+    <p><code>braking_verified=false</code> 而 <code>brake_deceleration_mps2=0.30</code> 已被用于「按速度与制动余量停车」。等于用一个从未实测的数决定停不停得下来。<code>calibration.json</code> 里 <code>stop_tests_completed: 0</code>、<code>brake_tests_completed: 0</code>。</p>
+    <div class="ev">"braking_verified": false,
+"brake_deceleration_mps2": 0.30,
+"stop_tests_completed": 0,
+"brake_tests_completed": 0</div>
+    <div class="kv"><div>工业做法</div><div>制动性能必须实测标定（不同载重/地面），并留安全系数；未标定时应把速度压到保守值并显式告警。</div>
+    <div>迁移动作</div><div>做斜坡制动试验，标定实际减速度；标定前锁定更低速度上限。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p0">P0</span><h4>控制周期里同步做 HTTP，抖动直冲看门狗预算</h4><span class="meta">src/camera_viewer.py:142-161</span></div>
+    <p>控制循环在 <code>motion_lock</code> 内调用 <code>publish_actuator_command</code>，而它是一次跨进程 HTTP（超时 0.22 s）。实测最慢 333 ms 已<b>超过</b> 280 ms 看门狗预算，余量只剩约 0 ms。</p>
+    <div class="ev">:65   CONTROL_TIMEOUT = 0.22
+:142  with motion_lock:
+:155      publish_actuator_command(active, ...)
+实测：看门狗 10 次最慢 333.38 ms  vs  预算 280 ms</div>
+    <div class="kv"><div>工业做法</div><div>控制回路内不做网络/磁盘 I/O；实时线程与 IO 线程通过无锁队列解耦，周期抖动有硬上界。</div>
+    <div>迁移动作</div><div>改成进程内发布或异步队列；把 HTTP 移出控制路径。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p0">P0</span><h4>/status 是「上帝端点」，无分级</h4><span class="meta">camera_viewer.py 路由</span></div>
+    <p>状态、事件、令牌、性能数据全塞在一个 GET 里，无鉴权分层。HMI、监控、运维共用同一出口，任何一方被攻破即等于拿到控制面。</p>
+    <div class="kv"><div>工业做法</div><div>控制面与观测面分离；控制接口要求强鉴权与审计，观测接口只读且脱敏。</div>
+    <div>迁移动作</div><div>拆分 <code>/status</code> 与 <code>/control</code>，前者脱敏只读。</div></div>
+  </div>
+
+  <h2><span class="idx">7.2</span>架构级（P1）</h2>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>用 Flask HTTP 桥架空了 ROS2</h4><span class="meta">src/follow_actuator.py · src/follow_sensors.py</span></div>
+    <p>系统名义上跑 ROS2，实际上用 18767/18768 两个 Flask 端口把话题转成 JSON 轮询。结果是丢掉了 ROS2 最值钱的东西：QoS、transient-local、<code>message_filters</code> 时间同步、lifecycle、composition。<code>/cmd_vel</code> 还是裸数字 QoS（<code>10</code>）。</p>
+    <div class="ev">src/follow_actuator.py:32  self.publisher = self.create_publisher(Twist, "/cmd_vel", 10)
+src/follow_actuator.py:44  self.create_subscription(Float32, "/PowerVoltage", ...)</div>
+    <div class="kv"><div>工业做法</div><div>节点间直接走 DDS，显式声明 QoS（传感器用 SensorDataQoS，控制用可靠有序），时间同步用 <code>message_filters</code>。</div>
+    <div>迁移动作</div><div>删掉 HTTP 桥，改成原生节点 / 组件；QoS 显式化。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>两套规划器并存，其中一套是死代码</h4><span class="meta">src/follow_control.py:292 / :320</span></div>
+    <p><code>plan_visual_follow</code> 与 <code>plan_follow</code> <b>零调用者</b>。现役规划在 <code>follow_motion.py</code> 的 <code>FollowMotion.plan()</code>，由 <code>follow_session.py:126</code> 调用。两套逻辑并存 = 改一处参数另一处不生效，后来人极易改错文件。</p>
+    <div class="ev">src/follow_session.py:8    from follow_motion import FollowMotion
+src/follow_session.py:126  plan = self.motion.plan(obs, sensors, frame_at, now, ...)
+src/follow_control.py:292  def plan_visual_follow(...)   # 无调用者
+src/follow_control.py:320  def plan_follow(...)          # 无调用者</div>
+    <div class="kv"><div>工业做法</div><div>单一职责、单一实现；死代码即删，或用测试锁死唯一入口。</div>
+    <div>迁移动作</div><div>删除两个 <code>plan_*</code>，把现役规划抽成独立可测模块。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>持锁跨越规划计算 + 网络往返</h4><span class="meta">camera_viewer.py:142-161</span></div>
+    <p><code>motion_lock</code> 与 <code>lock</code> 嵌套，且 <code>session.sent()</code> 在另一分支再次取 <code>lock</code>。锁范围覆盖了规划与 IO，Web 端 <code>/status</code> 会被控制循环拖慢，反过来又加剧 HMI 卡顿。</p>
+    <div class="kv"><div>工业做法</div><div>临界区只保护共享状态读写；计算与 IO 在锁外完成。</div>
+    <div>迁移动作</div><div>缩小临界区，快照式取值后在锁外计算。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>udev 命名漂移：laser vs lidar</h4><span class="meta">lslidar_driver/params/lsx10.yaml</span></div>
+    <p>官方规则生成 <code>/dev/wheeltec_laser</code>，驱动参数也写 <code>/dev/wheeltec_laser</code>；本项目车端记录却是 <code>/dev/wheeltec_lidar</code>。名字不一致，换卡/重装即断链。</p>
+    <div class="ev">lslidar_driver/params/lsx10.yaml:
+  serial_port_: /dev/wheeltec_laser
+  lidar_name: N10        # 可选 N10_P
+官方 udev: SYMLINK+="wheeltec_laser"</div>
+    <div class="kv"><div>工业做法</div><div>单一命名真相源；部署脚本里做「符号链接存在性」断言。</div>
+    <div>迁移动作</div><div>全仓统一为 <code>wheeltec_laser</code>，部署时校验。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>启动脚本不检查失败，开机「假成功」</h4><span class="meta">ops/robot-follow-boot.sh</span></div>
+    <p><code>set -u</code> 但没有 <code>-e</code>；<code>docker exec -d</code> 不检查退出码；健康检查 <code>timeout 25 ... || true</code>。桥可能根本没起来，但开机流程照样走完，界面看起来正常。</p>
+    <div class="ev">set -u                      # 无 -e
+docker exec -d ... ${container}   # 不检查返回值
+timeout 25 python3 "$assets/boot_health.py" || true</div>
+    <div class="kv"><div>工业做法</div><div>关键步骤失败即中止并显式报错；启动后做端到端就绪断言。</div>
+    <div>迁移动作</div><div>加 <code>set -euo pipefail</code>，校验每个 exec 的退出码。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>健康阈值与控制阈值不一致</h4><span class="meta">ops/boot_health.py</span></div>
+    <p>监督层认为 1 s / 2 s 才算不健康，控制层 <code>SCAN_TIMEOUT=0.4</code> / <code>FRAME_TIMEOUT=0.5</code> 早已降级。两套标准打架，导致「系统健康但功能已降级」的盲区。</p>
+    <div class="kv"><div>工业做法</div><div>健康判定阈值从同一配置派生，单一定义。</div>
+    <div>迁移动作</div><div>把超时阈值收敛到一份配置，boot_health 复用之。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>monotonic 时间跨重启比较，退避逻辑失效</h4><span class="meta">ops/boot_health.py</span></div>
+    <p><code>time.monotonic()</code> 每次开机归零，却被持久化后与上次写入值比较。结果退避上限、故障计数在重启后全部失真。</p>
+    <div class="kv"><div>工业做法</div><div>跨重启用 wall-clock 或持久化计数器 + boot_id 命名空间。</div>
+    <div>迁移动作</div><div>加 <code>boot_id</code> 校验，不同 boot 则重置计数。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p1">P1</span><h4>异常被吞成「等待数据」</h4><span class="meta">camera_viewer.py:148</span></div>
+    <p>规划里任何异常都被 <code>except Exception</code> 兜住并转成 <code>fault_paused</code>，真相被掩盖；跟着出现的是反复重试而不是暴露根因。</p>
+    <div class="ev">:148  except Exception:
+:149      logging.getLogger(__name__).exception('Control update failed')
+:150      session._wait('fault_paused', '控制计算异常，等待有效传感器数据', now)</div>
+    <div class="kv"><div>工业做法</div><div>区分「可恢复降级」与「致命故障」；致命故障进安全态并要求人工介入，而非静默重试。</div>
+    <div>迁移动作</div><div>按异常类型分流，致命类进维护态并告警。</div></div>
+  </div>
+
+  <h2><span class="idx">7.3</span>工程级（P2）</h2>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>CI 只跑测试，没有 lint / 类型 / ARM64</h4><span class="meta">.github/workflows/ci.yml</span></div>
+    <p>矩阵是 ubuntu/windows × py3.11/3.12，只做 <code>pytest</code> + <code>compileall</code> + <code>bash -n</code>。没有 ruff/mypy/覆盖率，没有 <code>colcon</code> 构建 <code>ros2_ws</code>，没有 aarch64 目标——而车端恰恰是 aarch64。</p>
+    <div class="kv"><div>工业做法</div><div>静态检查门禁 + 覆盖率阈值 + 与目标架构一致的构建/冒烟。</div>
+    <div>迁移动作</div><div>加 ruff/mypy/coverage；加 arm64 runner 或 qemu 构建。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>依赖锁在旧版本，无 SBOM</h4><span class="meta">requirements/</span></div>
+    <p>ONNX Runtime 1.23.2 / NumPy 1.24.2 / SciPy 1.10.1 / Pillow 9.4.0。Pillow 9.4 属于较早版本线。仓库无 SBOM、无依赖签名校验、无 CVE 门禁。</p>
+    <div class="kv"><div>工业做法</div><div>CycloneDX SBOM + 依赖哈希锁定 + 定期漏洞扫描。</div>
+    <div>迁移动作</div><div>生成 SBOM，接 Dependabot/OSV 扫描。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>模型与发布包无完整性校验</h4><span class="meta">releases/ · ops/deploy-on-robot.sh</span></div>
+    <p>归档有 SHA-256（<code>0554fe93…</code>），但部署脚本未见校验；<code>.onnx</code> 模型无签名，可被替换。</p>
+    <div class="kv"><div>工业做法</div><div>发布包与模型都签名（cosign / minisign），部署前校验。</div>
+    <div>迁移动作</div><div>部署脚本加 <code>sha256sum -c</code> 与签名校验。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>没有 OTA 与回滚</h4><span class="meta">deploy-on-robot.sh</span></div>
+    <p>手工推送，备份目录手工创建（<code>20261116-165035</code>）。无 A/B 分区、无健康门控回滚。</p>
+    <div class="kv"><div>工业做法</div><div>A/B 分区 + 健康检查失败自动回滚。</div>
+    <div>迁移动作</div><div>引入 rauc / swupdate 或等价方案。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>日志写容器 /tmp，重启即失</h4><span class="meta">ops/robot-follow-boot.sh</span></div>
+    <p>诊断日志落在容器 <code>/tmp/wheeltec-boot-*.log</code>，容器重建即丢；无结构化日志、无指标导出、无追踪。</p>
+    <div class="kv"><div>工业做法</div><div>结构化日志外送 + 指标（Prometheus）+ 分布式追踪。</div>
+    <div>迁移动作</div><div>日志落持久卷，加最小指标端点。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>时钟未统一，多传感器「同一时刻」是伪命题</h4><span class="meta">全栈</span></div>
+    <p>相机、雷达、控制各自 <code>time.monotonic()</code>，无 PTP/chrony 精度说明，也无 <code>message_filters.ApproximateTime</code> 对齐。融合前提（同一时刻）实际未闭合。</p>
+    <div class="kv"><div>工业做法</div><div>统一时基 + 硬件触发 + 时间同步策略。</div>
+    <div>迁移动作</div><div>启用 chrony/PTP，融合处用 <code>message_filters</code>。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>HMI 与控制同进程</h4><span class="meta">camera_viewer.py</span></div>
+    <p>Flask Web 控制台与控制回路同一个 Python 进程。网页卡顿、被 CSRF、或渲染阻塞都会影响控制。<code>VIEW_ONLY</code> 还是一个模块级常量，没有运行时权限门。</p>
+    <div class="ev">:155  active = bool(session.armed and (forward or turn) and not VIEW_ONLY)</div>
+    <div class="kv"><div>工业做法</div><div>HMI 与控制回路进程隔离；权限运行时可控且可审计。</div>
+    <div>迁移动作</div><div>拆出独立 HMI 进程，权限改为运行时配置。</div></div>
+  </div>
+
+  <div class="defect">
+    <div class="dtop"><span class="sev p2">P2</span><h4>状态全在内存，崩溃即丢会话</h4><span class="meta">follow_session · Restart=on-failure</span></div>
+    <p>跟随会话、跟踪器、相机状态全在进程内存，无 WAL、无快照。systemd <code>Restart=on-failure</code> 会静默重启，看起来「自己好了」，其实会话已重置。</p>
+    <div class="kv"><div>工业做法</div><div>关键状态可恢复或显式声明「重启即安全态」。</div>
+    <div>迁移动作</div><div>重启后强制进安全态并告警，而非静默续跑。</div></div>
+  </div>
+
+  <h2><span class="idx">7.4</span>一句话总结</h2>
+  <p class="lead">这套代码的<b>功能完整度相当高</b>——检测、跟踪、Re-ID、几何、限速、电压保护、HMI、发布都有，28 项测试也过了。它离工业的距离不在「会不会做」，而在<b>「失败时会不会静默」</b>：安全靠软件、凭据会外泄、异常会吞、启动会假装成功、时间不对齐。这些正是工业认证最先卡住的地方。</p>
+</section>
+
+<!-- ============================================================ 08 ROADMAP -->
+<section class="page" id="page-roadmap">
+  <p class="lead">从「课堂演示能跑」到「可以交付给第三方在有人环境里运行」，中间要补的不是算法，是<b>安全闭合、可观测、可回滚、可验证</b>。按依赖顺序分 6 个阶段，前一阶段不验收不进入下一阶段。</p>
+
+  <div class="phase">
+    <div class="ptag">P0<b>安全闭合</b><small>1 – 2 周</small></div>
+    <ul>
+      <li><b>硬件急停</b>：独立双通道 E-stop 直接断动力，不经过 Pi 与容器（ISO 13849 PL c / Cat 2）。</li>
+      <li><b>制动实测标定</b>：斜坡试验测实际减速度，把 <code>braking_verified</code> 改为 true；未标定前压低速度上限。</li>
+      <li><b>移除令牌泄漏</b>：<code>/status</code> 不再返回 <code>START_SESSION</code>；关机改独立鉴权 + 二次确认 + 审计。</li>
+      <li><b>控制路径去 IO</b>：把 HTTP 移出控制回路，抖动硬上界压回 280 ms 预算内。</li>
+      <li>验收：急停响应测量、制动距离表、<code>/status</code> 无敏感字段、看门狗抖动 &lt; 100 ms。</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="ptag">P1<b>架构归一</b><small>2 – 4 周</small></div>
+    <ul>
+      <li><b>拆 HTTP 桥</b>：传感器/执行器改原生 ROS2 节点，显式 QoS，<code>message_filters</code> 时间同步。</li>
+      <li><b>删死代码</b>：移除 <code>follow_control.py:292/320</code> 两个零调用规划器。</li>
+      <li><b>生命周期</b>：核心节点改 lifecycle node，状态机显式化。</li>
+      <li><b>进程隔离</b>：HMI 独立进程，权限运行时可控。</li>
+      <li>验收：节点图可导出、QoS 有文档、无死代码、HMI 崩溃不影响控制。</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="ptag">P2<b>可观测与测试</b><small>2 – 4 周</small></div>
+    <ul>
+      <li><b>结构化日志 + 指标</b>：日志落持久卷，暴露最小指标集（FPS、时延、看门狗、电压）。</li>
+      <li><b>测试矩阵</b>：把手册待做项变成自动化——0.15/0.20/0.25 分档、多人交叉、10 min 连续、30 cm 停车 20 次 ≥19、遮挡恢复 20 次 ≥19（1 s 内）。</li>
+      <li><b>CI 加码</b>：ruff / mypy / coverage / colcon / arm64 冒烟。</li>
+      <li>验收：测试报告可复现，CI 红灯即阻断。</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="ptag">P3<b>时间与几何</b><small>1 – 2 周</small></div>
+    <ul>
+      <li><b>统一时基</b>：chrony / PTP，多传感器时间同步策略落地。</li>
+      <li><b>几何工件化</b>：外参从硬编码改为标定工件 + 校验脚本；udev 统一 <code>wheeltec_laser</code>。</li>
+      <li>验收：时间同步误差有量化指标；换件后校准流程可执行。</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="ptag">P4<b>发布与安全</b><small>2 – 4 周</small></div>
+    <ul>
+      <li><b>供应链</b>：CycloneDX SBOM + cosign 签名 + 依赖 CVE 门禁；模型签名。</li>
+      <li><b>OTA</b>：A/B 分区 + 健康门控自动回滚。</li>
+      <li><b>通信安全</b>：DDS Security / mTLS。</li>
+      <li>验收：断电回滚演练通过；发布包与模型校验可离线复现。</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="ptag">P5<b>产品化</b><small>持续</small></div>
+    <ul>
+      <li>参数 schema + 版本迁移；远程诊断通道与审计。</li>
+      <li>FMEA 文档；功能安全计划；供应链双源（尤其停产的相机）。</li>
+      <li>验收：第三方按文档可部署、可诊断、可回滚。</li>
+    </ul>
+  </div>
+
+  <hr class="sep">
+  <h2><span class="idx">8.1</span>投入产出对照</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>阶段</th><th>解决的问题</th><th>主要产出</th><th>风险降低</th></tr></thead>
+    <tbody>
+      <tr><td>P0</td><td>会不会伤人</td><td>急停、制动标定、令牌收敛</td><td>★★★★★</td></tr>
+      <tr><td>P1</td><td>会不会架构债滚雪球</td><td>原生 ROS2、单实现、进程隔离</td><td>★★★★</td></tr>
+      <tr><td>P2</td><td>坏了知不知道</td><td>可观测 + 自动化测试矩阵</td><td>★★★★</td></tr>
+      <tr><td>P3</td><td>换了件准不准</td><td>时基 + 标定工件</td><td>★★★</td></tr>
+      <tr><td>P4</td><td>供应链与升级安全</td><td>SBOM、签名、A/B OTA</td><td>★★★</td></tr>
+      <tr><td>P5</td><td>能不能交付出去</td><td>文档、FMEA、双源</td><td>★★</td></tr>
+    </tbody>
+  </table></div>
+
+  <hr class="sep">
+  <h2><span class="idx">8.2</span>结语</h2>
+  <p class="lead">这台车的硬件组合（麦轮 + 单线 TOF + 结构光 + Pi 5 + STM32 驱控一体）是<b>教学场景下的合理选择</b>：便宜、能跑、能讲清楚每个环节。真正要跨过的门槛，是把「演示能跑」升级成「失败可证」——从软件看门狗升级到物理急停，从 HTTP 桥升级到原生 ROS2，从手工部署升级到签名 + 回滚。P0 到 P1 的投入最小、收益最大，是性价比最高的起点。</p>
+</section>
+
+</main>
+
+<footer>
+  <p>数据来源：车端 PDF 手册 2.0.1（2026-11-16 推送 / 2026-11-19 整理）、<code>config/calibration.json</code>、<code>config/follow_settings.json</code>、仓库源码与 <code>docs/technical-assessment-2026-11.md</code>。价格来自厂商页面与电商在售价，随市场波动。</p>
+  <p style="margin-top:8px">本页为单文件离线交付，无外部依赖，可直接双击打开。</p>
+</footer>
+
+<script>
+"use strict";
+
+const PARTS = {
+  chassis: {
+    badge:"01", role:"机械本体", name:"底盘总成", sub:"Wheeltec R550 · 原厂 ROS 模型 mini_mec",
+    rows:[
+      ["型号","Wheeltec R550 四轮麦轮底盘，原厂 URDF 模型名 <code>mini_mec</code>"],
+      ["结构","铝合金双层车架 + 4× 麦克纳姆轮（45°/135° 辊子）+ 4× 直流减速电机 + 4× 增量编码器"],
+      ["运动学","四轮麦轮，可全向平移；上位机按麦轮/差速解算下发 <code>/cmd_vel</code>"],
+      ["车身半宽","<code>0.116 m</code>（通道判定基准）"],
+      ["通道余量","单侧 <code>0.04 m</code>"],
+      ["车头前端","x = <code>0.13149 m</code>"],
+      ["供电","3S 锂电，经底盘稳压后给 Pi 5 与传感器"]
+    ],
+    duty:["承载全部外设与计算单元","把 <code>/cmd_vel</code> 变成四轮转速","通过编码器回传里程计"],
+    code:[["calibration.json","车身半宽 / 车头坐标"],["src/lidar_geometry.py","通道占用判定的几何基准"]],
+    risk:["麦轮传动效率约 70%，打滑会造成里程计漂移","无物理悬挂，急停时俯仰抖动影响深度相机","geometry_basis 为 URDF，非卷尺实测，改装后失效"],
+    price:["¥1,149 左右","京东整机套餐，渠道价"]
+  },
+  wheel: {
+    badge:"02", role:"机械本体", name:"麦克纳姆轮", sub:"抱紧式联轴器麦轮 × 4",
+    rows:[
+      ["数量","4 只 / 套"],
+      ["辊子角","45° 与 135° 交替布置，实现全向移动"],
+      ["连接","抱紧式联轴器直连减速电机轴"],
+      ["作用","把单轴旋转合成前后 / 左右 / 自转三自由度"]
+    ],
+    duty:["全向平移：横移、斜移、原地自转","配合四轮转速差实现解算"],
+    code:[["—","运动学在底盘固件内，上位机不直接控制"]],
+    risk:["辊子磨损后横向效率下降更明显","地面不平或有灰时打滑，需定期清洁"],
+    price:["约 ¥207 / 套（4 只）","渠道价"]
+  },
+  c30d: {
+    badge:"03", role:"驱动控制", name:"WheelBoard C30D 主控板", sub:"STM32F407VET6 · 驱控一体",
+    rows:[
+      ["MCU","STM32F407VET6（Cortex-M4F，168 MHz，512 KB Flash / 192 KB SRAM）"],
+      ["角色","电机 PWM 驱动 + 编码器采集 + IMU + 电源监测 + 串口协议"],
+      ["串口","USB→UART 桥 → <code>/dev/wheeltec_controller</code>，<b>115200 8N1</b>"],
+      ["ROS 接入","<code>turn_on_wheeltec_robot</code> · <code>base_serial.launch.py</code>"],
+      ["坐标系","<code>base_footprint</code> → <code>odom_combined</code>"],
+      ["上报","<code>/odom</code>（Odometry）、<code>/PowerVoltage</code>（Float32）"],
+      ["接收","<code>/cmd_vel</code>（Twist）"]
+    ],
+    duty:["接收速度指令并驱动四轮","闭环控制电机转速","采集电池电压并上报","回传里程计"],
+    code:[["src/follow_actuator.py:32","发布 /cmd_vel"],["src/follow_actuator.py:44","订阅 /PowerVoltage"],["src/battery_state.py","电压区间与锁停逻辑"]],
+    risk:["闭环只在板内，上位机看不到电机电流/温度","串口协议非 ROS2 标准，无 QoS、无诊断","固件闭源，改行为只能换板或改协议"],
+    price:["约 ¥340","渠道价（整车已含）"]
+  },
+  pi5: {
+    badge:"04", role:"计算单元", name:"树莓派 5", sub:"Model B Rev 1.1 · 4 GB",
+    rows:[
+      ["SoC","BCM2712，4× Cortex-A76 @ 2.4 GHz"],
+      ["内存","可见 4,142,224 KiB（约 3.95 GiB）"],
+      ["系统","Debian 12 bookworm，aarch64"],
+      ["存储","根分区 <code>/dev/mmcblk0p2</code> ext4 ≈ 59.5 GiB"],
+      ["供电","5V / 5A USB-C PD"],
+      ["角色","ROS2 容器宿主 + Flask 控制台 + YOLO/ReID 推理"]
+    ],
+    duty:["承载 Docker 内的 ROS2 Humble","跑 ONNX 推理（检测 + Re-ID）","提供 Web 控制台","与底盘/雷达/相机通信"],
+    code:[["ops/wheeltec-follow-edge.service","systemd user unit 拉起控制台"],["src/camera_viewer.py","Web 控制台主程序"]],
+    risk:["无 ECC 内存","SD 卡寿命有限，长期写入需换 SSD","单板即单点故障","CPU 推理是主要瓶颈"],
+    price:["$70 官方价","2025-12-01 由 $60 上调"]
+  },
+  camera: {
+    badge:"05", role:"感知", name:"Orbbec Astra S", sub:"结构光深度相机 · 2bc5:0402",
+    rows:[
+      ["型号","Orbbec Astra S（结构光 3D 相机）"],
+      ["USB ID","<code>2bc5:0402</code>"],
+      ["输出","彩色 + 深度均 320×240 @ 30 Hz"],
+      ["驱动","<code>astra_camera</code> 包（经容器桥接）"],
+      ["话题","<code>/camera/color/image_raw</code> · <code>/camera/depth/image_raw</code> · <code>/camera/color/camera_info</code>"],
+      ["几何","参考点 x = <code>0.10709 m</code>，到车头 <code>0.02440 m</code>"]
+    ],
+    duty:["提供 RGB 图给 YOLO 检测","提供深度图把像素框换算成距离","支撑 Re-ID 的外观特征"],
+    code:[["src/follow_control.py:94","fetch_frame() 取帧"],["src/edge_detector.py","检测封装"],["src/edge_reid.py","OSNet 特征"]],
+    risk:["<b>官方已停产</b>，无同型号原厂新件","结构光在强光/阳光/深色衣物下失效","320×240 分辨率低，远距离人物像素少"],
+    price:["— 未公开","已停产；替代 Astra 2 / Gemini 2 L"]
+  },
+  lidar: {
+    badge:"06", role:"感知", name:"镭神 N10Plus", sub:"单线二维 TOF 激光雷达",
+    rows:[
+      ["型号","镭神智能 N10Plus；驱动内 <code>lidar_name: N10_P</code>"],
+      ["接口","USB-UART（CP2102 serial=0001）→ <code>/dev/wheeltec_laser</code>"],
+      ["频率","实测 <code>/scan</code> ≈ 9.9 Hz"],
+      ["每帧","540 束，角度步长 ≈ 0.667°"],
+      ["量程","声明 0.15 – 50 m，坐标系 <code>laser</code>"],
+      ["话题","<code>/scan</code>（LaserScan）· <code>/x10/lslidar_point_cloud</code>（PointCloud2，实测 525×1）"]
+    ],
+    duty:["测量前方通道占用","提供车头净距（回波 − 99.86 mm）","防撞与通道清空判定"],
+    code:[["src/lidar_geometry.py","净距与通道几何"],["src/follow_motion.py","front_corridor / front_obstacle"]],
+    risk:["单线固定高度，矮障碍漏检","TOF 强光/镜面反射异常","9.9 Hz 意味着 100 ms 级更新","<b>udev 命名 laser vs lidar 不一致</b>"],
+    price:["约 ¥479","渠道价（N10；N10P 需询价）"]
+  },
+  bridge: {
+    badge:"07", role:"通信", name:"USB 转串口桥", sub:"CP2102 / CH343 / CH9102",
+    rows:[
+      ["芯片","CP2102（<code>10c4:ea60</code>）/ CH343（<code>1a86:55d4</code>）/ CH9102（Windows 侧 COM15）"],
+      ["作用","USB ↔ TTL UART 电平转换"],
+      ["区分方式","两个同型号 CP2102 靠 <code>ATTRS{serial}</code> 区分：0001=雷达，0002=底盘"],
+      ["产物","<code>/dev/wheeltec_controller</code> · <code>/dev/wheeltec_laser</code>"],
+      ["容器","需 <code>--device</code> 显式挂载"]
+    ],
+    duty:["把 USB 转成 STM32/雷达可用的 UART","用 udev 生成稳定设备名"],
+    code:[["udev 规则","wheeltec_controller / wheeltec_laser"],["ops/robot-follow-boot.sh","docker exec 桥接"]],
+    risk:["规则缺失或换线后 serial 变，符号链接断","容器未挂载节点时驱动静默失败"],
+    price:["¥10 – 30","渠道价（常已集成在线缆内）"]
+  },
+  battery: {
+    badge:"08", role:"供电", name:"3S 电池与电源", sub:"10.5 – 12.6 V",
+    rows:[
+      ["电压区间","10.5 – 12.6 V（3S 估算）"],
+      ["监测","底盘上报 <code>/PowerVoltage</code>，约 1 s 窗口中值滤波"],
+      ["限速","&lt; 10.8 V → 限速 0.10 m/s"],
+      ["锁停","&lt; 10.5 V 持续 3 s → 锁定停车"],
+      ["恢复","回到 10.8 V 保持 5 s，<b>且需人工重启</b>"],
+      ["电量估算","按电压区间映射"]
+    ],
+    duty:["给底盘动力与计算单元供电","上报电压供上位机限速/锁停"],
+    code:[["src/battery_state.py","电压→状态机"],["src/follow_actuator.py:106","每请求重压上限"]],
+    risk:["电压估算电量不准","无单体均衡监测","无温度保护","电池型号手册未给出"],
+    price:["约 ¥100 – 250","渠道价，容量决定"]
+  },
+  docker: {
+    badge:"09", role:"软件", name:"ROS2 容器与软件栈", sub:"ros2:wheeltec_V1.1 · Humble",
+    rows:[
+      ["容器","<code>codex-camera-live</code>"],
+      ["镜像","<code>ros2:wheeltec_V1.1</code>（Ubuntu 22.04.4 + ROS2 Humble）"],
+      ["端口","传感器桥 :18767 · 执行器桥 :18768 · Web :18769"],
+      ["应用","Python 3.12 + Flask 2.2.2 + ONNX Runtime 1.23.2"],
+      ["推理","YOLO11n ONNX（320×320）+ ByteTrack 式关联 + OSNet-x0.25 Re-ID"],
+      ["吞吐","检测 13.3–13.7 FPS；控制延迟 P95 201–231 ms"]
+    ],
+    duty:["提供 ROS2 运行时","桥接话题与 Web","执行检测、跟踪、Re-ID、规划"],
+    code:[["src/camera_viewer.py","控制台主程序"],["src/follow_session.py","会话状态机"],["src/follow_motion.py","现役规划器"]],
+    risk:["HTTP 桥架空 ROS2（无 QoS / 时间同步）","控制回路内做网络 IO","令牌明文广播","死代码并存"],
+    price:["—","软件，无单独成本"]
+  }
+};
+
+const ORDER = ["chassis","wheel","c30d","pi5","camera","lidar","bridge","battery","docker"];
+let current = null;
+
+const el = id => document.getElementById(id);
+
+function renderPart(id){
+  const p = PARTS[id];
+  if(!p) return;
+  current = id;
+  el("dBadge").textContent = p.badge;
+  el("dRole").textContent = p.role;
+  el("dTitle").textContent = p.name;
+  el("dSub").textContent = p.sub;
+
+  let h = "";
+  h += '<div class="d-sec" style="margin-top:2px"><h4>规格</h4><div>';
+  for(const [k,v] of p.rows){
+    h += '<div class="row"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';
+  }
+  h += '</div></div>';
+
+  h += '<div class="d-sec"><h4>它在系统里干什么</h4><ul>';
+  for(const d of p.duty) h += '<li>'+d+'</li>';
+  h += '</ul></div>';
+
+  if(p.code && p.code.length){
+    h += '<div class="d-sec"><h4>源码触点</h4><ul>';
+    for(const [f,d] of p.code) h += '<li><span class="coderef">'+f+'</span> '+d+'</li>';
+    h += '</ul></div>';
+  }
+
+  h += '<div class="d-sec"><h4>风险与注意</h4><ul>';
+  for(const r of p.risk) h += '<li>'+r+'</li>';
+  h += '</ul></div>';
+
+  const unknown = p.price[0].indexOf("未公开") >= 0 || p.price[0] === "—" || p.price[0] === "— 未公开";
+  h += '<div class="d-sec"><h4>价格</h4><span class="price'+(unknown?" unk":"")+'">'+p.price[0]+
+       ' <small>'+p.price[1]+'</small></span></div>';
+
+  el("dBody").innerHTML = h;
+
+  document.querySelectorAll(".hot").forEach(n=>{
+    n.classList.toggle("sel", n.dataset.part === id);
+  });
+
+  if(location.hash !== "#hw/"+id) history.replaceState(null,"","#hw/"+id);
+
+  if(window.matchMedia("(max-width: 980px)").matches){
+    const card = el("detailCard");
+    const top = card.getBoundingClientRect().top + window.scrollY - 70;
+    if(window.scrollY < top - 40) window.scrollTo({top, behavior:"smooth"});
+  }
+}
+
+// hotspots
+document.querySelectorAll(".hot").forEach(node=>{
+  const go = ()=> renderPart(node.dataset.part);
+  node.addEventListener("click", go);
+  node.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+});
+
+// tabs
+const tabs = Array.from(document.querySelectorAll("#tabs button"));
+function showPage(name, push){
+  const known = tabs.some(t=>t.dataset.p===name) ? name : "hw";
+  tabs.forEach(t=>t.classList.toggle("on", t.dataset.p===known));
+  document.querySelectorAll("section.page").forEach(s=>{
+    s.classList.toggle("on", s.id === "page-"+known);
+  });
+  if(push && location.hash.indexOf("#"+known) !== 0) history.replaceState(null,"","#"+known);
+  window.scrollTo({top:0, behavior:"auto"});
+}
+tabs.forEach(t=> t.addEventListener("click", ()=>{
+  const p = t.dataset.p;
+  if(p === "hw"){ showPage("hw", true); }
+  else showPage(p, true);
+}));
+
+// keyboard
+document.addEventListener("keydown", e=>{
+  if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if(e.key === "Escape"){
+    document.querySelectorAll(".hot").forEach(n=>n.classList.remove("sel"));
+    return;
+  }
+  const onHw = document.getElementById("page-hw").classList.contains("on");
+  if(!onHw) return;
+  if(e.key === "ArrowRight" || e.key === "ArrowLeft"){
+    let i = current ? ORDER.indexOf(current) : -1;
+    if(e.key === "ArrowRight") i = (i+1) % ORDER.length;
+    else i = (i-1+ORDER.length) % ORDER.length;
+    e.preventDefault();
+    renderPart(ORDER[i]);
+    const node = document.querySelector('.hot[data-part="'+ORDER[i]+'"]');
+    if(node) node.focus();
+  }
+});
+
+// hash routing
+function route(){
+  const h = location.hash.replace(/^#/,"");
+  const [page, part] = h.split("/");
+  if(PARTS[part]){ showPage("hw", false); renderPart(part); return; }
+  if(page) showPage(page, false);
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>

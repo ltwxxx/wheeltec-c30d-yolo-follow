@@ -1,0 +1,50 @@
+# 对应现在仓库：config/follow_settings.json
+# 差别只有一句话 —— 改了这个文件，`ros2 param set` 能在线生效；
+# 改了 follow_settings.json，要走作者自己写的那套重载逻辑或重启进程。
+
+follow_perception:
+  ros__parameters:
+    model_path: "/opt/wheeltec-follow/models/best.onnx"
+    input_width: 640
+    input_height: 480
+    conf_threshold: 0.45
+    iou_threshold: 0.60
+    class_filter: ["person"]
+    publish_hz: 10.0
+    # 允许在运行时改的（dynamic 那套语义），才值得暴露给 ros2 param set
+    max_tracks: 6
+
+follow_motion:
+  ros__parameters:
+    # ——— 目标距离 ———
+    desired_distance_m: 1.20
+    distance_deadband_m: 0.20        # 差这么点以内不动，防止来回抖
+    # ——— 速度上限（安全层还会再压一次，这里只是"想跑多快"）———
+    max_forward_mps: 0.45
+    max_backward_mps: 0.15
+    max_yaw_rate_rps: 0.90
+    # ——— 对准与丢失 ———
+    center_tolerance_norm: 0.06
+    lost_timeout_s: 2.5              # 目标丢了多久就停
+    lidar_max_age_s: 0.50            # 雷达数据旧过这个年龄就当没有
+    image_max_age_s: 0.35
+    # ——— 平滑 ———
+    accel_limit_mps2: 0.60
+    low_speed_floor_mps: 0.08        # 低于这个速度干脆不发，省得电机嗡嗡响
+    use_lidar_distance: true
+
+follow_safety:
+  ros__parameters:
+    # 这一组是"不许通过参数放松"的：代码里硬下限兜底，见 motion_node 注释
+    min_stop_distance_m: 0.35        # 雷达到人的最小间距
+    lidar_watchdog_s: 1.0            # 雷达多久没数据就停
+    cmd_watchdog_s: 0.6              # 上游多久没发速度就停（对应现在的 seq 看门狗）
+    voltage_lock_threshold_v: 11.4   # 低于此电压禁止前进（对应 BatterySafetyLock）
+    voltage_unlock_hysteresis_v: 0.4 # 回迟，防止在阈值附近反复锁/放
+    corridor_halfwidth_m: 0.45
+
+follow_session:
+  ros__parameters:
+    default_desired_distance_m: 1.20
+    default_timeout_s: 30.0
+    status_publish_hz: 2.0

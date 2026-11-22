@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>follow_motion</name>
+  <version>0.1.0</version>
+  <description>跟随决策节点（DDS 版形态参考）</description>
+  <maintainer email="dev@example.com">bruan</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>follow_msgs</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

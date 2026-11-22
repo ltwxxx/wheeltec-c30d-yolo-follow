@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>follow_msgs</name>
+  <version>0.1.0</version>
+  <description>跟随系统的自定义消息与动作接口</description>
+  <maintainer email="dev@example.com">bruan</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- 依赖分三类，这是 package.xml 的核心：
+       build_depend 只要编译时；exec_depend 运行时才要；test_depend 只跑测试。
+       写错方向会导致"能编过但装到车上跑不起来"，反过来则是白白拖慢构建。 -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>builtin_interfaces</depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <!-- 这行是接口包的规矩：声明它是消息包，rosidl 才会按 msg/srv/action 生成代码 -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

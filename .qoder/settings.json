@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${QODER_PROJECT_DIR}\"/.qoder/hooks/phase-commit.sh",
+            "timeout": 120,
+            "statusMessage": "阶段提交检查"
+          }
+        ]
+      }
+    ]
+  }
+}

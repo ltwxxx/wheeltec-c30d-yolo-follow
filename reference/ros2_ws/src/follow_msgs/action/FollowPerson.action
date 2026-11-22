@@ -1,0 +1,30 @@
+# 对应现在仓库：POST /follow (start/stop) + seq 请求序号 + 会话 ID + 状态轮询
+# Action 文件天生三段，用 --- 分隔，这就是"可派任务 + 可问进度 + 可取消"的形态。
+
+# ---------- Goal：客户端要小车干什么 ----------
+string mode                   # "person" 跟人 / "point" 跟坐标
+int32 target_track_id         # -1 = 由感知自己决定跟谁
+float32 desired_distance_m    # 期望保持距离；不填(=0)则用参数表默认值
+float32 max_speed_mps         # 本次任务限速，仍然受安全层硬上限压着
+# 踩坑记录（真实编译才抓得到）：原来写的是 `duration timeout`，
+# rosidl_adapter 直接报 KeyError processing template 'struct.idl.em': 'duration'
+# —— 时长要用带命名空间的完整类型名，primitive 里没有 duration 这个写法。
+builtin_interfaces/Duration timeout   # 目标丢了多久算失败；全 0 = 不限时
+
+---
+
+# ---------- Result：任务结束时的结论 ----------
+bool succeeded
+string reason                 # 成功/失败原因，对应现在 follow_control 里的 reason 字段
+uint32 meters_traveled
+float32 avg_speed_mps
+int32 safety_interventions    # 期间被安全层拦了几次
+
+---
+
+# ---------- Feedback：跑动中持续上报，对应现在的状态轮询 ----------
+std_msgs/Header header
+bool target_visible
+float32 current_distance_m
+float32 current_speed_mps
+string status_text            # 「跟手中」「目标丢失 3.2s」「电池电压锁」…

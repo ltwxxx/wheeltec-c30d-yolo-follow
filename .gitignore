@@ -3,6 +3,7 @@ __pycache__/
 .venv/
 venv/
 *.log
+MUJOCO_LOG.TXT
 .DS_Store
 releases/
 models/*_source.pth
@@ -18,3 +19,5 @@ test-results/
 *.egg-info/
 build/
 dist/
+ros2_ws/install/
+ros2_ws/log/
