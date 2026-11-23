@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .venv/
+.venv-sim/
 venv/
 *.log
 MUJOCO_LOG.TXT
@@ -13,6 +14,7 @@ validation/*.jsonl
 .coverage
 htmlcov/
 test-results/
+sim/results/
 .env
 .env.*
 !.env.example

@@ -1,0 +1,3 @@
+# Optional, isolated simulation environment; not used by the robot release.
+mujoco==4.0.1
+numpy>=1.26,<3
