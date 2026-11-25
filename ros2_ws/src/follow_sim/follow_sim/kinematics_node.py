@@ -38,11 +38,15 @@ class KinematicsNode(Node):
         # 两条 /odom、两条 /PowerVoltage 同时活着，比没仿真危险得多 —— 而且不会报错，只会骗人。
         # 位置很关键：必须在创建自己的发布器**之前**查。count_publishers() 把自己也算进去，
         # 上一版把检查放在 main() 里，仿真把你自己当成了真车，永远拒绝启动（实测踩过）。
-        if self.count_publishers('/PowerVoltage') > 0:
+        if self.count_publishers(self.get_parameter('battery_voltage_topic').value) > 0:
             raise RuntimeError('检测到真底盘在发 /PowerVoltage，仿真拒绝启动（避免与真实数据抢话题）')
 
         # 参数用 declare + set_parameters_callback，运行时可以 ros2 param set 挪人，
         # 不用重启 —— 这就是阶段 B 要在真代码里补的那件事，仿真先体验一遍。
+        self.declare_parameter('cmd_vel_topic', '/cmd_vel')
+        self.declare_parameter('odometry_topic', '/odom')
+        self.declare_parameter('scan_topic', '/scan')
+        self.declare_parameter('battery_voltage_topic', '/PowerVoltage')
         self.declare_parameter('person_x', 2.5)
         self.declare_parameter('person_y', 0.0)
         self.declare_parameter('person_radius', 0.35)
@@ -54,10 +58,10 @@ class KinematicsNode(Node):
         self.add_on_set_parameters_callback(self._on_param)
 
         # 真车契约：只订 cmd_vel，只发 odom / scan / PowerVoltage
-        self.create_subscription(Twist, '/cmd_vel', self._on_cmd, 10)
-        self.pub_odom = self.create_publisher(Odometry, '/odom', 10)
-        self.pub_scan = self.create_publisher(LaserScan, '/scan', 10)
-        self.pub_volt = self.create_publisher(Float32, '/PowerVoltage', 10)
+        self.create_subscription(Twist, self.get_parameter('cmd_vel_topic').value, self._on_cmd, 10)
+        self.pub_odom = self.create_publisher(Odometry, self.get_parameter('odometry_topic').value, 10)
+        self.pub_scan = self.create_publisher(LaserScan, self.get_parameter('scan_topic').value, 10)
+        self.pub_volt = self.create_publisher(Float32, self.get_parameter('battery_voltage_topic').value, 10)
         self.pub_tf = self.create_publisher(TFMessage, '/tf', 10)
 
         self._lock = threading.Lock()

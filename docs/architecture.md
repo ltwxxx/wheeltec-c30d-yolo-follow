@@ -22,8 +22,9 @@ flowchart LR
 | `src/follow_motion.py` | 车头净距、障碍等待、速度上限和加速度限制 |
 | `src/follow_control.py` | 传感器数据结构、人物测距关联和共享控制计算 |
 | `src/edge_*.py` | YOLO ONNX 推理、两阶段轨迹关联和 OSNet Re-ID |
-| `src/follow_sensors.py` | ROS 相机、雷达、TF 数据读取及 HTTP 输出 |
-| `src/follow_actuator.py` | 下发速度、指令看门狗、电量保护和里程计读取 |
+| `src/follow_actuator.py`、`src/follow_sensors.py` | 旧发布布局的兼容入口，转发到 ROS 节点实现 |
+| `ros2_ws/src/follow_bridges/` | ROS 相机/雷达读取、速度下发、指令看门狗、电压保护和 HTTP 兼容接口 |
+| `ros2_ws/src/follow_bringup/` | 组合 launch、话题名和 HTTP 端口参数 |
 | `src/follow_settings.py` | 配置加载及范围校验 |
 | `src/runtime_paths.py` | 源码目录与车端发布目录的资源定位 |
 | `web/templates/` | Flask 网页模板 |
@@ -37,11 +38,12 @@ flowchart LR
 
 ## 仓库与发布目录
 
-源码按职责分目录，发布包沿用已安装小车的平铺模块结构：
+源码应用模块保持平铺，ROS 节点实现同时存在于活动 workspace 和 `src/follow_bridges/` 发布兼容目录。发布包沿用已安装小车的平铺应用模块结构：
 
 | 仓库路径 | 发布包 / 车端路径 |
 | --- | --- |
 | `src/*.py` | `*.py` |
+| `src/follow_bridges/*.py` | `follow_bridges/*.py` |
 | `config/follow_settings.json` | `follow_settings.json` |
 | `config/calibration.json` | `calibration.json` |
 | `config/botsort_reid.yaml` | `botsort_reid.yaml` |
@@ -49,4 +51,4 @@ flowchart LR
 | `models/osnet_*`、相关许可证 | `models/` 中对应文件 |
 | 选定的 `ops/` 文件 | `ops/` 中对应文件 |
 
-完整白名单在 `ops/build_release.py`。`runtime_paths.py` 同时随 ROS 桥复制到容器，避免配置模块缺少依赖。不要把整个源码仓库直接覆盖到运行目录。
+完整白名单在 `ops/build_release.py`。`runtime_paths.py` 同时随 ROS 桥复制到容器，避免配置模块缺少依赖。不要把整个源码仓库直接覆盖到运行目录。ROS 2 包的构建、launch 和资源安装见 [ROS 2 包化运行](ros2-packages.md)。

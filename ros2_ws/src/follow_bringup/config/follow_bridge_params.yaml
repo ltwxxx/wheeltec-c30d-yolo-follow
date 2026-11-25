@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    color_image_topic: /camera/color/image_raw
+    depth_image_topic: /camera/depth/image_raw
+    camera_info_topic: /camera/color/camera_info
+    scan_topic: /scan
+    http_port: 18767
+
+codex_follow_actuator:
+  ros__parameters:
+    battery_voltage_topic: /PowerVoltage
+    odometry_topic: /odom
+    command_topic: /cmd_vel
+    http_port: 18768

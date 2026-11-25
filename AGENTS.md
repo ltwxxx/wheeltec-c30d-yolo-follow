@@ -2,8 +2,8 @@
 
 ## Project Structure
 
-- `src/` contains the runnable Python application modules. Keep this flat layout: the release builder maps its files to the established robot install paths, and ROS 2 bridges load modules from it.
-- `ros2_ws/src/` contains active ROS 2 bridge and lightweight simulation packages. `reference/ros2_ws/` is a non-runnable design skeleton; do not treat it as part of the active workspace.
+- `src/` contains the runnable Python application modules. Keep the application modules flat; `src/follow_bridges/` carries the ROS node implementations used by both the active workspace and the established flat robot release. ROS 2 nodes live in `ros2_ws/src/follow_bridges/` and must not use `runpy` to execute `src/`.
+- `ros2_ws/src/` contains active ROS 2 bridge, bringup, and lightweight simulation packages. `reference/ros2_ws/` is a non-runnable design skeleton; do not treat it as part of the active workspace.
 - `config/`, `web/templates/`, `models/`, and `assets/samples/` contain runtime configuration, the Flask page, model files and metadata, and development samples.
 - `ops/` contains deployment, diagnostics, release, watchdog, and field-recording tools. `sim/` contains MuJoCo scenarios and batch experiments; optional dependencies are in `requirements/sim.txt`.
 - `tests/` contains hardware-free pytest tests. `validation/` stores field-test summaries. `docs/` holds architecture, development, deployment, tuning, and research notes; `docs/html/` contains standalone visual guides.

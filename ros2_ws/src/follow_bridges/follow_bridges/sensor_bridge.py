@@ -1,16 +1,7 @@
-"""Launch the existing read-only sensor bridge without modifying or copying its source."""
-import runpy
-import sys
+"""Console entry point for the read-only sensor bridge."""
+from .follow_sensors import Sensors, main
 
-from .legacy_paths import legacy_source_dir
+__all__ = ["Sensors", "main"]
 
-
-def main():
-    source_dir = legacy_source_dir()
-    if str(source_dir) not in sys.path:
-        sys.path.insert(0, str(source_dir))
-    runpy.run_path(str(source_dir / 'follow_sensors.py'), run_name='__main__')
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

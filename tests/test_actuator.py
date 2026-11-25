@@ -26,6 +26,13 @@ def actuator(monkeypatch):
             pass
         def create_timer(self, *args):
             pass
+        def declare_parameter(self, name, default):
+            return types.SimpleNamespace(value=default)
+        def get_parameter(self, name):
+            return types.SimpleNamespace(value={'command_topic': '/cmd_vel',
+                                                'battery_voltage_topic': '/PowerVoltage',
+                                                'odometry_topic': '/odom',
+                                                'http_port': 18768}[name])
     for package, names in {'rclpy': {}, 'rclpy.node': {'Node': Node},
                            'geometry_msgs': {}, 'geometry_msgs.msg': {'Twist': Twist},
                            'nav_msgs': {}, 'nav_msgs.msg': {'Odometry': object},
@@ -33,8 +40,7 @@ def actuator(monkeypatch):
         module = types.ModuleType(package)
         module.__dict__.update(names)
         monkeypatch.setitem(sys.modules, package, module)
-    sys.modules.pop('follow_actuator', None)
-    import follow_actuator as module
+    import follow_bridges.follow_actuator as module
     clock = [10.]
     monkeypatch.setattr(module.time, 'monotonic', lambda: clock[0])
     bridge = module.Actuator()

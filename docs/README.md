@@ -12,6 +12,7 @@
 ## 开发与运行
 
 - [本地开发](development.md)：Python 环境、依赖组、常用命令和 CI 范围。
+- [ROS 2 包化运行](ros2-packages.md)：活动包结构、colcon 构建、launch、参数与 SIL 验证。
 - [部署、连接与排障](deployment.md)：连接现有小车、发布更新、服务检查和故障定位。
 - [控制页入口](control-page.md)：本机与局域网控制入口的配置状态。
 - [运动与识别调参](tuning-guide.md)：参数含义、调节顺序和复测方法。

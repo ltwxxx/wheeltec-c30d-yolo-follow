@@ -17,6 +17,8 @@ SOURCE_MODULES = (
     'lidar_geometry', 'edge_detector', 'edge_tracking', 'edge_reid', 'runtime_paths',
 )
 RELEASE_FILES = {f'src/{name}.py': f'{name}.py' for name in SOURCE_MODULES}
+for path in (ROOT / 'src' / 'follow_bridges').glob('*.py'):
+    RELEASE_FILES[str(path.relative_to(ROOT))] = f'follow_bridges/{path.name}'
 RELEASE_FILES.update({
     'config/follow_settings.json': 'follow_settings.json',
     'config/calibration.json': 'calibration.json',

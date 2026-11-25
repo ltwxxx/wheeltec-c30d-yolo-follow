@@ -1,16 +1,8 @@
-"""Launch the existing cmd_vel bridge without modifying or copying its source."""
-import runpy
-import sys
+"""Console entry point for the ROS 2 actuator bridge."""
+from .follow_actuator import Actuator, main
 
-from .legacy_paths import legacy_source_dir
-
-
-def main():
-    source_dir = legacy_source_dir()
-    if str(source_dir) not in sys.path:
-        sys.path.insert(0, str(source_dir))
-    runpy.run_path(str(source_dir / 'follow_actuator.py'), run_name='__main__')
+__all__ = ["Actuator", "main"]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
