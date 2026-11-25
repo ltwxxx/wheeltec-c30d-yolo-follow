@@ -1,8 +1,8 @@
 # 技术评估：wheeltec-c30d-yolo-follow 与工业级嵌入式机器人软件的差距
 
-调研范围：全文读完 `src/`（14 模块，约 2200 行）、`config/`、`docs/architecture.md`、`docs/IMPLEMENTATION.md`、`docs/tuning-guide.md`、`docs/deployment.md`、`tests/`（28 项，本机实测通过）、`ops/`（systemd 单元、开机监督、发布器）、`requirements/`、`validation/`、`web/templates/follow.html`。另核对了当前分支 `feat/ros2-package` 上的迁移进展：`ros2_ws/src/follow_bridges`（阶段 A shim）、`ros2_ws/src/follow_sim`（S1 仿真节点）、`reference/ros2_ws/src/`（follow_msgs / follow_bringup / follow_motion / follow_session 骨架）。**未修改任何被评估的代码文件。**
+调研范围：全文读完 `src/`（14 模块，约 2200 行）、`config/`、`docs/architecture.md`、`docs/IMPLEMENTATION.md`、`docs/tuning-guide.md`、`docs/deployment.md`、`tests/`、`ops/`（systemd 单元、开机监督、发布器）、`requirements/`、`validation/`、`web/templates/follow.html`。另核对了当前分支 `feat/ros2-package` 上的迁移进展：`ros2_ws/src/follow_bridges`（正式 `ament_python` 包）、`follow_bringup`（组合 launch）和 `follow_sim`（S1 运动学仿真）。2026-11-26 在 Docker Linux ARM64 ROS 2 Humble 中完成三包构建与 SIL 验收，主机回归为 `50 passed, 2 skipped`；未连接真车，详见 `docs/ros2-packages.md`。除特别标注外，后文 `src/follow_*.py` 行号对应评估时版本；当前 ROS 桥实现位于 `src/follow_bridges/` 与 `ros2_ws/src/follow_bridges/`。
 
-**总体判断**：这不是"玩具脚本"级别。它有明显高于业余项目的工程自觉——控制环与感知环解耦、执行器侧独立看门狗、配置范围校验、可复现发布包、真实验收数据，而且已经把"HTTP 桥 + 非 ROS 节点"识别为过渡形态并在用 strangler-fig 逐阶段替换（A 包化 + S1 仿真已验证）。但它的**实时性与故障隔离上限仍受当前进程模型约束**，且**安全体系停留在"软件约定"层面，缺少硬件回路与独立保护通道**。按工业标准衡量，大致处于"实验室可演示 / 产品化前夜"的位置。
+**总体判断**：这不是"玩具脚本"级别。它有明显高于业余项目的工程自觉——控制环与感知环解耦、执行器侧独立看门狗、配置范围校验、可复现发布包、真实验收数据，而且已经把"HTTP 桥 + 非 ROS 节点"识别为过渡形态并在用 strangler-fig 逐阶段替换（正式桥包化 + bringup + S1 仿真已验证）。但它的**实时性与故障隔离上限仍受当前进程模型约束**，且**安全体系停留在"软件约定"层面，缺少硬件回路与独立保护通道**。按工业标准衡量，大致处于"实验室可演示 / 产品化前夜"的位置。
 
 ---
 
@@ -61,10 +61,10 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 - 彩色-深度配对是手写的"最近邻 + 硬阈值"：`src/follow_sensors.py:34-58`（`aligned_pair`），要求 `frame_id` 相同、分辨率相同（`46-47`）、`gap_ns <= 60_000_000`（`src/follow_sensors.py:54`）；否则抛错。color-only 模式另有一套并行实现：`src/follow_sensors.py:157-169`。**两份逻辑高度重复**（`min(compatible, key=...)` 出现在 `52` 和 `168`），是典型的一致性隐患。
 - 雷达与相机的同步只有一个窗口常数：`SCAN_FRAME_WINDOW_S = 0.20`（`src/follow_sensors.py:26`，用于 `130`），超过就丢弃投影。这是"就近取一帧"，不是插值/外推，也不是带协方差的时间不确定度传播。
 
-**TF2 用了，但只在传感器桥内部，且几何仍有硬编码**：
+**TF 用了，但只在传感器桥内部，且几何仍有硬编码**：
 
-- 真用了 TF2：`src/follow_sensors.py:21`（import）、`85-86`（`Buffer` + `TransformListener`）、`134`（`lookup_transform(info.frame_id, message.frame_id, Time())`，即"最新变换"，不做时间插值——**这是一个明确的精度妥协**：查询的是 latest，而非 color 帧时刻的变换，车体转动时雷达投影会带旋转误差）。
-- 手动做四元数旋转而不复用 tf2 的矩阵工具：`src/follow_sensors.py:61-74`（`project_scan`，`points += 2*np.cross(axis, ...)`）。
+- 当前包化实现直接订阅 `tf2_msgs/TFMessage` 的 `/tf` 与 `/tf_static`，在 `src/follow_bridges/follow_sensors.py` 的 `transform_between()` 中维护变换图，支持正向、反向和多跳组合；不再依赖 `tf2_ros.Buffer` / `TransformListener`。查询仍取最新保存的变换，不按彩色帧时间戳插值，车体转动时雷达投影仍会带旋转误差。
+- 四元数归一化、旋转矩阵、逆变换和组合均在桥内用 NumPy 实现，`project_scan()` 通过旋转矩阵平移雷达点。`tests/test_sensor_tf.py` 覆盖动态/静态、直接/反向/多跳、无效边回退和精确 180° 旋转；另完成 `10000` 次随机旋转与三次精确半周压力检查。
 - 相机外参走 TF，但**车头距离偏移是配置文件里的常数**：`SETTINGS.camera_to_front_m`（`src/follow_settings.py:16`，实际值 `config/follow_settings.json:2` = 0.0244），减 offset 的操作散落在 `src/lidar_geometry.py:13,21`、`src/follow_control.py:148,161-162`、`src/follow_motion.py:47,56`、`src/camera_viewer.py:521`。**同一个物理量在 6 处分别减去**，容易漏改。
 - `config/calibration.json` 记录了来源与置信度（`geometry_basis: "factory model, not a physical tape measurement"`，第 9 行；`stop_tests_completed: 0`、`brake_tests_completed: 0`，第 10-11 行），诚实度高。但**这个文件在代码里从未被读取**——grep 全仓只有 `ops/build_release.py:22`（打包）和 `validation/deployment-audit.json:104`（清单）引用它。真正生效的是 `follow_settings.json` 里的 `camera_to_front_m`/`geometry_verified`。标定溯源与实际参数之间**没有代码级绑定**。
 - 走廊半宽等几何量硬编码：`src/lidar_geometry.py:12,19` 用 `body_half_width_m + corridor_margin_m`（配置里有，OK）；但 `src/lidar_geometry.py:15` 的 `.16`（聚类分裂距离）、`22,35` 的 `.03`（后方剔除）、`27,38` 的归一化视口边界是常数。
@@ -72,7 +72,7 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 ### 工业做法 / 差距
 
 1. **统一时钟**：工业系统强制所有节点使用同一时间基准（PTP/chrony + ROS2 sim/system time 一致策略），并检查 `header.stamp` 与接收时刻之差是否合理（`message_filters::TimeSynchronizer` 或自定义带最大偏差的策略）。当前方案对 loopback 有效，一旦跨主机部署（README 提到局域网入口待配置）就会失效。
-2. **按时刻查 TF**：应 `lookup_transform(target, source, Time(color_stamp), timeout=...)`，并在 `TransformException` 时区分"暂未可用可重试"与"永久失败"。当前 `except TransformException: return None`（`src/follow_sensors.py:135-136`）把所有 TF 故障静默降级为"无雷达投影"，进而让 `src/follow_motion.py:46` 报"雷达数据过期"停车——安全但难以定位根因（日志里没有 TF 失败原因）。
+2. **按时刻查 TF**：应在彩色帧时间戳上查询或插值，并区分“暂未可用可重试”与“永久失败”。当前直接消费 `TFMessage` 的实现只保存最新变换，也没有带时间戳的历史缓存；`projected_lidar()` 在缺变换时返回 `None`，最终让 `src/follow_motion.py:46` 报“雷达数据过期”停车。行为安全，但日志没有 TF 失败原因，根因不易定位。
 3. **单一几何真源**：车头净距应由 URDF/TF 树派生（`base_link → camera_link → lidar_link → front`），一处定义。当前 6 处手工减 offset + 未被读取的 `calibration.json`，是产品化时必须消除的隐患。
 4. **同步逻辑收敛**：`aligned_pair` 与 color-only 分支应合并为一个带策略参数的函数，避免两套阈值漂移。
 
@@ -208,7 +208,7 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 **日志：几乎只有事件日志。** 全仓 logging 调用 4 处：`src/camera_viewer.py:24`（压制 werkzeug）、`149`、`306`（exception）、`src/follow_session.py:59`（`logging.getLogger("follow.events").warning(json.dumps(event))`）。
 
 - 亮点：状态迁移日志是**结构化 JSON**、带 session_id/state/reason/target/sensor ages/下发速度（`src/follow_session.py:55-59`），且只在状态真正变化时打（`54`）。这一条达到可运维水平。
-- 缺陷：① 级别误用——正常状态迁移打在 `warning`；② 其余三个进程（sensors/actuator/boot）无任何 logging，就绪信号用 `print`（`src/follow_actuator.py:222`、`src/follow_sensors.py:273`），HTTP handler 显式静音（`src/follow_actuator.py:204-205`、`src/follow_sensors.py:262-263` `log_message` pass）——**两个 ROS 桥是完全静默的**，出问题时 journalctl 里什么都没有；③ 无 log rotation、无 trace/request id、无统一 formatter。
+- 缺陷：① 级别误用——正常状态迁移打在 `warning`；② 两个 ROS 桥通过 `rclpy` 记录就绪事件，传感器桥还会记录 HTTP 请求失败，但 HTTP 访问日志被显式静音，执行器缺少同等程度的故障日志；③ 无 log rotation、无 trace/request id、无统一 formatter。桥日志已有改善，但还不能替代完整可观测性。
 
 **配置管理**：集中式 `Settings` frozen dataclass + JSON 覆盖 + 严格范围校验，质量高（`src/follow_settings.py:12-99`）。但：
 
@@ -234,7 +234,7 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 - 端口号散落：`18767` 出现在 `src/follow_control.py:20,104`、`src/follow_sensors.py:271`、`ops/boot_health.py:28,48`、`ops/run_short_trial.py:35`、`ops/deploy-on-robot.sh`；`18768` 在 `src/camera_viewer.py:64`、`src/follow_actuator.py:214`、`ops/*`；`18769` 只在 ops 里，而 viewer 默认端口是 `8769`（`src/camera_viewer.py:27`），车端靠 unit 文件覆盖为 18769（`ops/wheeltec-follow-edge.service:10`）——**默认值与部署值不一致，且无共享常量模块**。
 - 速度上限三处重复定义：`src/follow_control.py:25-26`（0.10/0.25）、`src/follow_actuator.py:21`（0.25）、`src/follow_settings.py:22-23`（max/fallback）。执行器钳制 0.25 而活动配置允许 0.25，勉强自洽，但靠 `load_settings` 的 `<= .25` 断言维持（`src/follow_settings.py:74,76,95`），任一处改动都可能悄悄破掉不变式。
 
-**可测试性**：核心决策层很好（`tests/test_follow.py:1-236` 无需 mock 即可测会话/运动/电池/几何/跟踪器，`FakeDetector`/`NoReid` 注入见 `tests/test_follow.py:238-249`）。但**编排层与 IO 层几乎无覆盖**：`capture()`、`worker()`、`control_loop()` 三个循环体一行都没被执行过（测试 fixture 只 import 模块、不调 `main`，见 `tests/test_follow.py:294-304`）；`follow_sensors.py` 的 `aligned_pair`/`project_scan`/`Sensors.frame` **零测试**（`sensor_msgs`、`tf2_ros`、`cv2` 从未被 mock，grep 无命中；本机也无 rclpy）。`test_actuator.py` 只 mock 了 `rclpy/geometry_msgs/nav_msgs/std_msgs`（`tests/test_actuator.py:29-32`），因此测的是 `Actuator` 类逻辑，**HTTP handler 层（`src/follow_actuator.py:157-207`）未测**。总计 28 项，`docs/IMPLEMENTATION.md:33` 声称 24 项（版本漂移）。
+**可测试性**：核心决策层很好（`tests/test_follow.py:1-236` 无需 mock 即可测会话/运动/电池/几何/跟踪器，`FakeDetector`/`NoReid` 注入见 `tests/test_follow.py:238-249`）。**编排层与 IO 层覆盖仍不完整**：`capture()`、`worker()`、`control_loop()` 三个循环体没有主机单元测试直接执行（测试 fixture 只 import 模块、不调 `main`，见 `tests/test_follow.py:294-304`）。ROS 桥已补上轻量 stub 测试：`tests/test_sensor_tf.py` 覆盖 TF 直接/反向/多跳、动态/静态、无效直连或反向边回退和精确 180° 旋转；`tests/test_actuator.py` 已覆盖无请求体 `/arm`、`/stop`、keep-alive 非空请求体消费和 `/health` 的 `503/200` 语义。`aligned_pair()`、`project_scan()` 与 `Sensors.frame()` 尚未形成主机单元测试；彩色帧编码、扫描新鲜度和雷达投影由 Docker ROS 2 Humble SIL 运行时验证。2026-11-26 完整回归为 `50 passed, 2 skipped`，跳过项均因缺少可选 MuJoCo 依赖；`docs/IMPLEMENTATION.md` 的 24 项是 2026-11-12 历史记录，不代表当前数量。
 
 **依赖管理**：分层 requirements 设计合理（`requirements/base.txt`/`edge.txt`/`desktop.txt`/`dev.txt`/`export.txt`，edge 精确 pin `onnxruntime==1.23.2`）。但：
 
@@ -272,8 +272,8 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 - 有**原始遥测**：`/status` 暴露 fps、P95 延迟及其 basis、四个分段延迟埋点、detect_ms、传感器年龄、计划/下发/里程计三列速度（`src/camera_viewer.py:537-543`；前端分别渲染 `web/templates/follow.html:388-397`）。`ops/record_validation.py` 以 0.5 Hz 落 JSONL 并汇总 RSS/PID/error count（`ops/record_validation.py:22-45`）——**这是自制的最小可行遥测系统，思路正确**。
 - **没有 metrics 端点**（无 Prometheus/OTLP；grep `prometheus|metrics|opentelemetry` 只命中 CSS 类名 `web/templates/follow.html:128`）、**没有 trace/request id**、**没有 rosbag 记录**（grep `rosbag|rosbag2` 零命中）。`validation/*.jsonl` 被 gitignore（`.gitignore:11`），只留 summary。
 - 前端轮询放大观测噪声：`setInterval(refresh, 500)` + `setInterval(heartbeat, 400)` + `setInterval(refreshPreview, 260)`（`web/templates/follow.html:506,514,515`），即每页 ~7 req/s，且 `/status` 在 `lock` 内构造大对象（`src/camera_viewer.py:516-546`）——**Web 负载与控制环争用同一把锁**，观测行为本身影响被测系统。
-- 故障定位能力：`/healthz` 提供 image/inference/control 三个 age（`src/camera_viewer.py:507-510`）、`boot_health.py` 据此做逐项退避重启（`ops/boot_health.py:49-98`）、`ops/diagnose_tracking.py` 提供逐帧感知透视。这三件套让常见故障可查。但两个 ROS 桥无日志（第 6 节），TF 失败被静默吞掉（`src/follow_sensors.py:135-136`），是最难定位的一类盲区。
-**接口与可观测性三项具体缺陷**：① UI"计划前进"绑的是下发值而非计划值，破坏了文档承诺的"计划 → 下发 → 里程计"三段回放诊断法（`web/templates/follow.html:388` 读 `follow.forward_mps`，而真计划在 `src/follow_session.py:132` 的 `planned_forward_mps`，前端从未引用）；② 试跑前置安全检查未接线——后端 `trial_block_reason` 恒为 `None`（`src/camera_viewer.py:534`），前端却围绕它做按钮禁用与提示（`web/templates/follow.html:406,423-425`），本该填它的 `src/follow_control.py:280` `trial_depth_block()` 是死代码，**试跑的场地确认实质不生效**；③ 两个 ROS 桥完全静默（`log_message` pass：`src/follow_actuator.py:204-205`、`src/follow_sensors.py:262-263`），且 TF 失败被吞成 `None`（`src/follow_sensors.py:135-136`），是最难定位的一类盲区。
+- 故障定位能力：`/healthz` 提供 image/inference/control 三个 age（`src/camera_viewer.py:507-510`）、`boot_health.py` 据此做逐项退避重启（`ops/boot_health.py:49-98`）、`ops/diagnose_tracking.py` 提供逐帧感知透视。这三件套让常见故障可查。ROS 桥已记录就绪事件，传感器桥也会记录 HTTP 请求失败，但 TF 缺失或无效仍只表现为无投影，执行器故障日志也偏少，是最难定位的一类盲区。
+**接口与可观测性三项具体缺陷**：① UI"计划前进"绑的是下发值而非计划值，破坏了文档承诺的"计划 → 下发 → 里程计"三段回放诊断法（`web/templates/follow.html:388` 读 `follow.forward_mps`，而真计划在 `src/follow_session.py:132` 的 `planned_forward_mps`，前端从未引用）；② 试跑前置安全检查未接线——后端 `trial_block_reason` 恒为 `None`（`src/camera_viewer.py:534`），前端却围绕它做按钮禁用与提示（`web/templates/follow.html:406,423-425`），本该填它的 `src/follow_control.py:280` `trial_depth_block()` 是死代码，**试跑的场地确认实质不生效**；③ ROS 桥已有就绪日志，传感器桥也会记录 HTTP 请求失败，但访问日志被静音、TF 缺失仍无明确诊断，执行器故障日志不足。
 
 ### 工业做法 / 差距
 
@@ -285,24 +285,25 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 
 ### 现状（客观描述）
 
-**重要更正：仓库当前分支 `feat/ros2-package` 上，"HTTP 桥 + 非 ROS 节点"已不是终态判断，而是 strangler-fig 迁移的中间态。** 我最初只读 `src/` 得出"这是临时形态"的结论，与项目既定路线一致，但低估了已完成的部分。实际状态：
+**重要更正：仓库当前分支 `feat/ros2-package` 已完成现有传感器/执行器的正式包化，并通过 ROS 2 Humble SIL 验收。** Flask、感知、会话和运动规划仍通过 HTTP 使用两个桥，这是当前刻意保留的兼容边界，不是 `runpy` shim。实际状态：
 
-- **阶段 A 已落地并可运行**：`ros2_ws/src/follow_bridges/`（ament_python，两个 console_scripts）。启动器用 `runpy.run_path` 执行**未经修改的** `follow_actuator.py` / `follow_sensors.py`（`ros2_ws/src/follow_bridges/follow_bridges/actuator_bridge.py:1-16`、`sensor_bridge.py:1-15`），路径由 `legacy_paths.py:9-16` 向上找 `pyproject.toml` 解析（可用 `WHEELTEC_FOLLOW_SRC` 覆盖）。壳是 ROS 的、肉还是 HTTP 的——**这是刻意为之**：不改动任何车辆行为。
-- **S1 仿真节点已跑通并验证了话题契约**：`ros2_ws/src/follow_sim/follow_sim/kinematics_node.py`（186 行）订阅 `/cmd_vel`，发布 `/odom`(20 Hz)、`/scan`(10 Hz、360 束以通过 `src/follow_sensors.py:114` 的全扫描启发式)、`/PowerVoltage`(Float32，带载下垂以便测低压锁)、TF odom→base_link（`kinematics_node.py:57-61`）。并有硬保险：检测到真底盘在发 `/PowerVoltage` 就拒绝启动（`kinematics_node.py:38-42`）。据项目记录，仅启仿真、不改 `src/`，`/health` 从 HTTP 503 变 200 —— **证明契约名对齐就是 sim-to-real 的机制本身**。
-- **业界形态骨架已在 `reference/ros2_ws/src/`**：`follow_msgs`（Track/TrackArray/FollowPerson.action）、`follow_bringup`（launch + `config/follow_params.yaml`）、`follow_motion`、`follow_session` 四包，且已真实编译通过（`ros2 interface show follow_msgs/action/FollowPerson` 可打印三段）。它被**故意放在 `ros2_ws/src/` 之外**，colcon 永远不会误构建它。
-- **发布白名单已隔离**：`ops/build_release.py:13-31` 的 `RELEASE_FILES` 只含 `src/*.py` + `config/` + `web/` + `models/` + 指定 ops 文件，**`ros2_ws/` 与 `reference/` 不可能被打包上车**。
+- **`follow_bridges` 是正式 `ament_python` 包**：节点实现位于 `ros2_ws/src/follow_bridges/follow_bridges/`，`actuator_bridge.py` 与 `sensor_bridge.py` 通过包相对 import 暴露 `main`，不使用 `runpy`。配置资源安装到包 share 目录，发布归档通过 `src/follow_bridges/` 携带同一份实现。
+- **`follow_bringup` 与 `follow_sim` 已组成可运行 workspace**：launch 支持参数文件、命名空间以及传感器/执行器开关；SIL 启动 `follow_sim` 与 `actuator_bridge`。仿真订阅 `/cmd_vel`，发布 `/odom`、`/scan`、`/PowerVoltage` 和 `/tf`，并在检测到其他 `/PowerVoltage` 发布者时拒绝启动。
+- **SIL 验收覆盖真实 ROS/DDS 边界**：三包构建、节点/话题发现、`/health` 从 `503` 到 `200`、无请求体 `/arm` 与 `/stop`、`0.05 m/s` 低速运动、执行器与仿真看门狗、传感器 HTTP、TF 雷达投影和干净关停均通过；详见 `docs/ros2-packages.md`。这不是实车验收。
+- **自定义接口骨架仍在 `reference/ros2_ws/src/`**：`follow_msgs`、`follow_bringup`、`follow_motion`、`follow_session` 是可编译设计参考，不属于活动 workspace。`TrackArray.msg` 与 `FollowPerson.action` 尚未接入运行系统。
+- **发布映射已包含包化桥实现**：`ops/build_release.py` 把 `src/follow_bridges/*.py` 映射到归档的 `follow_bridges/`；活动 `ros2_ws/` 与 `reference/` 仍不直接进入车端发布归档。
 
-原生 ROS2 的两个桥本体不变：`src/follow_sensors.py:77`（`class Sensors(Node)`，订 `/camera/color/image_raw`、`/camera/depth/image_raw`、`/camera/color/camera_info`、`/scan`，QoS `qos_profile_sensor_data`，见 `87-93`）与 `src/follow_actuator.py:29`（`class Actuator(Node)`，发 `/cmd_vel`，订 `/PowerVoltage`、`/odom`，`32-45`）。应用层其余模块无一 import rclpy，全靠 `HTTPConnection`（`src/camera_viewer.py:101-124`、`src/follow_control.py:94-169`）。坐标变换只在桥内做一次（`src/follow_sensors.py:134`）。
+两个桥保留 ROS 节点身份：`Sensors(Node)` 订阅彩色/深度图像、相机信息、扫描和 TF，`Actuator(Node)` 发布 `/cmd_vel` 并订阅电压与里程计。应用层其余模块仍通过 localhost HTTP 通信，因此本次包化没有改变跟随算法和人工停止路径。传感器桥直接消费 `tf2_msgs/TFMessage`，执行器继续以独立进程运行看门狗和停止突发。
 - 值得肯定的细节：`rclpy.init(signal_handler_options=SignalHandlerOptions.NO)`（`src/follow_sensors.py:269`）避免 ROS 抢信号处理器；执行器自己接管 SIGTERM/SIGINT 并在退出时**继续主动发零速 1.5 s**（`src/follow_actuator.py:217-232`）；`TCP_NODELAY`（`src/follow_sensors.py:227`、`src/follow_actuator.py:163`）；`allow_nan=False` 防 NaN 出 JSON（`src/follow_sensors.py:251`、`src/follow_actuator.py:166`）。
 
 ### 利（这套做法的真实价值）
 
-1. **可在无 ROS 的机器上开发与测试。** 这是最大收益且已被兑现：本仓库 28 项测试在本机（macOS，无 rclpy）全部通过，只需 mock 4 个 ROS 模块（`tests/test_actuator.py:29-32`）。工业界也常用类似手法（protobuf/gRPC 边界 + 硬件抽象层）。
+1. **可在无 ROS 的机器上开发与测试。** 这是最大收益且已被兑现：2026-11-26 主机回归为 `50 passed, 2 skipped`，两项跳过均因缺少可选 MuJoCo；ROS 消息与 OpenCV 用轻量 stub 隔离。工业界也常用类似手法（protobuf/gRPC 边界 + 硬件抽象层）。
 2. **进程边界带来真实的容错与可重启性。** 桥与应用分离后，`ops/boot_health.py` 可以单独重启 astra/lidar/base/桥（`ops/boot_health.py:66-96`）而不打断跟随会话；这正是 ROS 节点"崩了不连坐"的收益，作者在学习笔记里想要的性质其实已经部分拿到了。
 3. **调试成本极低。** `curl http://127.0.0.1:18767/frame`、`/health`、`/scan` 就能定位问题层，不需要 `ros2 topic echo` + QoS 排障。`docs/ros2-learning-notes-01.md:134` 记录的"QoS 不兼容时静默收不到数据"这一痛点被 HTTP 天然规避。
 4. **序列化边界强制显式契约**。所有跨层数据必须是可 JSON 化的显式字段（`src/follow_control.py:141-168` 逐字段校验），反而避免了隐式共享复杂对象的耦合。
 5. **只读姿态明确**：`src/follow_sensors.py:1` docstring "Read-only ROS sensor bridge"、`ops/record_validation.py:1` "never sends a motion/start/shutdown request"，传感器侧绝不写 ROS，降低了污染原厂栈的风险。
-6. **迁移路径已经证明了 shim 的价值**（新增）：阶段 A 用 `runpy` 包装而零修改 `src/`，换来"包化收益立刻可得、行为风险为零"；S1 仿真又证明只要话题名严格对齐，不改应用层就能把真契约跑在假数据上（`ros2_ws/src/follow_sim/follow_sim/kinematics_node.py:57-61`）。这条性质是后续阶段 F 能安全落地的前提，应当保留而不是被"主流化"掉。
+6. **迁移路径已验证包化边界**：正式 ROS 包保留原有 HTTP 契约，SIL 用真实 DDS 验证话题名、类型、健康状态与停车语义。说明应用层可以在不重写跟随算法的前提下接入 ROS；后续若引入原生消息和 action，仍需单独验证行为等价性。
 
 ### 弊（工程代价，具体到代码）
 
@@ -311,7 +312,7 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 3. **QoS/可靠性语义丢失**。桥用 `qos_profile_sensor_data`（best-effort，`src/follow_sensors.py:93`）收数据，但下游变成 TCP 可靠 + 应用层"重复包丢弃"（`src/follow_sensors.py:97`），既没有 deadline policy 也没有 liveliness 回调——**"话题死了"这件事只能靠 age 阈值猜**（`src/follow_control.py:226-229`、`src/follow_motion.py:40-46`）。
 4. **TF/时间语义降级**。桥内查 latest transform（`src/follow_sensors.py:134`）而非按 color stamp 查，且传给应用层的只有标量 age，应用层无法做时间插值或不确定度传播。原生 ROS2 节点可以直接持有 `MessageFilter` + `ApproximateTimeSynchronizer` 保留完整 `header.stamp`。
 5. **无法接入 ROS 生态（正在被逐阶段消解）**。当前 `src/` 应用层用不了 nav2、SMAC/MPPI controller、ros2_control，也没有 `ros2 action`（跟随任务本该是一个 Action：有 goal/feedback/cancel，`docs/ros2-learning-notes-01.md:76-78` 作者自己分析到了），也失去了 `ros2 bag` 黑匣子能力。但 `reference/ros2_ws/src/follow_msgs` 已定义 `FollowPerson.action` 并编译通过，`follow_bringup` 已有 launch + `config/follow_params.yaml`，对应路线图的 B/C/D/E/F 阶段——**这一项不再是"缺失"，而是"排期中"**。
-6. **拓扑复杂度上升而非下降**。现在一台 Pi5 上并存：Docker 容器 + 原厂 3 个 launch + 2 个桥进程 + 2 个 HTTP 端口 + Flask 主进程 4 线程 + 外部 systemd 监督 + Windows 侧 SSH 隧道（`ops/watch-follow.sh:78`）。**排障要跨 5 个层次**，比原生 6 个 ROS 节点更难，尤其两个桥无日志。迁移完成后此项会收敛（launch 取代 pgrep 逻辑、话题取代端口）。
+6. **拓扑复杂度上升而非下降**。现在一台 Pi5 上并存：Docker 容器 + 原厂 3 个 launch + 2 个桥进程 + 2 个 HTTP 端口 + Flask 主进程 4 线程 + 外部 systemd 监督 + Windows 侧 SSH 隧道（`ops/watch-follow.sh:78`）。**排障要跨 5 个层次**，比原生 6 个 ROS 节点更难；桥日志已有就绪与部分错误信息，但仍缺少统一诊断。迁移完成后此项会收敛（launch 取代 pgrep 逻辑、话题取代端口）。
 7. **配置一致性靠人维护**。`follow_settings.py` 需在容器内的 `/tmp` 副本保持一致，靠部署脚本手工 `docker cp` 七个文件（`ops/robot-follow-boot.sh`），`docs/IMPLEMENTATION.md:52` 特意警告"不要只复制个别 Python 文件"——**这类警告本身就是架构缺陷的症状**。阶段 B（ROS Parameters 取代 `config/follow_settings.json`）正是它的根治方案；注意 `reference/ros2_ws/src/follow_bringup/config/follow_params.yaml` 目前与 `config/follow_settings.json` 是两份平行真源，切换期间需防止二者漂移。
 8. **骨架的话题契约与真车不一致，必须在阶段 F 之前修正**（新发现）。`reference/ros2_ws/src/follow_motion/follow_motion/motion_node.py:15,48` 订阅 `sensor_msgs/BatteryState` 的 `battery` 并读 `msg.voltage`（`motion_node.py:89`），而真车实际发布的是 `std_msgs/Float32` 的 `/PowerVoltage`（`src/follow_actuator.py:44`，取 `message.data`）；真车还订 `/odom`（`src/follow_actuator.py:45`）。既然 S1 已证明"话题名严格对齐"就是 sim-to-real 的全部机制，那么骨架里这个类型不匹配会让参考实现连上仿真时看似正常、连上实车时静默失效。另外 `motion_node.py:140` 用硬编码 `voltage < 11.4` 做低压判断，与现役 `SETTINGS.battery_slow_v = 10.8` / `battery_stop_v = 10.5`（`src/follow_settings.py:38-39`）语义不同，且丢掉了中位数滤波与 3 s 锁定语义（`src/battery_state.py:25-30`）——迁移时这两处都要显式对齐，不能"顺手简化"。
 
@@ -321,7 +322,7 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 
 1. **该保留、不要"主流化"掉的两项资产**（与项目既定决策一致，我独立读码后同样认为它们是加分项而非缺陷）：
    - **执行器作为独立进程 + 自带看门狗**（`src/follow_actuator.py:24-25,46,116-131`）。工业上这恰好是"保护通道与被保护功能分离"的雏形，比把一切塞进同一个 DDS executor 更接近安全架构。DDS 化之后也必须保持它是**另一个进程**。
-   - **感知逻辑可在无 ROS 环境下单元测试**（本机 `.venv` 无 rclpy，28 项测试全绿；mock 面只有 4 个 ROS 模块，`tests/test_actuator.py:29-32`）。这是真实工程收益，不能被"必须用 ros2 test/launch_testing"的形式主义换掉。
+   - **感知逻辑可在无 ROS 环境下单元测试**（本机 `.venv` 无 rclpy，`50 passed, 2 skipped`；ROS 消息与 OpenCV 用轻量 stub 隔离）。这是真实工程收益，不能被"必须用 ros2 test/launch_testing"的形式主义换掉。
    - 附带一条：**硬件缺席时必须拒绝运动而不是假装可用**。当前 `/health` 在无底盘时报 `available_forward_mps: 0.0`（依据 `src/follow_actuator.py:106-107,146`），这是正确行为，不是待修的 bug。
 2. **HTTP 桥本身确实不适合作为终态**，理由不变且可量化：每帧 base64+JSON 的 CPU/拷贝成本（第 1、2 节）、请求-响应模型重造订阅语义（`X-After-Frame`，`src/follow_control.py:99-100`）、QoS/deadline/liveliness 语义丢失、TF 只能传标量 age。这些是结构性损失，参数调不出来。
 3. **建议路径（不改代码，仅评估）**：按既定 B→F 推进即可，无需另起炉灶。具体优先级我会这样排：
@@ -345,12 +346,12 @@ GIL / CPU 推理阻塞控制环路：**问题确实存在，但被架构部分�
 | 4 | 高 | 遗留的第二套控制器是死代码，参数语义已与现役分叉 | `src/follow_control.py:292-317,320-356` |
 | 5 | 中 | UI"计划前进"显示的是下发值，破坏三段回放诊断 | `web/templates/follow.html:388` vs `src/follow_session.py:132` |
 | 6 | 中 | 试跑前置深度安全检查未接线，`trial_block_reason` 恒 None | `src/camera_viewer.py:534`；`src/follow_control.py:280` |
-| 7 | 中 | 两个 ROS 桥完全无日志；TF 失败被静默吞 | `src/follow_sensors.py:262-263,135-136`；`src/follow_actuator.py:204-205` |
+| 7 | 中 | ROS 桥日志仍不完整；TF 缺失或无效只表现为无投影 | `src/follow_bridges/follow_sensors.py` 的 `projected_lidar()`/`transform_between()`；`src/follow_bridges/follow_actuator.py` |
 | 8 | 中 | Re-ID worker 线程异常后永久失效且不重启 | `src/edge_reid.py:72-73` |
 | 9 | 中 | `camera_to_front_m` 在 6 处手工相减；`calibration.json` 从未被代码读取（溯源与实际参数无代码绑定） | `src/lidar_geometry.py:13,21`；`src/follow_control.py:148,161`；`src/follow_motion.py:47,56`；`src/camera_viewer.py:521`；`config/calibration.json` 仅被 `ops/build_release.py:22` 打包 |
 | 10 | 中 | 彩深配对两套实现；HTTP keep-alive 客户端两套实现 | `src/follow_sensors.py:34-58` vs `157-169`；`src/camera_viewer.py:101-118` vs `src/follow_control.py:94-117` |
 | 11 | 中 | 开发/生产依赖版本不同且无 lockfile；CI 不覆盖容器环境 | `requirements/base.txt` vs `docs/IMPLEMENTATION.md:66`；`.github/workflows/ci.yml` |
-| 12 | 中 | `capture/worker/control_loop` 三个循环零测试覆盖；`follow_sensors.py` 全模块零覆盖 | `tests/` 无相应引用（grep `aligned_pair/project_scan/capture()/worker()/control_loop` 无命中） |
+| 12 | 中 | `capture/worker/control_loop` 三个循环仍无主机单元测试；`Sensors.frame()` 编码与投影只有 ROS SIL 运行时覆盖 | `tests/` 无三个循环的直接调用；`tests/test_sensor_tf.py` 覆盖 TF 图变换，传感器帧路径见 `docs/ros2-packages.md` |
 | 13 | 低 | 无返回类型注解（全仓 0 处）；CI 仅 `compileall` | `grep "def .*->" src/*.py` = 0；`.github/workflows/ci.yml` |
 | 14 | 低 | 死常量/死参数/死接口 | `src/follow_actuator.py:20,22`；`src/camera_viewer.py:182`；`src/camera_viewer.py:549`；`src/camera_viewer.py:79,486,498` |
 | 15 | 低 | `Nice=5` 给控制进程降权；无绑核/实时策略 | `ops/wheeltec-follow-edge.service:22` |

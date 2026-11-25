@@ -1,14 +1,4 @@
-"""差速小车运动学仿真：用话题名伪装成真车。
-
-sim-to-real 的全部机制只有一句话 —— 仿真节点发布真车发布的、订阅真车订阅的，
-名字和类型都对齐（契约见 docs/architecture.md 与 src/follow_actuator.py:32,44,45），
-于是 src/ 里的真实代码一行不改就能跑在桌面上。
-
-跑法（先别装 Gazebo，这个零新依赖）：
-    ros2 run follow_sim sim_node
-    ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.3}}"
-    ros2 topic echo /odom
-"""
+"""差速小车运动学仿真，话题契约与真车一致。"""
 
 import math
 import random
@@ -34,19 +24,13 @@ class KinematicsNode(Node):
     def __init__(self):
         super().__init__('follow_sim')
 
-        # 硬保险：真车底盘在发 /PowerVoltage 时，仿真绝不启动。
-        # 两条 /odom、两条 /PowerVoltage 同时活着，比没仿真危险得多 —— 而且不会报错，只会骗人。
-        # 位置很关键：必须在创建自己的发布器**之前**查。count_publishers() 把自己也算进去，
-        # 上一版把检查放在 main() 里，仿真把你自己当成了真车，永远拒绝启动（实测踩过）。
-        if self.count_publishers(self.get_parameter('battery_voltage_topic').value) > 0:
-            raise RuntimeError('检测到真底盘在发 /PowerVoltage，仿真拒绝启动（避免与真实数据抢话题）')
-
-        # 参数用 declare + set_parameters_callback，运行时可以 ros2 param set 挪人，
-        # 不用重启 —— 这就是阶段 B 要在真代码里补的那件事，仿真先体验一遍。
         self.declare_parameter('cmd_vel_topic', '/cmd_vel')
         self.declare_parameter('odometry_topic', '/odom')
         self.declare_parameter('scan_topic', '/scan')
         self.declare_parameter('battery_voltage_topic', '/PowerVoltage')
+        # 必须在自己创建发布器之前检查，否则会把仿真自己误判为真车。
+        if self.count_publishers(self.get_parameter('battery_voltage_topic').value) > 0:
+            raise RuntimeError('检测到真底盘在发 /PowerVoltage，仿真拒绝启动（避免与真实数据抢话题）')
         self.declare_parameter('person_x', 2.5)
         self.declare_parameter('person_y', 0.0)
         self.declare_parameter('person_radius', 0.35)

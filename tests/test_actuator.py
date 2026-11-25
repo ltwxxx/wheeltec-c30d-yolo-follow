@@ -89,3 +89,66 @@ def test_stale_battery_or_odometry_cannot_report_ready_or_allow_motion(actuator)
     assert not bridge.health()['ok']
     with pytest.raises(RuntimeError):
         bridge.accept({'active': True, 'forward_mps': .1, 'turn_rad_s': 0.})
+
+
+def test_arm_and_stop_accept_empty_http_bodies(actuator):
+    import http.client
+    import json
+    import threading
+    import urllib.error
+    import urllib.request
+    import follow_bridges.follow_actuator as module
+
+    class HttpActuator:
+        def __init__(self):
+            self.calls = []
+            self.ready = False
+
+        def arm(self):
+            self.calls.append('arm')
+
+        def stop(self):
+            self.calls.append('stop')
+
+        def health(self):
+            return {'ok': self.ready}
+
+    bridge = HttpActuator()
+    server = module.ThreadingHTTPServer(('127.0.0.1', 0), module.handler(bridge))
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        for endpoint in ('arm', 'stop'):
+            request = urllib.request.Request(
+                f'http://127.0.0.1:{server.server_port}/{endpoint}', data=b'', method='POST')
+            with urllib.request.urlopen(request, timeout=2) as response:
+                assert response.status == 200
+                assert json.load(response) == {'ok': True}
+        assert bridge.calls == ['arm', 'stop']
+
+        connection = http.client.HTTPConnection('127.0.0.1', server.server_port, timeout=2)
+        try:
+            connection.request('POST', '/arm', body=b'{}', headers={'Content-Type': 'application/json'})
+            response = connection.getresponse()
+            assert response.status == 200
+            assert json.loads(response.read()) == {'ok': True}
+            connection.request('GET', '/health')
+            response = connection.getresponse()
+            assert response.status == 503
+            assert json.loads(response.read()) == {'ok': False}
+        finally:
+            connection.close()
+        assert bridge.calls == ['arm', 'stop', 'arm']
+
+        health_url = f'http://127.0.0.1:{server.server_port}/health'
+        with pytest.raises(urllib.error.HTTPError) as error:
+            urllib.request.urlopen(health_url, timeout=2)
+        assert error.value.code == 503
+        bridge.ready = True
+        with urllib.request.urlopen(health_url, timeout=2) as response:
+            assert response.status == 200
+            assert json.load(response) == {'ok': True}
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)

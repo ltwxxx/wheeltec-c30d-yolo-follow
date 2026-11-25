@@ -189,7 +189,11 @@ def handler(actuator):
                 length = int(self.headers.get("Content-Length", "0"))
                 if not 0 <= length <= 2048:
                     raise ValueError("invalid request size")
-                payload = json.loads(self.rfile.read(length))
+                body = self.rfile.read(length)
+                if body or self.path not in ("/stop", "/arm"):
+                    payload = json.loads(body)
+                else:
+                    payload = {}
                 if not isinstance(payload, dict):
                     raise ValueError("request must be an object")
                 if self.path == "/command":
@@ -237,9 +241,9 @@ def main(args=None):
         while time.monotonic() < deadline:
             actuator.tick()
             time.sleep(0.05)
-        actuator.destroy_node()
-        spin_thread.join(timeout=1.0)
         rclpy.try_shutdown()
+        spin_thread.join(timeout=1.0)
+        actuator.destroy_node()
 
 
 if __name__ == "__main__":

@@ -8,14 +8,17 @@ import signal
 import socket
 import threading
 import time
+import types
 
 import cv2
+cv2.setNumThreads(1)
 import numpy as np
+import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
-from rclpy.time import Time
+from rclpy.signals import SignalHandlerOptions
 from sensor_msgs.msg import CameraInfo, Image, LaserScan
-from tf2_ros import Buffer, TransformException, TransformListener
+from tf2_msgs.msg import TFMessage
 
 from .follow_settings import VERSION
 from .lidar_geometry import summarize_points
@@ -23,6 +26,20 @@ from .lidar_geometry import summarize_points
 
 SCAN_FRAME_WINDOW_S = 0.20
 FRONT_HALF_WIDTH_M = 0.23
+TRANSFORM_TOPIC = "/tf"
+
+
+def rotation_matrix(rotation):
+    qx, qy, qz, qw = rotation.x, rotation.y, rotation.z, rotation.w
+    norm = math.sqrt(qx * qx + qy * qy + qz * qz + qw * qw)
+    if norm == 0:
+        raise ValueError("TF 旋转四元数无效")
+    qx, qy, qz, qw = qx / norm, qy / norm, qz / norm, qw / norm
+    return np.array([
+        [1 - 2 * (qy * qy + qz * qz), 2 * (qx * qy - qz * qw), 2 * (qx * qz + qy * qw)],
+        [2 * (qx * qy + qz * qw), 1 - 2 * (qx * qx + qz * qz), 2 * (qy * qz - qx * qw)],
+        [2 * (qx * qz - qy * qw), 2 * (qy * qz + qx * qw), 1 - 2 * (qx * qx + qy * qy)],
+    ])
 
 
 def stamp_ns(message):
@@ -63,12 +80,57 @@ def project_scan(scan, transform, info):
     angles = scan.angle_min + beam_indices * scan.angle_increment
     ranges = ranges[valid]
     points = np.column_stack((ranges * np.cos(angles), ranges * np.sin(angles), np.zeros(len(ranges))))
-    q, t = transform.rotation, transform.translation
-    axis = np.array([q.x, q.y, q.z])
-    points += 2 * np.cross(axis, np.cross(axis, points) + q.w * points)
-    points += (t.x, t.y, t.z)
+    points = points @ rotation_matrix(transform.rotation).T
+    points += (transform.translation.x, transform.translation.y, transform.translation.z)
     return summarize_points(points, beam_indices, info.k[0] / info.width, info.k[4] / info.height,
                             info.k[2] / info.width, info.k[5] / info.height)
+
+
+def transform_from_matrix(rotation, translation):
+    candidates = [
+        np.array([rotation[2, 1] - rotation[1, 2],
+                  rotation[0, 2] - rotation[2, 0],
+                  rotation[1, 0] - rotation[0, 1],
+                  rotation.trace() + 1.0]),
+        np.array([rotation[0, 0] - rotation[1, 1] - rotation[2, 2] + 1.0,
+                  rotation[1, 0] + rotation[0, 1],
+                  rotation[2, 0] + rotation[0, 2],
+                  rotation[2, 1] - rotation[1, 2]]),
+        np.array([rotation[0, 1] + rotation[1, 0],
+                  rotation[1, 1] - rotation[0, 0] - rotation[2, 2] + 1.0,
+                  rotation[1, 2] + rotation[2, 1],
+                  rotation[0, 2] - rotation[2, 0]]),
+        np.array([rotation[0, 2] + rotation[2, 0],
+                  rotation[1, 2] + rotation[2, 1],
+                  rotation[2, 2] - rotation[0, 0] - rotation[1, 1] + 1.0,
+                  rotation[1, 0] - rotation[0, 1]]),
+    ]
+    quaternion = max(candidates, key=lambda value: np.linalg.norm(value))
+    quaternion_norm = np.linalg.norm(quaternion)
+    if quaternion_norm == 0:
+        raise ValueError("TF 旋转矩阵无效")
+    quaternion = quaternion / quaternion_norm
+    return types.SimpleNamespace(
+        translation=types.SimpleNamespace(x=translation[0], y=translation[1], z=translation[2]),
+        rotation=types.SimpleNamespace(x=quaternion[0], y=quaternion[1], z=quaternion[2], w=quaternion[3]),
+    )
+
+
+def inverse_transform(transform):
+    rotation = rotation_matrix(transform.rotation).T
+    translation = -rotation @ np.array([
+        transform.translation.x, transform.translation.y, transform.translation.z])
+    return transform_from_matrix(rotation, translation)
+
+
+def compose_transforms(first, second):
+    first_rotation = rotation_matrix(first.rotation)
+    second_rotation = rotation_matrix(second.rotation)
+    rotation = first_rotation @ second_rotation
+    translation = first_rotation @ np.array([
+        second.translation.x, second.translation.y, second.translation.z
+    ]) + np.array([first.translation.x, first.translation.y, first.translation.z])
+    return transform_from_matrix(rotation, translation)
 
 
 class Sensors(Node):
@@ -84,8 +146,9 @@ class Sensors(Node):
         self.depths = deque(maxlen=8)
         self.camera_info = None
         self.scan = None
-        self.transforms = Buffer()
-        self.transform_listener = TransformListener(self.transforms, self)
+        self.transforms = {}
+        self.create_subscription(TFMessage, TRANSFORM_TOPIC, self.on_transform, 10)
+        self.create_subscription(TFMessage, "/tf_static", self.on_transform_static, 10)
         for kind, topic, callback in (
             (Image, self.get_parameter("color_image_topic").value, self.on_color),
             (Image, self.get_parameter("depth_image_topic").value, self.on_depth),
@@ -120,6 +183,62 @@ class Sensors(Node):
                 return
             self.scan = (time.monotonic(), closest, scan)
 
+    def on_transform(self, message):
+        with self.lock:
+            for transform in message.transforms:
+                self.transforms[(transform.header.frame_id, transform.child_frame_id)] = (
+                    transform.header.stamp.sec * 10**9 + transform.header.stamp.nanosec,
+                    transform.transform)
+
+    def on_transform_static(self, message):
+        with self.lock:
+            for transform in message.transforms:
+                self.transforms[(transform.header.frame_id, transform.child_frame_id)] = (
+                    None, transform.transform)
+
+    def transform_between(self, parent, child):
+        if parent == child:
+            return types.SimpleNamespace(
+                translation=types.SimpleNamespace(x=0., y=0., z=0.),
+                rotation=types.SimpleNamespace(x=0., y=0., z=0., w=1.),
+            )
+        with self.lock:
+            edges = dict(self.transforms)
+        if (parent, child) in edges:
+            result = edges[(parent, child)][1]
+            try:
+                rotation_matrix(result.rotation)
+            except ValueError:
+                edges.pop((parent, child))
+            else:
+                return result
+        if (child, parent) in edges:
+            try:
+                return inverse_transform(edges[(child, parent)][1])
+            except ValueError:
+                edges.pop((child, parent))
+        queue = deque([(parent, None)])
+        visited = {parent}
+        while queue:
+            frame, transform = queue.popleft()
+            for (edge_parent, edge_child), (_, edge_transform) in edges.items():
+                reverse = edge_child == frame
+                next_frame = edge_parent if reverse else edge_child
+                if not reverse and edge_parent != frame or next_frame in visited:
+                    continue
+                candidate = inverse_transform(edge_transform) if reverse else edge_transform
+                try:
+                    result = candidate if transform is None else compose_transforms(transform, candidate)
+                except ValueError:
+                    continue
+                if result is None:
+                    continue
+                visited.add(next_frame)
+                if next_frame == child:
+                    return result
+                queue.append((next_frame, result))
+        return None
+
     def scan_status(self):
         with self.lock:
             scan = self.scan
@@ -132,13 +251,12 @@ class Sensors(Node):
         if scan is None or scan[1] is None or abs(scan[0] - color_at) > SCAN_FRAME_WINDOW_S:
             return None
         at, _, message = scan
-        try:
-            transform = self.transforms.lookup_transform(info.header.frame_id, message.header.frame_id, Time())
-        except TransformException:
+        transform = self.transform_between(info.header.frame_id, message.header.frame_id)
+        if transform is None:
             return None
         if info.height <= 0 or not all(math.isfinite(info.k[i]) for i in (4, 5)) or info.k[4] <= 0:
             return None
-        points, front_m, nearest_m, clusters = project_scan(message, transform.transform, info)
+        points, front_m, nearest_m, clusters = project_scan(message, transform, info)
         return {"age": time.monotonic() - at, "points": points, "front_m": front_m,
                 "nearest_m": nearest_m, "clusters": clusters, "front_reference": "bumper",
                 "sample_at": at, "version": VERSION}
@@ -239,6 +357,7 @@ def handler(sensors):
                 status = 200
             except (ValueError, cv2.error) as exc:
                 data, status = {"error": str(exc)}, 503
+                sensors.get_logger().warning(f"传感器 HTTP 请求失败: {exc}")
             if data is None:
                 self.send_response(204)
                 self.send_header("Cache-Control", "no-store")
@@ -280,9 +399,9 @@ def main(args=None):
         server.serve_forever()
     finally:
         server.server_close()
-        sensors.destroy_node()
-        spin_thread.join(timeout=1.0)
         rclpy.try_shutdown()
+        spin_thread.join(timeout=1.0)
+        sensors.destroy_node()
 
 
 if __name__ == "__main__":
