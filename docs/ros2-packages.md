@@ -8,7 +8,7 @@
 ros2_ws/src/
 ├── follow_bridges/         传感器与执行器节点、安全逻辑、运行配置
 ├── follow_bringup/         组合 launch 与 ROS 参数
-└── follow_sim/             差速运动学 SIL 仿真
+├── follow_sim/             差速运动学 SIL（sim_node）与 MuJoCo SIL（mujoco_world / mujoco_follow）
 ```
 
 `src/follow_actuator.py`、`src/follow_sensors.py` 仅保留兼容入口。现有发布包通过 `src/follow_bridges/` 携带同一份节点实现。
@@ -91,6 +91,68 @@ curl -X POST http://127.0.0.1:18768/stop
 ## 验证边界
 
 硬件无关测试覆盖执行器看门狗、同步停止、低电压锁存、陈旧数据拒绝、发布归档、独立运行资源，以及 TF 直接/反向/多跳变换。运动学仿真只验证接口和指定停车语义，不替代动力学、制动距离或现场安全验收。
+
+## MuJoCo SIL 启动
+
+`follow_sim` 里还有一对 MuJoCo 节点：物理世界是真的算出来的，话题契约仍与真车一致。它不属于发布包，也不会影响 `sim_node` 的运动学 SIL。
+
+```text
+mujoco_world   加载 sim/car.xml，跑物理，发 /odom /tf /scan /camera/image_raw
+mujoco_follow  只吃 /scan + /camera/image_raw，发 /cmd_vel /follow_state
+```
+
+两个节点之间没有共享内存、没有互相 import，只通过话题说话；把 `mujoco_world` 换成真车，`mujoco_follow` 不需要改。
+
+启动（容器内，仓库挂载在 `/work`）：
+
+```console
+source /opt/ros/humble/setup.bash
+source ros2_ws/install/setup.bash
+export MUJOCO_GL=osmesa ROS_DOMAIN_ID=42 ROS_LOCALHOST_ONLY=1
+ros2 launch follow_sim mujoco_sil.launch.py
+ros2 launch follow_sim mujoco_sil.launch.py person_x:=3.4 person_y:=1.4
+```
+
+| 话题 | 类型 | 方向 | 说明 |
+| --- | --- | --- | --- |
+| `/cmd_vel` | `geometry_msgs/Twist` | 进 world | 0.5 s 无新命令即停车 |
+| `/sim/person` | `geometry_msgs/Point` | 进 world | 挪人 |
+| `/odom`、`/tf` | `nav_msgs/Odometry`、`tf2_msgs/TFMessage` | 出 world | 物理世界里的真实位姿，`odom → base_link` |
+| `/scan` | `sensor_msgs/LaserScan` | 出 world | 360 束、10 Hz、`-π…π`、打空为 `inf`，从车顶 `lidar` site 出发，跳过自身底盘 |
+| `/camera/image_raw` | `sensor_msgs/Image` | 出 world | 320×240 `rgb8`，车头 `eye` 相机（fovy 65°） |
+| `/follow_state` | `std_msgs/String` | 出 follow | 一行 JSON：状态、方位、像素数、前/左/右激光、左右轮速 |
+
+挪人也可以在线做：`ros2 topic pub --once /sim/person geometry_msgs/Point "{x: 1.0, y: -0.5}"` 或 `ros2 param set /mujoco_world person_x 1.0`。
+
+参数：`world_file`（默认自动找仓库根目录 `sim/car.xml`）、`person_x/person_y`、`rate_hz`（物理 30）、`scan_every`（3 → 10 Hz）、`image_hz`（10）、`cmd_timeout_s`、`wheel_radius`、`half_track`、`camera_width/height`；follow 侧 `laser_cutoff`、`data_timeout_s`、`fov_v_deg`。跟随阈值仍是代码里的常量，与第 6、7 课一致。
+
+两个实现细节：
+
+- 渲染单开一条线程。容器里没有 GPU，osmesa 一帧要上百毫秒；放在物理循环里会把 30 Hz 拖成 17 Hz、仿真跑成慢动作。物理每帧只往快照里 `mj_copyData`，渲染线程按 `image_hz` 慢慢画。
+- 世界节点会数“车身/轮子碰到别的实体”的接触步数并限频告警，地面接触不算。绕障跑完全程这个数字必须是 0。
+
+## 2026-11-26 MuJoCo SIL 验收
+
+环境同下节容器（`ros2-learn:dev` + `pip install mujoco`（3.17.0）+ `libosmesa6`），`ROS_DOMAIN_ID=42`、`ROS_LOCALHOST_ONLY=1`、`MUJOCO_GL=osmesa`。未连接真车，未改动实车 systemd 与人工停止路径。
+
+| 检查项 | 结果 |
+| --- | --- |
+| 构建 | `follow_sim` 单包 `colcon build --symlink-install` 通过，`mujoco_world` / `mujoco_follow` 入口与 `mujoco_sil.launch.py` 可从安装空间加载 |
+| 话题频率 | `/odom` 28.4 Hz、`/scan` 8.8 Hz、`/camera/image_raw` 8.0 Hz（软件渲染上限所致，物理接近实时） |
+| 雷达内容 | 360 束，`angle_min=-3.14`、`angle_max=3.12`、`frame_id=base_link`；停车时 114 条返回，最近 `0.50 m` 正对人 |
+| 摄像头内容 | 320×240 `rgb8`，画面里只有人、石头、树和草地，没有激光辅助线 |
+| 默认跟随 | 人 (2.0, 0.0)、车在原点：1.8 m → 稳定在 `0.50 m`，状态 `保持`，轮速归零 |
+| 挪人 | `/sim/person` 与 `person_y` 参数均生效；人挪到车后时进入 `看不见 / 找人`（左 −2.0、右 +2.0 原地搜），约 6 s 后重新看见并追上 |
+| 绕障 | 人 (3.4, 1.4)、石头 (1.5, 0.62) 挡路：出现 `绕障`，左轮 +3.8 / 右轮 −2.2 借右侧通过，最终稳定 `0.50 m`、`保持` |
+| 碰撞计数 | 上述两段跟跑全程 `0`；反例（直接 `0.2 m/s` 冲向人）出现 `碰撞接触步数 331` 并持续告警 |
+| 关停 | launch `SIGINT` 后两节点 `process has finished cleanly`，渲染线程 3 s 内退出 |
+
+补充说明：
+
+- 仿真时间略慢于墙钟（渲染线程抢 CPU 时 `/odom` 掉到 28 Hz 左右）。执行器看门狗、`/cmd_vel` 超时都按墙钟计时，因此看到的是真实的看门狗语义；但不要把这里的位移速度当成真车速度。
+- 人是运动学物体（贴地、站直、清除速度），不模拟人的质量与行走；车是完整刚体动力学，会撞、会被石头顶偏。
+- `mj_ray` 只跳过车身，不跳过轮子；射线起点在车顶 `lidar` site，才不会被自己的车轮挡住。
+- 仍未验证：真车话题名与 TF 帧名、相机标定、底盘动力学与制动距离。MuJoCo SIL 只证明“控制逻辑与接口自洽”，不构成车辆安全验收。
 
 ## 2026-11-26 安装与 SIL 验收
 
