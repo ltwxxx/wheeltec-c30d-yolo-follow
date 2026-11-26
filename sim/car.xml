@@ -90,20 +90,20 @@
       <geom type="sphere" pos="0.28 -0.12 1.44" size="0.42" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
 
-    <!-- 灌木和石头：散布在路边的点缀 -->
+    <!-- 灌木和石块：路边点缀，但都是真的会挡路的东西（车会撞、激光也扫得到） -->
     <body name="bush_a" pos="2.4 1.7 0">
-      <geom type="sphere" pos="0 0 0.22" size="0.26" material="leaf_b" contype="0" conaffinity="0"/>
-      <geom type="sphere" pos="0.20 0.10 0.18" size="0.20" material="leaf_a" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 0 0.22" size="0.26" material="leaf_b"/>
+      <geom type="sphere" pos="0.20 0.10 0.18" size="0.20" material="leaf_a"/>
     </body>
     <body name="bush_b" pos="-1.8 -1.9 0">
-      <geom type="sphere" pos="0 0 0.20" size="0.24" material="leaf_a" contype="0" conaffinity="0"/>
-      <geom type="sphere" pos="-0.18 -0.08 0.16" size="0.18" material="leaf_b" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 0 0.20" size="0.24" material="leaf_a"/>
+      <geom type="sphere" pos="-0.18 -0.08 0.16" size="0.18" material="leaf_b"/>
     </body>
     <body name="bush_c" pos="-3.1 0.9 0">
-      <geom type="sphere" pos="0 0 0.18" size="0.22" material="leaf_b" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 0 0.18" size="0.22" material="leaf_b"/>
     </body>
     <body name="bush_d" pos="4.6 4.3 0">
-      <geom type="sphere" pos="0 0 0.24" size="0.28" material="leaf_a" contype="0" conaffinity="0"/>
+      <geom type="sphere" pos="0 0 0.24" size="0.28" material="leaf_a"/>
     </body>
 
     <!-- 石块：和树一样是真障碍（车会撞到），绕障课里当“路边大石头” -->
@@ -113,7 +113,7 @@
     <body name="rock_b" pos="2.1 -3.3 0">
       <geom type="ellipsoid" pos="0 0 0.10" size="0.22 0.18 0.13" material="rock"/>
     </body>
-    <body name="rock_c" pos="1.5 0.55 0">
+    <body name="rock_c" pos="1.5 0.62 0">
       <geom type="sphere" pos="0 0 0.17" size="0.17" material="rock"/>
     </body>
 
