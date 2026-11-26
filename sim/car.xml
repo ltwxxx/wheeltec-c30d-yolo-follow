@@ -57,41 +57,35 @@
     <geom name="path" type="box" pos="0 0 0.0005" size="6 0.45 0.0005" material="path"
           contype="0" conaffinity="0"/>
 
-    <!-- 树：树干 + 三团树冠。纯视觉件，车会直接穿过去 -->
+    <!-- 树：树干会挡路（真障碍，激光和车都会撞到），树冠是“软叶子”，只负责好看 -->
     <body name="tree_a" pos="3.4 2.9 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.85" size="0.075" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.85" size="0.075" material="bark"/>
       <geom type="sphere" pos="0 0 1.10" size="0.62" material="leaf_a" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="0.30 0.12 1.40" size="0.42" material="leaf_b" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="-0.28 -0.16 1.32" size="0.38" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
     <body name="tree_b" pos="-2.9 2.6 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.75" size="0.065" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.75" size="0.065" material="bark"/>
       <geom type="sphere" pos="0 0 0.98" size="0.55" material="leaf_b" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="0.24 -0.10 1.24" size="0.36" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
     <body name="tree_c" pos="5.6 -2.0 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.95" size="0.08" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.95" size="0.08" material="bark"/>
       <geom type="sphere" pos="0 0 1.20" size="0.66" material="leaf_a" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="-0.30 0.10 1.52" size="0.44" material="leaf_b" contype="0" conaffinity="0"/>
     </body>
     <body name="tree_d" pos="-4.4 -2.6 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.80" size="0.07" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.80" size="0.07" material="bark"/>
       <geom type="sphere" pos="0 0 1.02" size="0.58" material="leaf_b" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="0.22 0.14 1.30" size="0.38" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
     <body name="tree_e" pos="1.4 -4.8 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.70" size="0.06" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.70" size="0.06" material="bark"/>
       <geom type="sphere" pos="0 0 0.92" size="0.52" material="leaf_a" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="-0.22 -0.12 1.18" size="0.34" material="leaf_b" contype="0" conaffinity="0"/>
     </body>
     <body name="tree_f" pos="8.2 2.4 0">
-      <geom type="cylinder" fromto="0 0 0 0 0 0.90" size="0.075" material="bark"
-            contype="0" conaffinity="0"/>
+      <geom type="cylinder" fromto="0 0 0 0 0 0.90" size="0.075" material="bark"/>
       <geom type="sphere" pos="0 0 1.12" size="0.62" material="leaf_b" contype="0" conaffinity="0"/>
       <geom type="sphere" pos="0.28 -0.12 1.44" size="0.42" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
@@ -112,16 +106,15 @@
       <geom type="sphere" pos="0 0 0.24" size="0.28" material="leaf_a" contype="0" conaffinity="0"/>
     </body>
 
+    <!-- 石块：和树一样是真障碍（车会撞到），绕障课里当“路边大石头” -->
     <body name="rock_a" pos="-1.2 2.1 0">
-      <geom type="ellipsoid" pos="0 0 0.13" size="0.28 0.22 0.16" material="rock"
-            contype="0" conaffinity="0"/>
+      <geom type="ellipsoid" pos="0 0 0.13" size="0.28 0.22 0.16" material="rock"/>
     </body>
     <body name="rock_b" pos="2.1 -3.3 0">
-      <geom type="ellipsoid" pos="0 0 0.10" size="0.22 0.18 0.13" material="rock"
-            contype="0" conaffinity="0"/>
+      <geom type="ellipsoid" pos="0 0 0.10" size="0.22 0.18 0.13" material="rock"/>
     </body>
-    <body name="rock_c" pos="5.0 0.7 0">
-      <geom type="sphere" pos="0 0 0.12" size="0.16" material="rock" contype="0" conaffinity="0"/>
+    <body name="rock_c" pos="1.5 0.55 0">
+      <geom type="sphere" pos="0 0 0.17" size="0.17" material="rock"/>
     </body>
 
     <!-- 跟随目标：站在车前方 2 米的“人”
@@ -174,6 +167,11 @@
       <site name="front" pos="0.13149 0 0" size="0.012" rgba="1 0.2 0.2 1"/>
       <!-- 测距传感器：rangefinder 沿 site 的 z 轴发射，所以绕 y 转 90° 让它朝正前方 -->
       <site name="range_front" pos="0.16 0 0" euler="0 90 0" size="0.008" rgba="1 1 0 1"/>
+      <!-- 左右两道斜 30° 的激光：绕障时用来判断“哪边更空” -->
+      <site name="range_left" pos="0.16 0 0" xyaxes="-0.5 0.866 0 0 0 1" size="0.006"
+            rgba="1 1 0 0.7"/>
+      <site name="range_right" pos="0.16 0 0" xyaxes="0.5 0.866 0 0 0 1" size="0.006"
+            rgba="1 1 0 0.7"/>
       <!-- 车载摄像头：装在车头，镜头朝正前方。控制程序从这里“看”人 -->
       <camera name="eye" pos="0.175 0 0.12" xyaxes="0 -1 0 0 0 1" fovy="65"/>
 
@@ -217,9 +215,11 @@
     <exclude body1="chassis" body2="wheel_rr"/>
   </contact>
 
-  <!-- 前方测距：一束激光沿车头方向打出去，量到最近障碍物的距离（米） -->
+  <!-- 三束激光：正前方 + 左 30° + 右 30°，量到最近障碍物的距离（米），打空返回 -1 -->
   <sensor>
     <rangefinder name="front_range" site="range_front" cutoff="6"/>
+    <rangefinder name="left_range" site="range_left" cutoff="6"/>
+    <rangefinder name="right_range" site="range_right" cutoff="6"/>
   </sensor>
 
   <!-- 四个“马达”：ctrl 是目标轮速（rad/s），kv 是跟随强度，forcerange 是力矩上限 -->
